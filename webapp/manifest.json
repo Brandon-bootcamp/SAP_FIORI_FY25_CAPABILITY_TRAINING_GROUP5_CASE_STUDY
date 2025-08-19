@@ -51,6 +51,10 @@
         "settings": {
           "bundleName": "casestudy.i18n.i18n"
         }
+      },
+      "": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {}
       }
     },
     "resources": {
@@ -68,23 +72,23 @@
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
-        "path": "casestudy.view",
-        "async": true,
-        "viewPath": "casestudy.view"
+        "viewPath": "casestudy.view",
+        "async": true
       },
       "routes": [
         {
-          "name": "Routeg5_CaseStudy",
-          "pattern": ":?query:",
+          "name": "RouteOrderManagement",
+          "pattern": "",
           "target": [
-            "Targetg5_CaseStudy"
+            "TargetOrderManagement"
           ]
         }
       ],
       "targets": {
-        "Targetg5_CaseStudy": {
-          "id": "g5_CaseStudy",
-          "name": "g5_CaseStudy"
+        "TargetOrderManagement": {
+          "viewName": "order_management",
+          "viewId": "order_management",
+          "viewType": "XML"
         }
       }
     },
