@@ -1,85 +1,91 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" controllerName="editpage.controller.EditPage">
-<Page id="page3" floatingFooter="true" title="{i18n>title}">
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" controllerName="casestudy.controller.EditPage">
+    <Page id="editPage" floatingFooter="true" title="{i18n>title}">
         <content>
 
             <!-- Order Details Panel -->
-            <Panel id="panel0" width="auto" expandable="false" class="sapUiResponsiveMargin" expanded="true">
+            <Panel id="orderDetailsPanel" width="auto" expandable="false" class="sapUiResponsiveMargin" expanded="true">
                 <headerToolbar>
-                    <Toolbar id="toolbar1">
-                        <Title id="_IDGenTitle1" text="Order Details"/>
+                    <Toolbar id="orderDetailsToolbar">
+                        <Title id="orderDetailsTitle" text="Order Details"/>
                     </Toolbar>
                 </headerToolbar>
-            
-                   <HBox id="fb" justifyContent="Center" >
-                        <sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" xmlns:sap.ui.core="sap.ui.core" editable="true" layout="ColumnLayout" columnsL="1" columnsM="1" columnsXL="1" id="formOrderDetails" width="100%" >
-                        <sap.ui.layout.form:content>
-                            <Label id="orderNumber" text="Order Number"/>
-                            <Input id="inp_ordernumber" value="{OrderNumber}" editable="false" width="50%"/>
+                <HBox id="orderDetailsHBox" justifyContent="Center">
+                    <f:SimpleForm id="orderDetailsForm" editable="true" layout="ColumnLayout" columnsL="1" columnsM="1" columnsXL="1" width="100%">
+                        <f:content>
+                            <Label id="lblOrderNumber" text="Order Number"/>
+                            <Input id="inpOrderNumber" value="{OrderNumber}" editable="false" width="50%"/>
 
-                            <Label id="createdOn" text="Created On"/>
-                            <Input id="inp_createdOn" value="{CreatedOn}" editable="false" width="50%"/>
+                            <Label id="lblCreatedOn" text="Created On"/>
+                            <Input id="inpCreatedOn" value="{CreatedOn}" editable="false" width="50%"/>
 
-                            <Label id="receivingplant" text="Receiving Plant"/>
-                            <Input id="inp_receivingplant" value="{ReceivingPlant}" editable="false" width="50%"/>
+                            <Label id="lblReceivingPlant" text="Receiving Plant"/>
+                            <Input id="inpReceivingPlant" value="{ReceivingPlant}" editable="false" width="50%"/>
 
-                            <Label id="deliveringplant" text="Delivering Plant"/>
-                            <Input id="inp_deliveringplant" value="{DeliveringPlant}" editable="false" width="50%"/>
+                            <Label id="lblDeliveringPlant" text="Delivering Plant"/>
+                            <Input id="inpDeliveringPlant" value="{DeliveringPlant}" editable="false" width="50%"/>
 
-                            <Label id="idstatus" text="Status"/>
-                            <Select id="idSelStatus" forceSelection="false" change="onChangeStatus" width="50%">
+                            <Label id="lblStatus" text="Status"/>
+                            <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%">
                                 <items>
-                                    <core:Item id="idItmCreated" text="Created" key="Created"/>
+                                    <core:Item id="statusItemCreated" text="Created" key="Created"/>
+                                    <core:Item id="statusItemReleased" text="Released" key="Released"/>
+                                    <core:Item id="statusItemPartiallyCompleted" text="Partially Completed" key="Partially Completed"/>
+                                    <core:Item id="statusItemDelivered" text="Delivered" key="Delivered"/>
                                 </items>
                             </Select>
-                        </sap.ui.layout.form:content>
-                        </sap.ui.layout.form:SimpleForm>
-                    </HBox>
+                        </f:content>
+                    </f:SimpleForm>
+                </HBox>
             </Panel>
 
             <!-- Product Table Panel -->
-            <Panel id="panel0_1755497504020" width="auto" expandable="false" class="sapUiResponsiveMargin" expanded="true">
+            <Panel id="productTablePanel" width="auto" expandable="false" class="sapUiResponsiveMargin" expanded="true">
                 <headerToolbar>
-                    <Toolbar id="toolbar1_1755497504020">
-                        <Title id="_IDGenTitle2" text="Product(0)"/>
-                        <ToolbarSpacer id="_IDGenToolbarSpacer"/>
-                        <Button id="_IDGenButton" icon="sap-icon://add" press="onAddProduct"/>
-                        <Button id="_IDGenButton_copy" icon="sap-icon://delete" press="onDeleteProduct"/>
+                    <Toolbar id="productToolbar">
+                        <Title id="productTitle" text="Product(0)"/>
+                        <ToolbarSpacer id="productToolbarSpacer"/>
+                        <Button id="btnAddProduct" icon="sap-icon://add" press="onAddProduct"/>
+                        <Button id="btnDeleteProduct" icon="sap-icon://delete" press="onDeleteProduct"/>
                     </Toolbar>
                 </headerToolbar>
 
                 <content>
-                    <Table id="table0" items="{/products}" noDataText="Drop column list items here and columns in the area above">
-
+                    <Table id="productTable" items="{/products}" noDataText="Drop column list items here and columns in the area above">
                         <columns>
-                            <Column id="column011">
+                            <Column id="colCheckBox" width="5rem">
                                 <header>
-                                    <CheckBox id="_IDGenCheckBox" text="Product Name"/>
+                                   <CheckBox id="cbColCheckBox" select="onSelectAllProducts"/>
                                 </header>
                             </Column>
-                            <Column id="column1">
+                            <Column id="colProductName">
                                 <header>
-                                    <Label id="label1_1755497526125" text="Quantity"/>
+                                    <Text id="lblProductName" text="Product Name"/>
                                 </header>
                             </Column>
-                            <Column id="column2">
+                            <Column id="colQuantity">
                                 <header>
-                                    <Label id="label2" text="Price Per Quantity"/>
+                                    <Label id="lblQuantity" text="Quantity"/>
                                 </header>
                             </Column>
-                            <Column id="column3">
+                            <Column id="colPricePerQuantity">
                                 <header>
-                                    <Label id="label3" text="Total Price"/>
+                                    <Label id="lblPricePerQuantity" text="Price Per Quantity"/>
+                                </header>
+                            </Column>
+                            <Column id="colTotalPrice">
+                                <header>
+                                    <Label id="lblTotalPrice" text="Total Price"/>
                                 </header>
                             </Column>
                         </columns>
-
                         <items>
-                            <ColumnListItem id="item0" type="Active">
+                            <ColumnListItem id="productListItem" type="Active">
                                 <cells>
-                                    <Text id="text1" text="{ProductName}"/>
-                                    <Text id="text2" text="{Quantity}"/>
-                                    <Text id="text3" text="{PricePerQuantity}"/>
-                                    <Text id="text4" text="{TotalPrice}"/>
+                                    <CheckBox id="chkSelectProduct" selected="{selected}" select="onSelectProduct"/>
+                                    <Text id="txtProductName" text="{ProductName}"/>
+                                    <Text id="txtQuantity" text="{Quantity}"/>
+                                    <Text id="txtPricePerQuantity" text="{PricePerQuantity}"/>
+                                    <Text id="txtTotalPrice" text="{TotalPrice}"/>
                                 </cells>
                             </ColumnListItem>
                         </items>
@@ -91,10 +97,10 @@
 
         <!-- Footer Toolbar -->
         <footer>
-            <OverflowToolbar id="_IDGenOverflowToolbar1">
-                <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
-                <Button id="_IDGenButton1" type="Emphasized" text="Save" press="onSave"/>
-                <Button id="_IDGenButton2" type="Reject" text="Cancel" press="onCancel"/>
+            <OverflowToolbar id="footerToolbar">
+                <ToolbarSpacer id="footerToolbarSpacer"/>
+                <Button id="btnSave" type="Emphasized" text="Save" press="onSave"/>
+                <Button id="btnCancel" type="Reject" text="Cancel" press="onCancel"/>
             </OverflowToolbar>
         </footer>
     </Page>
