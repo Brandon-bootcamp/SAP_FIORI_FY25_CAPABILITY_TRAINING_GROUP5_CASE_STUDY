@@ -42,7 +42,7 @@
             <Panel id="productTablePanel" width="auto" expandable="false" class="sapUiResponsiveMargin" expanded="true">
                 <headerToolbar>
                     <Toolbar id="productToolbar">
-                        <Title id="productTitle" text="Product(0)"/>
+                        <Title id="productTitle" text="Product"/>
                         <ToolbarSpacer id="productToolbarSpacer"/>
                         <Button id="btnAddProduct" icon="sap-icon://add" press="onAddProduct"/>
                         <Button id="btnDeleteProduct" icon="sap-icon://delete" press="onDeleteProduct"/>
