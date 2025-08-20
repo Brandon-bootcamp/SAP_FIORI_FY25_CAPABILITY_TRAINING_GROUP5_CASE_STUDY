@@ -1,0 +1,9 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ordermanagement.ordermanagement.controller.OrderManagement">    
+    <Page xmlns="sap.m" id="pageId" title="Page Title" floatingFooter="true">
+        <!-- <List id="listEmployee" items="{/Orders}">
+            <StandardListItem id="listItem" title="{OrderNumber}, {ProductName}"/>
+        </List> -->
+        <footer>
+        </footer>
+    </Page>
+</mvc:View>

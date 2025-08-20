@@ -3,7 +3,7 @@ sap.ui.define([
 ], (Controller) => {
     "use strict";
 
-    return Controller.extend("casestudy.controller.g5_CaseStudy", {
+    return Controller.extend("com.ordermanagement.ordermanagement.controller.OrderManagement", {
         onInit() {
         }
     });

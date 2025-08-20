@@ -1,25 +1,25 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Mon Aug 18 2025 06:46:17 GMT+0000 (Coordinated Universal Time)|
+|**Generation Date and Time**<br>Wed Aug 20 2025 00:50:02 GMT+0000 (Coordinated Universal Time)|
 |**App Generator**<br>SAP Fiori Application Generator|
 |**App Generator Version**<br>1.18.5|
 |**Generation Platform**<br>SAP Business Application Studio|
-|**Template Used**<br>Basic|
-|**Service Type**<br>None|
-|**Service URL**<br>N/A|
-|**Module Name**<br>casestudy|
-|**Application Title**<br>Case Study|
-|**Namespace**<br>|
+|**Template Used**<br>Basic V2|
+|**Service Type**<br>File|
+|**Metadata File**<br>metadata.xml|
+|**Module Name**<br>order_management|
+|**Application Title**<br>Order Management|
+|**Namespace**<br>com.order_management|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.139.0|
 |**Enable Code Assist Libraries**<br>False|
 |**Enable TypeScript**<br>False|
 |**Add Eslint configuration**<br>False|
 
-## casestudy
+## order_management
 
-An SAP Fiori application.
+An SAP Fiori application for case study.
 
 ### Starting the generated app
 
@@ -27,6 +27,12 @@ An SAP Fiori application.
 
 ```
     npm start
+```
+
+- It is also possible to run the application using mock data that reflects the OData Service URL supplied during application generation.  In order to run the application with Mock Data, run the following from the generated app root folder:
+
+```
+    npm run start-mock
 ```
 
 #### Pre-requisites:
