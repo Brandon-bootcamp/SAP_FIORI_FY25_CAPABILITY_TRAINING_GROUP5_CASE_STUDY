@@ -9,7 +9,6 @@ sap.ui.define([
     return Controller.extend("casestudy.controller.EditPage", {
 
         onInit: function () {
-            // Load existing order data (mocked for now)
             var oData = {
                 OrderNumber: "ORD12345",
                 CreatedOn: "2025-08-18",
@@ -37,23 +36,62 @@ sap.ui.define([
         },
 
         onAddProduct: function () {
-            // Simulate product selection based on DeliveringPlant
-            var oModel = this.getView().getModel();
-            var aProducts = oModel.getProperty("/products");
+            var oDialogModel = new JSONModel({
+                selectedProductId: "",
+                quantity: 1000,
+                availableProducts: [
+                    { id: "Widget A", name: "Widget A" },
+                    { id: "Widget B", name: "Widget B" },
+                    { id: "Widget C", name: "Widget C" }
+                ]
+            });
+            this.getView().setModel(oDialogModel, "dialog");
 
-            // Mock product selection
+            if (!this._pDialog) {
+                this._pDialog = this.loadFragment({
+                    name: "casestudy.fragment.ProductDialog",
+                    controller: this // ensure event handlers are bound
+                });
+            }
+
+            this._pDialog.then(function (oDialog) {
+                oDialog.open();
+            });
+        },
+
+        onConfirmAddProduct: function () {
+            var oDialogModel = this.getView().getModel("dialog");
+            var oMainModel = this.getView().getModel();
+            var aProducts = oMainModel.getProperty("/products");
+
+            var sProductName = oDialogModel.getProperty("/selectedProductId");
+            var iQuantity = parseInt(oDialogModel.getProperty("/quantity"), 10);
+            var iPrice = 10; // Static price, can be dynamic
+
+            if (!sProductName || iQuantity <= 0) {
+                MessageBox.error("Please enter valid product and quantity.");
+                return;
+            }
+
             var oNewProduct = {
-                ProductName: "New Widget",
-                Quantity: 1,
-                PricePerQuantity: 10,
-                TotalPrice: 10,
+                ProductName: sProductName,
+                Quantity: iQuantity,
+                PricePerQuantity: iPrice,
+                TotalPrice: iQuantity * iPrice,
                 selected: false
             };
 
             aProducts.push(oNewProduct);
-            oModel.setProperty("/products", aProducts);
+            oMainModel.setProperty("/products", aProducts);
             MessageToast.show("Product added.");
+
+            this.byId("_IDGenDialog1").close();
         },
+
+        onCancelAddProduct: function () {
+            this.byId("_IDGenDialog1").close();
+        },
+
         onSelectAllProducts: function (oEvent) {
             var bSelected = oEvent.getParameter("selected");
             var oModel = this.getView().getModel();
@@ -96,9 +134,8 @@ sap.ui.define([
                     if (sAction === MessageBox.Action.OK) {
                         MessageBox.success("The Order " + sOrderNumber + " has been successfully updated.", {
                             onClose: function () {
-                                // Navigate back to Detail Page
                                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                                oRouter.navTo("DetailPage"); // Replace with actual route name
+                                oRouter.navTo("DetailPage");
                             }.bind(this)
                         });
                     }
@@ -111,7 +148,7 @@ sap.ui.define([
                 onClose: function (sAction) {
                     if (sAction === MessageBox.Action.OK) {
                         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                        oRouter.navTo("DetailPage"); // Replace with actual route name
+                        oRouter.navTo("DetailPage");
                     }
                 }
             });
