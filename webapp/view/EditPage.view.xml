@@ -27,10 +27,10 @@
                             <Label id="lblStatus" text="Status"/>
                             <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%">
                                 <items>
-                                    <core:Item id="statusItemCreated" text="Created" key="Created"/>
-                                    <core:Item id="statusItemReleased" text="Released" key="Released"/>
-                                    <core:Item id="statusItemPartiallyCompleted" text="Partially Completed" key="Partially Completed"/>
-                                    <core:Item id="statusItemDelivered" text="Delivered" key="Delivered"/>
+                                    <core:Item id="statusCreated" text="Created" key="Created"/>
+                                    <core:Item id="statusReleased" text="Released" key="Released"/>
+                                    <core:Item id="statusPartiallyCompleted" text="Partially Completed" key="Partially Completed"/>
+                                    <core:Item id="statusDelivered" text="Delivered" key="Delivered"/>
                                 </items>
                             </Select>
                         </f:content>

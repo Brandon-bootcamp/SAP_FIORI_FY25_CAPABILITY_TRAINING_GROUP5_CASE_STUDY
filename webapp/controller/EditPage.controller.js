@@ -38,7 +38,7 @@ sap.ui.define([
         onAddProduct: function () {
             var oDialogModel = new JSONModel({
                 selectedProductId: "",
-                quantity: 1000,
+                quantity: " ",
                 availableProducts: [
                     { id: "Widget A", name: "Widget A" },
                     { id: "Widget B", name: "Widget B" },
