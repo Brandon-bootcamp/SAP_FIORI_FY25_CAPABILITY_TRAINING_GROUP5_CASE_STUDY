@@ -1,7 +1,7 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ordermanagement.ordermanagement.controller.OrderManagement">    
     <Page id="pageCreateOrder" title="{i18n>pageCreateOrder}" floatingFooter="true" class="headerTitle">
     <!-- Panel: Order Details -->
-        <Panel xmlns="sap.m" width="auto" expandable="false" expanded="false" id="panOrderDetails" class="sapUiResponsiveMargin" headerText="OrderDetail">
+        <Panel xmlns="sap.m" width="auto" expandable="false" expanded="false" id="panOrderDetails" class="sapUiResponsiveMargin" headerText="Order Detail">
             <content>
                 <HBox id="fbCreateOrder" justifyContent="Center" >
                     <sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" xmlns:sap.ui.core="sap.ui.core" editable="true" layout="ColumnLayout" id="formOrderDetails" width="100%" >
@@ -32,11 +32,11 @@
                     <items>            
                         <ColumnListItem type="Active" id="colListProd">            
                             <cells>
-                                <CheckBox id="cbSelectAllProd" selected="{Selected}"/>
+                                <CheckBox id="cbSelectAllProd" selected="{Selected}" visible="{= !!${ProductName} }"/>
                                 <Text id="txtProdName" text="{ProductName}"/>
                                 <Text id="txtQuantity" text="{Quantity}"/>
                                 <Text id="txtPricePerQuantity" text="{PricePerQuantity}"/>
-                                <Text id="txtTotalPrice" text="{= ${Quantity} * ${PricePerQuantity}}"/>
+                                <Text id="txtTotalPrice" text="{= ${Quantity} * ${PricePerQuantity}}" visible="{= !!${ProductName} }"/>
                             </cells>
                         </ColumnListItem>
                     </items>

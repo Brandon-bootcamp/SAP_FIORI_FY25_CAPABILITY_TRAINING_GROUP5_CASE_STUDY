@@ -18,7 +18,7 @@ sap.ui.define(
           var oTable = this.byId("tbProd");
           var iItemCount = oTable.getItems().length;
 
-          this.byId("ttlProd").setText("Products(" + iItemCount + ")");
+          this.byId("ttlProd").setText("Products (" + iItemCount + ")");
         },
 
         // Open Add Dialog

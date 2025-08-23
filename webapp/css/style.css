@@ -1,1 +1,8 @@
 /* Enter your custom styles here */
+
+/* Header in Bar */
+.headerTitle .sapMBar .sapMTitle {
+    padding-left: 30px !important;
+    font-weight: bolder !important;
+    font-size: 24px !important;
+}
