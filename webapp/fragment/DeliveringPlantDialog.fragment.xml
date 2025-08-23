@@ -1,0 +1,22 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog id="SelectDialogDeliveringPlant"
+        noDataText="No Products Found"
+        title="Delivering Plant"
+        search=".onSearch"
+        selectionChange="onSelectProduct"
+        searchPlaceholder="Search..."
+        confirm=".onValueHelpDialogClose"
+        cancel=".onValueHelpDialogClose"
+        items="{
+            path: '/Orders'
+        }">
+        <StandardListItem id="StandardListItemDeliveringPlant" 
+            title="{ProductName}"
+            description="Delivering Plant: {DeliveringPlantDescription}"
+            iconDensityAware="false"
+            iconInset="false"
+            type="Active" />
+    </SelectDialog>
+
+</core:FragmentDefinition>
