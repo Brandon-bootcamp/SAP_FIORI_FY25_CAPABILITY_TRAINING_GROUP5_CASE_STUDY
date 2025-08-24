@@ -2,7 +2,7 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
     <Page id="editPage" floatingFooter="true" title="{i18n>title}">  
-gi    <content>
+    <content>
       <Panel headerText="{i18n>Order Detail}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel0">
         <content>
           <sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" editable="true" layout="ColumnLayout" columnsL="1" columnsM="1" columnsXL="1" width="100%" id="form0">
