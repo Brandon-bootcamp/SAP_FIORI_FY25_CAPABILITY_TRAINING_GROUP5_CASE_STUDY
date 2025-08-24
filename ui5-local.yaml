@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: casestudy
+  name: com.ordermanagement.ordermanagement
 type: application
 framework:
   name: SAPUI5
@@ -29,3 +29,16 @@ server:
       afterMiddleware: compression
       configuration:
         ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        backend:
+          - path: /here
+            url: http://localhost
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /here/goes/your/serviceurl
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
+            generateMockData: true
+        annotations: []

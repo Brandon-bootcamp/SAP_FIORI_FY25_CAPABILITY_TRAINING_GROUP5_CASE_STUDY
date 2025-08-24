@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: casestudy
+  name: com.ordermanagement.ordermanagement
 type: application
 server:
   customMiddleware:
@@ -15,6 +15,9 @@ server:
             - /resources
             - /test-resources
           url: https://ui5.sap.com
+        backend:
+          - path: /here
+            url: http://localhost
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
