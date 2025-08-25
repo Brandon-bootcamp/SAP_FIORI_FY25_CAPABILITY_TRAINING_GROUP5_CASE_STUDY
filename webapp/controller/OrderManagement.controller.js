@@ -5,9 +5,10 @@ sap.ui.define(
     "use strict";
 
     return Controller.extend(
-      "com.ordermanagement.ordermanagement.controller.OrderManagement",
+      "com.ordermanagement.ordermanagement.controller.CreateOrderPage",
       {
         onInit: function () {
+          // Panel Product(0)
           var oTable = this.byId("tbProd");
 
           oTable.attachUpdateFinished(this.updateProductTitle.bind(this));
@@ -21,18 +22,21 @@ sap.ui.define(
           this.byId("ttlProd").setText("Products (" + iItemCount + ")");
         },
 
-        // Open Add Dialog
+        // Open CreateOrder Dialog
         onPressCreate: function () {
-          if (!this.oAddDialog) {
-            this.oAddDialog = this.loadFragment({
-              name: "com.ordermanagement.ordermanagement.fragment.AddDialog",
+          if (!this.oCreateOrderDialog) {
+            this.oCreateOrderDialog = this.loadFragment({
+              name: "com.ordermanagement.ordermanagement.fragment.CreateOrderDialog",
               controller: this,
             });
           }
-          this.oAddDialog.then(function (oDialog) {
+          this.oCreateOrderDialog.then(function (oDialog) {
             oDialog.open();
           });
         },
+
+        // Create Order upon confirmation
+        onConfirmCreateOrder: function () {},
 
         // Add New Product to model
         onAddProduct: function () {
@@ -105,9 +109,9 @@ sap.ui.define(
           }
         },
 
-        // Close open dialog
+        // Close  CreateOrderdialog
         onCloseDialog: function () {
-          const oDialog = this.byId("dialogAdd");
+          const oDialog = this.byId("dialogCreateOrder");
 
           // Clear input fields when reusing the Add Dialog
           this.byId("inpAddProductName").setValue("");
@@ -196,20 +200,123 @@ sap.ui.define(
           }
         },
 
-        // onValueHelpDialogClose: function (oEvent) {
-        //   var oSelectedItem = oEvent.getParameter("selectedItem");
+        // Search filter for ReceivingPlant Dialog
+        onSearchReceivingPlant: function (oEvent) {
+          var sValue = oEvent.getParameter("value");
+          var oFilter = new sap.ui.model.Filter(
+            "ReceivingPlantDescription",
+            sap.ui.model.FilterOperator.Contains,
+            sValue
+          );
+          var oBinding = oEvent.getSource().getBinding("items");
+          oBinding.filter([oFilter]);
+        },
 
-        //   if (oSelectedItem) {
-        //     var sTitle = oSelectedItem.getTitle();
-        //     var oModel = this.getView().getModel();
+        // Search filter for DeliveringPlant Dialog
+        onSearchDeliveringPlant: function (oEvent) {
+          var sValue = oEvent.getParameter("value");
+          var oFilter = new sap.ui.model.Filter(
+            "DeliveringPlantDescription",
+            sap.ui.model.FilterOperator.Contains,
+            sValue
+          );
+          var oBinding = oEvent.getSource().getBinding("items");
+          oBinding.filter([oFilter]);
+        },
 
-        //     // Set the selected value to the model
-        //     oModel.setProperty("/ReceivingPlant", sTitle);
-        //   }
+        // Search filter for DeliveringPlant Dialog
+        onSearchProduct: function (oEvent) {
+          var sValue = oEvent.getParameter("value");
+          var oFilter = new sap.ui.model.Filter(
+            "ProductName",
+            sap.ui.model.FilterOperator.Contains,
+            sValue
+          );
+          var oBinding = oEvent.getSource().getBinding("items");
+          oBinding.filter([oFilter]);
+        },
 
-        //   // Close the dialog
-        //   this.byId("SelectDialogReceivingPlant").close();
-        // },
+        // Get Selected item from ReceivingPlant and set data to inpReceivingPlant
+        onValueHelpReceivingPlantDialogClose: function (oEvent) {
+          var oSelectedItem = oEvent.getParameter("selectedItem");
+          if (oSelectedItem) {
+            var sTitle = oSelectedItem.getTitle(); // Assuming ProductName is in title
+            var oInput = this.byId("inpReceivingPlant");
+            oInput.setValue(sTitle);
+          }
+        },
+
+        // Get Selected item from DeliveringPlant and set data to inpDeliveringPlant
+        onValueHelpDeliveringPlantDialogClose: function (oEvent) {
+          var oSelectedItem = oEvent.getParameter("selectedItem");
+          if (oSelectedItem) {
+            var sTitle = oSelectedItem.getTitle(); // Assuming ProductName is in title
+            var oInput = this.byId("inpDeliveringPlant");
+            oInput.setValue(sTitle);
+          }
+        },
+
+        // Navigate to OrderQuantityDialog
+        onValueHelpProductName: function (oEvent) {
+          var oSelectedItem = oEvent.getParameter("selectedItem");
+          if (oSelectedItem) {
+            if (!this.oOrderQuantityDialog) {
+              this.oOrderQuantityDialog = this.loadFragment({
+                name: "com.ordermanagement.ordermanagement.fragment.OrderQuantityDialog",
+                controller: this,
+              });
+            }
+            this.oOrderQuantityDialog.then(function (oDialog) {
+              oDialog.open();
+            });
+            var sTitle = oSelectedItem.getTitle();
+            var oInput = this.byId("inpSelectedProduct");
+            oInput.setValue(sTitle);
+          }
+        },
+
+        onPressConfirmCreateOrder: function (oEvent) {
+          var oView = this.getView();
+          var oQuantity = oView.byId("inpQuantity");
+          var sQuantity = oQuantity.getValue();
+          // bValid = true;
+
+          if (sQuantity === "") {
+            oQuantity.setValueState("Error");
+            oQuantity.setValueStateText("Quantity is required.");
+            // bValid = false;
+          } else {
+            oQuantity.setValueState("Success");
+
+            // Get the Model Orders
+            var oModel = this.getOwnerComponent().getModel();
+
+            // get the Product selected
+            var oSelectedProduct = oView.byId("inpSelectedProduct").getValue();
+
+            // Get current date when the product is created
+            var oDate = new Date();
+            var iTime = oDate.getTime();
+            var sFormattedDate = "/Date(" + iTime + ")/";
+
+            // Add data to model
+            var oData = {
+              ProductName: oSelectedProduct,
+              Quantity: sQuantity,
+              Status: "Created",
+              CreationDate: sFormattedDate,
+            };
+
+            oModel.create("/Orders", oData, {
+              success: function (data) {
+                sap.m.MessageToast.show("Naitiponen");
+                // that.onCloseDialog();
+              },
+              error: function (data) {},
+            });
+          }
+          // }
+        },
       }
     );
   }

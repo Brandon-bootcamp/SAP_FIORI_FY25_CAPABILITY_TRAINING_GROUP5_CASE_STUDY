@@ -1,0 +1,21 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:cards="sap.f.cards" xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Dialog id="idProductDialog" title="Enter Quantity">
+
+        <form:SimpleForm id="sformQuantity">
+            <!-- <Title id="txtSelectedProduct" text="Product:"/> -->
+            <Input id="inpQuantity" placeholder="Enter quantity..." type="Number" />
+        </form:SimpleForm>
+
+        <beginButton>
+            <Button id="idButtonConfirmDialog" text="Confirm" type="Emphasized" press="onPressConfirmCreateOrder"/>
+        </beginButton>
+
+        <endButton>
+            <Button id="idButtonCancelialog" text="Cancel" type="Reject" press="" />
+        </endButton>
+
+    </Dialog>
+
+</core:FragmentDefinition>
+

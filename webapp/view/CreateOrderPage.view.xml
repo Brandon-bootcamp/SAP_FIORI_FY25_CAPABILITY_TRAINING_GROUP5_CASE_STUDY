@@ -1,4 +1,4 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ordermanagement.ordermanagement.controller.OrderManagement">    
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ordermanagement.ordermanagement.controller.CreateOrderPage">    
     <Page id="pageCreateOrder" title="{i18n>pageCreateOrder}" floatingFooter="true" class="headerTitle">
     <!-- Panel: Order Details -->
         <Panel xmlns="sap.m" width="auto" expandable="false" expanded="false" id="panOrderDetails" class="sapUiResponsiveMargin" headerText="Order Detail">
@@ -20,7 +20,7 @@
         <Panel xmlns="sap.m" width="auto" expandable="false" expanded="false" id="panProduct" class="sapUiResponsiveMargin" headerText="Products">
             <headerToolbar>
                 <Toolbar id="toolbar1">
-                    <Title id="ttlProd" text="{i18n>ttlProducts}" class="productTitle"/> <!--No Data Fed, number of products is still undefined-->
+                    <Title id="ttlProd" text="{i18n>ttlProducts}" class="productTitle"/>
                     <ToolbarSpacer id="tsProduct"/>
                     <Button id="btnCreate" icon="sap-icon://add" press="onPressCreate"/>
                     <Button id="btnDelete" icon="sap-icon://delete" press="onPressDelete"/>
@@ -70,6 +70,7 @@
                 </Table>
             </content>
         </Panel>
+        <Input id="inpSelectedProduct" visible="false"/>
     <content/>
     
     <!-- Footer -->

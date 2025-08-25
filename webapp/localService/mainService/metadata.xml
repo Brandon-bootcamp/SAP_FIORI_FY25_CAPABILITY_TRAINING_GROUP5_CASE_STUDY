@@ -5,6 +5,9 @@
             <EntityType Name="Order">
 
                 <!-- Orders -->
+                <Key>
+                    <PropertyRef Name="OrderNumber" />
+                </Key>
                 <Property Name="OrderNumber" Type="Edm.Int32" Nullable="false" sap:label="Order Number" />
                 <Property Name="CreationDate" Type="Edm.DateTime" Nullable="false" sap:label="Creation Date" />
                 <Property Name="ReceivingPlantCode" Type="Edm.Int32" Nullable="false" sap:label="Receiving Plant Code" />
@@ -14,9 +17,6 @@
                 <Property Name="Status" Type="Edm.String" Nullable="false" sap:label="Order Status" />
 
                 <!-- Product -->
-                 <Key>
-                    <PropertyRef Name="ProductID" />
-                </Key>
                 <Property Name="ProductID" Type="Edm.Int32" Nullable="false" sap:label="Product ID" />
                 <Property Name="ProductName" Type="Edm.String" Nullable="false" sap:label="Product Name" />
                 <Property Name="Quantity" Type="Edm.Int32" Nullable="false" sap:label="Quantity" />
