@@ -4,7 +4,7 @@
   xmlns="sap.m"
   xmlns:core="sap.ui.core">
 
-  <Page id="orderPage" title="{i18n>title}">
+  <Page id="orderPage" title="{i18n>title}" floatingFooter="true">
     <content>
 
       <!-- 🔍 Filter Panel -->
@@ -102,5 +102,12 @@
       </Panel>
 
     </content>
+    <footer>
+      <OverflowToolbar id="idOFTFooter">
+      <ToolbarSpacer id="idTSpacerFooter"/>
+      <!-- Check Out Button -->
+      <Button id="idBtnCheckout" text="{i18n>createOrderBtn}" press="onPressCreateOrder"/>
+      </OverflowToolbar>
+    </footer>
   </Page>
 </mvc:View>
