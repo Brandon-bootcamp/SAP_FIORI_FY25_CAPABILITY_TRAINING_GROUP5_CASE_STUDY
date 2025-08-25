@@ -7,7 +7,7 @@ sap.ui.define([
 ], function (Controller, Filter, FilterOperator, MessageToast, MessageBox) {
   "use strict";
 
-  return Controller.extend("com.ordermanagement.ordermanagement.controller.OrderManagement", {
+  return Controller.extend("com.ordermanagement.ordermanagement.controller.OrderMainPage", {
 
     // 🚀 Initialization
     onInit() {

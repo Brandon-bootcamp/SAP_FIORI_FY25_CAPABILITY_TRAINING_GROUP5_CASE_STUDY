@@ -1,5 +1,5 @@
 <mvc:View
-  controllerName="com.ordermanagement.ordermanagement.controller.OrderManagement"
+  controllerName="com.ordermanagement.ordermanagement.controller.OrderMainPage"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns="sap.m"
   xmlns:core="sap.ui.core">
