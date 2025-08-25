@@ -99,8 +99,8 @@
       ],
       "targets": {
         "TargetOrderManagement": {
-          "id": "OrderManagement",
-          "name": "OrderManagement"
+          "id": "OrderMainPage",
+          "name": "OrderMainPage"
         }
       }
     },
