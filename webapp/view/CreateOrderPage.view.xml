@@ -20,7 +20,7 @@
         <Panel xmlns="sap.m" width="auto" expandable="false" expanded="false" id="panProduct" class="sapUiResponsiveMargin" headerText="Products">
             <headerToolbar>
                 <Toolbar id="toolbar1">
-                    <Title id="ttlProd" text="{i18n>ttlProducts}" class="productTitle"/>
+                    <Title id="ttlProd" text="{i18n>ttlProducts}" class="productTitle"/> <!--No Data Fed, number of products is still undefined-->
                     <ToolbarSpacer id="tsProduct"/>
                     <Button id="btnCreate" icon="sap-icon://add" press="onPressCreate"/>
                     <Button id="btnDelete" icon="sap-icon://delete" press="onPressDelete"/>

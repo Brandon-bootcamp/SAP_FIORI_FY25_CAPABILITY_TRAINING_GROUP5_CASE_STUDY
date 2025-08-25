@@ -90,17 +90,17 @@
       },
       "routes": [
         {
-          "name": "RouteOrderManagement",
+          "name": "RouteCreateOrderPage",
           "pattern": ":?query:",
           "target": [
-            "TargetOrderManagement"
+            "TargetCreateOrderPage"
           ]
         }
       ],
       "targets": {
-        "TargetOrderManagement": {
-          "id": "OrderManagement",
-          "name": "OrderManagement"
+        "TargetCreateOrderPage": {
+          "id": "CreateOrderPage",
+          "name": "CreateOrderPage"
         }
       }
     },
