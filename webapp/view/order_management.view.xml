@@ -1,0 +1,97 @@
+<mvc:View
+  controllerName="casestudy.controller.order_management"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+
+<Page id="orderPage" title="{i18n>ordersTitle}">
+    <content>
+
+      <!-- 🔍 Filter Panel -->
+      <Panel id="filterPanel" headerText="" expandable="false" class="sapUiMediumMarginBottom">
+        <VBox id="filterContainer" justifyContent="Center" alignItems="Center" class="sapUiMediumMarginBottom">
+          <HBox id="filterRow" justifyContent="Center" alignItems="Center">
+
+            <!-- Order Number Filter -->
+            <VBox id="orderNumberVBox" class="sapUiSmallMarginEnd">
+              <Label id="orderNumberLabel" text="{i18n>orderNumberLabel}" labelFor="orderNumberInput"/>
+              <Input id="orderNumberInput" placeholder="{i18n>orderNumberPlaceholder}" width="220px" type="Number"/>
+            </VBox>
+
+            <!-- Creation Date Filter -->
+            <VBox id="creationDateVBox" class="sapUiSmallMarginEnd">
+              <Label id="creationDateLabel" text="{i18n>creationDateLabel}" labelFor="creationDateInput"/>
+              <DatePicker id="creationDateInput" placeholder="{i18n>creationDatePlaceholder}" width="220px" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd"/>
+            </VBox>
+
+            <!-- Status Filter -->
+            <VBox id="statusVBox" class="sapUiSmallMarginEnd">
+              <Label id="statusLabel" text="{i18n>statusLabel}" labelFor="statusSelect"/>
+              <Select id="statusSelect" width="220px">
+                <items>
+                  <core:Item id="statusItemEmpty" key="" text=""/>
+                  <core:Item id="statusItemCreated" key="Created" text="{i18n>statusCreated}"/>
+                  <core:Item id="statusItemReleased" key="Released" text="{i18n>statusReleased}"/>
+                  <core:Item id="statusItemPartiallyCompleted" key="PartiallyCompleted" text="{i18n>statusPartiallyCompleted}"/>
+                  <core:Item id="statusItemDelivered" key="Delivered" text="{i18n>statusDelivered}"/>
+                </items>
+              </Select>
+            </VBox>
+
+            <!-- Action Buttons -->
+            <VBox id="actionButtonsVBox">
+              <Label id="actionSpacerLabel" text=" "/>
+              <HBox id="actionButtonsHBox">
+                <Button id="goButton" text="{i18n>goButton}" press="onFilter"/>
+                <Button id="clearButton" text="{i18n>clearButton}" press="onClear"/>
+              </HBox>
+            </VBox>
+
+          </HBox>
+        </VBox>
+      </Panel>
+
+      <!-- 📋 Orders Table Panel -->
+      <Panel id="ordersPanel" expandable="false">
+        <headerToolbar>
+          <Toolbar id="ordersToolbar">
+            <Title id="ordersTitle" text="{i18n>ordersTitle}"/>
+            <ToolbarSpacer id="ordersSpacer"/>
+            <Button id="addOrderButton" icon="sap-icon://add" tooltip="{i18n>addOrderTooltip}" press="onAddOrder"/>
+            <Button id="deleteOrderButton" icon="sap-icon://delete" tooltip="{i18n>deleteOrderTooltip}" press="onDeleteOrder"/>
+          </Toolbar>
+        </headerToolbar>
+
+        <Table id="ordersTable" inset="false" items="{/orders}">
+          <columns>
+            <Column id="selectColumn" width="50px">
+              <header>
+                <CheckBox id="selectAllCheckbox" tooltip="{i18n>selectAllTooltip}" select="onSelectAll"/>
+              </header>
+            </Column>
+            <Column id="orderNumberColumn"><Text id="orderNumberColumnText" text="{i18n>orderNumberLabel}"/></Column>
+            <Column id="creationDateColumn"><Text id="creationDateColumnText" text="{i18n>creationDateLabel}"/></Column>
+            <Column id="receivingPlantColumn"><Text id="receivingPlantColumnText" text="Receiving Plant"/></Column>
+            <Column id="deliveringPlantColumn"><Text id="deliveringPlantColumnText" text="Delivering Plant"/></Column>
+            <Column id="statusColumn"><Text id="statusColumnText" text="{i18n>statusLabel}"/></Column>
+          </columns>
+
+          <items>
+            <ColumnListItem id="orderListItem" type="Active" press="onOrderSelect">
+              <cells>
+                <CheckBox id="rowSelectCheckbox" selected="{selected}" select="onRowSelect"/>
+                <Text id="orderNumberText" text="{orderNumber}"/>
+                <Text id="creationDateText" text="{creationDate}"/>
+                <Text id="receivingPlantText" text="{receivingPlant}"/>
+                <Text id="deliveringPlantText" text="{deliveringPlant}"/>
+                <Text id="statusText" text="{status}"/>
+              </cells>
+            </ColumnListItem>
+          </items>
+        </Table>
+      </Panel>
+
+    </content>
+  </Page>
+
+</mvc:View>
