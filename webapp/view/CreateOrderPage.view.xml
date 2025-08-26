@@ -78,7 +78,7 @@
         <OverflowToolbar id="idOFTFooter">
         <ToolbarSpacer id="idTSpacerFooter"/>
             <Button id="btnSave" text="Save" type="Emphasized" tooltip="Save" press="onSavePressed"/>
-            <Button id="btnCancel" text="Cancel" type="Reject" tooltip="Cancel"/>
+            <Button id="btnCancel" text="Cancel" type="Reject" tooltip="Cancel" press="onCancelPressed"/>
         <content/>
         </OverflowToolbar>
     </footer>

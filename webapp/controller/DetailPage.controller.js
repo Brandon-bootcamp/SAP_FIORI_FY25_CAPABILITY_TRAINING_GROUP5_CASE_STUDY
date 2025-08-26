@@ -3,7 +3,7 @@ sap.ui.define([
 ], (Controller) => {
     "use strict";
 
-    return Controller.extend("casestudy.controller.detail", {
+    return Controller.extend("com.ordermanagement.ordermanagement.controller.DetailPage", {
         
 onInit: function () {
 //   var oModel = new sap.ui.model.json.JSONModel({
@@ -18,11 +18,13 @@ onInit: function () {
       },
 
 onEdit: function () {
-      MessageToast.show("Edit button pressed");
+      var oRouter = this.getOwnerComponent().getRouter();
+      oRouter.navTo("RouteEditPage");
     },
 
 onCancel: function () {
-      MessageToast.show("Cancel button pressed");
+            var oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo("RouteOrderMainPage");
       }  
       
     });

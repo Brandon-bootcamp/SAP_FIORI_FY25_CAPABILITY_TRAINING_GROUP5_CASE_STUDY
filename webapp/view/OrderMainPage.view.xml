@@ -4,7 +4,7 @@
   xmlns="sap.m"
   xmlns:core="sap.ui.core">
 
-  <Page id="orderPage" title="{i18n>title}" floatingFooter="true">
+  <Page id="orderPage" title="{i18n>OrderMainPageTitle}" floatingFooter="true">
     <content>
 
       <!-- 🔍 Filter Panel -->

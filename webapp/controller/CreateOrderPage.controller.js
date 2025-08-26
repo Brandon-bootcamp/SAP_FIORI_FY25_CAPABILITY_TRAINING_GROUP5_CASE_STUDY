@@ -318,6 +318,11 @@ sap.ui.define(
           }
           // }
         },
+
+        onCancelPressed: function () {
+          var oRouter = this.getOwnerComponent().getRouter();
+          oRouter.navTo("RouteOrderMainPage");
+        },
       }
     );
   }
