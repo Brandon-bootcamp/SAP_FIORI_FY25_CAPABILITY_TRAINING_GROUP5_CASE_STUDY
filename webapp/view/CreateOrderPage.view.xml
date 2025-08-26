@@ -27,7 +27,7 @@
                     </Toolbar>               
             </headerToolbar>
             <content>
-                <Table noDataText="No Data" id="tbProd" items="{/Orders}">
+                <Table noDataText="No Data" id="tbProd" items="{Products}">
                 <!-- <Table noDataText="No Data" id="tbProd"> -->
                     <items>            
                         <ColumnListItem type="Active" id="colListProd">            

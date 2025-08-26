@@ -265,7 +265,7 @@ sap.ui.define(
         },
 
         // Validation if there is tick in the table, if so then open ConfirmatDeleteDialog
-        onOpenDelete: function (oEvent) {
+        onOpenDelete: function () {
           var oTable = this.getView().byId("tbProd");
           var aItems = oTable.getItems();
           var aToDelete = [];
