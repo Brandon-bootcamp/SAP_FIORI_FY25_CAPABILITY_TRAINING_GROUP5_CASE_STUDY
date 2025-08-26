@@ -97,10 +97,17 @@ sap.ui.define([
 
     // 📋 Order Row Press
     onOrderSelect(oEvent) {
-      const oBundle = this.getView().getModel("i18n").getResourceBundle();
+      // const oBundle = this.getView().getModel("i18n").getResourceBundle();
       const selectedOrder = oEvent.getSource().getBindingContext().getObject();
-      const sMessage = oBundle.getText("selectedOrderMessage", [selectedOrder.OrderNumber]);
-      MessageToast.show(sMessage);
+      // const sMessage = oBundle.getText("selectedOrderMessage", [selectedOrder.OrderNumber]);
+      // MessageToast.show(sMessage);
+      var oRouter = this.getOwnerComponent().getRouter();
+      oRouter.navTo("RouteDetailPage", {selectedOrder});
+    },
+
+    onPressCreateOrder: function(){
+      var oRouter = this.getOwnerComponent().getRouter();
+      oRouter.navTo("RouteCreateOrderPage");
     }
 
   });
