@@ -1,0 +1,86 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ordermanagement.ordermanagement.controller.CreateOrderPage">    
+    <Page id="pageCreateOrder" title="{i18n>pageCreateOrder}" floatingFooter="true" class="headerTitle">
+    <!-- Panel: Order Details -->
+        <Panel xmlns="sap.m" width="auto" expandable="false" expanded="false" id="panOrderDetails" class="sapUiResponsiveMargin" headerText="Order Detail">
+            <content>
+                <HBox id="fbCreateOrder" justifyContent="Center" >
+                    <sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" xmlns:sap.ui.core="sap.ui.core" editable="true" layout="ColumnLayout" id="formOrderDetails" width="100%" >
+                        <sap.ui.layout.form:content>
+                            <Label text="{i18n>lblReceivingPlant}" id="lblReceivingPlant" required="true"/>
+                            <MultiInput id="inpReceivingPlant" width="70%" showValueHelp="true" value="{ReceivingPlant}" valueHelpRequest=".onReceivingPlant"/>                    
+                            <Label text="{i18n>lbldeliveringPlant}" id="lblDeliveringPlant" required="true"/>
+                            <MultiInput id="inpDeliveringPlant" width="70%" showValueHelp="true" valueHelpRequest=".onDeliveringPlant"/>
+                        </sap.ui.layout.form:content>
+                    </sap.ui.layout.form:SimpleForm>
+                </HBox>
+            </content>
+        </Panel>
+
+        <!-- Panel: Products -->
+        <Panel xmlns="sap.m" width="auto" expandable="false" expanded="false" id="panProduct" class="sapUiResponsiveMargin" headerText="Products">
+            <headerToolbar>
+                <Toolbar id="toolbar1">
+                    <Title id="ttlProd" text="{i18n>ttlProducts}" class="productTitle"/> <!--No Data Fed, number of products is still undefined-->
+                    <ToolbarSpacer id="tsProduct"/>
+                    <Button id="btnCreate" icon="sap-icon://add" press="onPressCreate"/>
+                    <Button id="btnDelete" icon="sap-icon://delete" press="onPressDelete"/>
+                    </Toolbar>               
+            </headerToolbar>
+            <content>
+                <Table noDataText="No Data" id="tbProd" items="{/Orders}">
+                <!-- <Table noDataText="No Data" id="tbProd"> -->
+                    <items>            
+                        <ColumnListItem type="Active" id="colListProd">            
+                            <cells>
+                                <CheckBox id="cbSelectAllProd" selected="{Selected}" visible="{= !!${ProductName} }"/>
+                                <Text id="txtProdName" text="{ProductName}"/>
+                                <Text id="txtQuantity" text="{Quantity}"/>
+                                <Text id="txtPricePerQuantity" text="{PricePerQuantity}"/>
+                                <Text id="txtTotalPrice" text="{= ${Quantity} * ${PricePerQuantity}}" visible="{= !!${ProductName} }"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                    <columns>
+                        <Column id="colSelectProd" width="2rem">
+                            <header>
+                                <CheckBox id="cbSelectProd" select="onSelectAllProducts"/>   
+                            </header>
+                        </Column>
+                        <Column id="colProdName">
+                            <header>
+                                <Label id="cbProdName" text="{i18n>lblProductName}"/>   
+                            </header>
+                        </Column>
+                        <Column id="colQnty">
+                            <header>
+                                <Label text="{i18n>lblQuantity}" id="lblQuantity"/>
+                            </header>
+                        </Column>
+                        <Column id="colPriceQnty">
+                            <header>
+                                <Label text="{i18n>lblPriceQnty}" id="lblPriceQnty"/>
+                            </header>
+                        </Column>
+                        <Column id="colTotalPrice">
+                            <header>
+                            <Label text="{i18n>lblTotalPrice}" id="lblTotalPrice"/>
+                            </header>
+                        </Column>
+                    </columns>
+                </Table>
+            </content>
+        </Panel>
+        <Input id="inpSelectedProduct" visible="false"/>
+    <content/>
+    
+    <!-- Footer -->
+    <footer>
+        <OverflowToolbar id="idOFTFooter">
+        <ToolbarSpacer id="idTSpacerFooter"/>
+            <Button id="btnSave" text="Save" type="Emphasized" tooltip="Save" press="onSavePressed"/>
+            <Button id="btnCancel" text="Cancel" type="Reject" tooltip="Cancel" press="onCancelPressed"/>
+        <content/>
+        </OverflowToolbar>
+    </footer>
+    </Page>
+</mvc:View>

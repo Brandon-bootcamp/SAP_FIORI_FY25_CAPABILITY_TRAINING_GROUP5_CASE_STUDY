@@ -7,7 +7,7 @@ sap.ui.define([
 
 	Opa5.extendConfig({
 		arrangements: new Startup(),
-		viewNamespace: "casestudy.view.",
+		viewNamespace: "com.ordermanagement.ordermanagement.view.",
 		autoWait: true
 	});
 });

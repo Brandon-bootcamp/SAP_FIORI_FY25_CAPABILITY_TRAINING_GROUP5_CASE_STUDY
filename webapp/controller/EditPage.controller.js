@@ -6,7 +6,7 @@ sap.ui.define([
 ], function (Controller, MessageBox, MessageToast, JSONModel) {
     "use strict";
 
-    return Controller.extend("casestudy.controller.EditPage", {
+    return Controller.extend("com.ordermanagement.ordermanagement.controller.EditPage", {
 
         onInit: function () {
             var oData = {
@@ -135,7 +135,7 @@ sap.ui.define([
                         MessageBox.success("The Order " + sOrderNumber + " has been successfully updated.", {
                             onClose: function () {
                                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                                oRouter.navTo("DetailPage");
+                                oRouter.navTo("RouteDetailPage");
                             }.bind(this)
                         });
                     }
@@ -145,14 +145,14 @@ sap.ui.define([
 
         onCancel: function () {
             MessageBox.confirm("Are you sure you want to cancel the changes done in the page?", {
-                onClose: function (sAction) {
-                    if (sAction === MessageBox.Action.OK) {
+                onClose: function (oAction) {
+                    if (oAction === MessageBox.Action.OK) {
                         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                        oRouter.navTo("DetailPage");
+                        oRouter.navTo("RouteDetailPage");
                     }
-                }
+                }.bind(this)
             });
-        }
+        },
 
     });
 });

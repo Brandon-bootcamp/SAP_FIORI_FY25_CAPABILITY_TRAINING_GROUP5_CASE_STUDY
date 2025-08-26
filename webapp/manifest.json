@@ -1,7 +1,7 @@
 {
   "_version": "1.76.0",
   "sap.app": {
-    "id": "casestudy",
+    "id": "com.ordermanagement.ordermanagement",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,7 +13,18 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
       "version": "1.18.5",
-      "toolsId": "54157a07-fd31-4f35-814b-ff8afa3c3c94"
+      "toolsId": "e010e601-6ef6-44d0-b1d3-0955dccecc28"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/here/goes/your/serviceurl/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
     }
   },
   "sap.ui": {
@@ -49,11 +60,12 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "casestudy.i18n.i18n"
+          "bundleName": "com.ordermanagement.ordermanagement.i18n.i18n"
         }
       },
       "": {
-        "type": "sap.ui.model.json.JSONModel",
+        "dataSource": "mainService",
+        "preload": true,
         "settings": {}
       }
     },
@@ -72,28 +84,61 @@
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
-        "viewPath": "casestudy.view",
-        "async": true
+        "path": "com.ordermanagement.ordermanagement.view",
+        "async": true,
+        "viewPath": "com.ordermanagement.ordermanagement.view"
       },
       "routes": [
         {
-          "name": "RouteOrderManagement",
-          "pattern": "",
+          "name": "RouteOrderMainPage",
+          "pattern": ":?query:",
           "target": [
-            "TargetOrderManagement"
+            "TargetOrderMainPage"
+          ]
+        },
+        {
+          "name": "RouteCreateOrderPage",
+          "pattern": "CreateOrderPage",
+          "target": [
+            "TargetCreateOrderPage"
+          ]
+        },
+        {
+          "name": "RouteDetailPage",
+          "pattern": "DetailPage",
+          "target": [
+            "TargetDetailPage"
+          ]
+        },
+        {
+          "name": "RouteEditPage",
+          "pattern": "EditPage",
+          "target": [
+            "TargetEditPage"
           ]
         }
       ],
       "targets": {
-        "TargetOrderManagement": {
-          "viewName": "order_management",
-          "viewId": "order_management",
-          "viewType": "XML"
+        "TargetOrderMainPage": {
+          "id": "OrderMainPage",
+          "name": "OrderMainPage"
+        },
+        "TargetCreateOrderPage": {
+          "id": "CreateOrderPage",
+          "name": "CreateOrderPage"
+        },
+        "TargetDetailPage": {
+          "id": "DetailPage",
+          "name": "DetailPage"
+        },
+        "TargetEditPage": {
+          "id": "EditPage",
+          "name": "EditPage"
         }
       }
     },
     "rootView": {
-      "viewName": "casestudy.view.App",
+      "viewName": "com.ordermanagement.ordermanagement.view.App",
       "type": "XML",
       "id": "App",
       "async": true

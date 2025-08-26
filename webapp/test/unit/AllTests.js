@@ -1,5 +1,5 @@
 sap.ui.define([
-	"casestudy/test/unit/controller/g5_CaseStudy.controller"
+	"com/ordermanagement/ordermanagement/test/unit/controller/OrderManagement.controller"
 ], function () {
 	"use strict";
 });
