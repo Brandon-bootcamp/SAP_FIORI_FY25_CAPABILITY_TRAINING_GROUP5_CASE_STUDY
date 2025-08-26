@@ -23,11 +23,11 @@
                     <Title id="ttlProd" text="{i18n>ttlProducts}" class="productTitle"/> <!--No Data Fed, number of products is still undefined-->
                     <ToolbarSpacer id="tsProduct"/>
                     <Button id="btnCreate" icon="sap-icon://add" press="onPressCreate"/>
-                    <Button id="btnDelete" icon="sap-icon://delete" press="onOpenDelete"/>
+                    <Button id="btnDelete" icon="sap-icon://delete" press="onPressDelete"/>
                     </Toolbar>               
             </headerToolbar>
             <content>
-                <Table noDataText="No Data" id="tbProd" items="{Products}">
+                <Table noDataText="No Data" id="tbProd" items="{/Orders}">
                 <!-- <Table noDataText="No Data" id="tbProd"> -->
                     <items>            
                         <ColumnListItem type="Active" id="colListProd">            
@@ -78,7 +78,7 @@
         <OverflowToolbar id="idOFTFooter">
         <ToolbarSpacer id="idTSpacerFooter"/>
             <Button id="btnSave" text="Save" type="Emphasized" tooltip="Save" press="onSavePressed"/>
-            <Button id="btnCancel" text="Cancel" type="Reject" tooltip="Cancel"/>
+            <Button id="btnCancel" text="Cancel" type="Reject" tooltip="Cancel" press="onCancelPressed"/>
         <content/>
         </OverflowToolbar>
     </footer>

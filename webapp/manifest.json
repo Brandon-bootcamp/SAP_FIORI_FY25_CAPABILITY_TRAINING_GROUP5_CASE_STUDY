@@ -90,17 +90,50 @@
       },
       "routes": [
         {
-          "name": "RouteCreateOrderPage",
+          "name": "RouteOrderMainPage",
           "pattern": ":?query:",
           "target": [
+            "TargetOrderMainPage"
+          ]
+        },
+        {
+          "name": "RouteCreateOrderPage",
+          "pattern": "CreateOrderPage",
+          "target": [
             "TargetCreateOrderPage"
+          ]
+        },
+        {
+          "name": "RouteDetailPage",
+          "pattern": "detail/{orderId}",
+          "target": [
+            "TargetDetailPage"
+          ]
+        },
+        {
+          "name": "RouteEditPage",
+          "pattern": "EditPage",
+          "target": [
+            "TargetEditPage"
           ]
         }
       ],
       "targets": {
+        "TargetOrderMainPage": {
+          "id": "OrderMainPage",
+          "name": "OrderMainPage"
+        },
         "TargetCreateOrderPage": {
           "id": "CreateOrderPage",
           "name": "CreateOrderPage"
+        },
+        "TargetDetailPage": {
+          "id": "DetailPage",
+          "name": "DetailPage"
+        },
+        "TargetEditPage": {
+          "id": "EditPage",
+          "name": "EditPage"
         }
       }
     },

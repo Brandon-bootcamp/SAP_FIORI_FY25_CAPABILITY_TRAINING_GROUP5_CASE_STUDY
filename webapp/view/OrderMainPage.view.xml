@@ -1,0 +1,109 @@
+<mvc:View
+  controllerName="com.ordermanagement.ordermanagement.controller.OrderMainPage"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+<Page id="orderPage" title="{i18n>OrderMainPageTitle}" floatingFooter="true" xmlns="sap.m" xmlns:core="sap.ui.core">
+  <content>
+
+    <!-- 🔍 Filter Panel -->
+    <Panel id="filterPanel" headerText="" expandable="false" class="sapUiMediumMarginBottom">
+      <VBox justifyContent="Center" alignItems="Center">
+        <HBox justifyContent="Center" alignItems="Center">
+
+          <!-- Order Number -->
+          <VBox class="sapUiSmallMarginEnd">
+            <Label text="{i18n>orderNumberLabel}" labelFor="orderNumberInput"/>
+            <Input
+              id="orderNumberInput"
+              placeholder="{i18n>orderNumberPlaceholder}"
+              width="220px"
+              type="Text"
+              liveChange="onOrderNumberLiveChange"/>
+          </VBox>
+
+          <!-- Creation Date -->
+          <VBox class="sapUiSmallMarginEnd">
+            <Label text="{i18n>creationDateLabel}" labelFor="creationDateInput"/>
+            <DatePicker
+              id="creationDateInput"
+              placeholder="{i18n>creationDatePlaceholder}"
+              width="220px"
+              displayFormat="yyyy-MM-dd"
+              valueFormat="yyyy-MM-dd"
+              liveChange="onCreationDateLiveChange"/>
+          </VBox>
+
+          <!-- Status -->
+          <VBox class="sapUiSmallMarginEnd">
+            <Label text="{i18n>statusLabel}" labelFor="statusMultiCombo"/>
+            <MultiComboBox id="statusMultiCombo" width="220px">
+              <items>
+                <core:Item key="Created" text="{i18n>statusCreated}"/>
+                <core:Item key="Released" text="{i18n>statusReleased}"/>
+                <core:Item key="Partially Completed" text="{i18n>statusPartiallyCompleted}"/>
+                <core:Item key="Delivered" text="{i18n>statusDelivered}"/>
+              </items>
+            </MultiComboBox>
+          </VBox>
+
+          <!-- Action Buttons -->
+          <VBox>
+            <Label text=" "/>
+            <HBox>
+              <Button text="{i18n>goButton}" press="onFilter"/>
+              <Button text="{i18n>clearButton}" press="onClear"/>
+            </HBox>
+          </VBox>
+
+        </HBox>
+      </VBox>
+    </Panel>
+
+    <!-- 📋 Orders Panel -->
+    <Panel expandable="false">
+      <VBox>
+
+        <!-- 🔘 Toolbar -->
+        <Toolbar>
+          <Title text="{i18n>ordersTitle}"/>
+          <ToolbarSpacer/>
+          <Button id="addOrderButton" icon="sap-icon://add" tooltip="{i18n>addOrderTooltip}" press="onPressCreateOrder"/>
+          <Button id="deleteOrderButton" icon="sap-icon://delete" tooltip="{i18n>deleteOrderTooltip}" press="onDeletePress"/>
+        </Toolbar>
+
+        <!-- 📋 Orders Table -->
+        <Table id="ordersTable" items="{/Orders}" mode="MultiSelect">
+          <columns>
+            <Column><Text text="{i18n>orderNumberLabel}"/></Column>
+            <Column><Text text="{i18n>creationDateLabel}"/></Column>
+            <Column><Text text="Receiving Plant"/></Column>
+            <Column><Text text="Delivering Plant"/></Column>
+            <Column><Text text="{i18n>statusLabel}"/></Column>
+          </columns>
+          <items>
+            <ColumnListItem type="Active" press="onOrderSelect">
+              <cells>
+                <Text text="{OrderNumber}"/>
+                <Text text="{CreationDate}"/>
+                <Text text="{ReceivingPlantCode} - {ReceivingPlantDescription}"/>
+                <Text text="{DeliveringPlantCode} - {DeliveringPlantDescription}"/>
+                <ObjectStatus
+                  text="{Status}"
+                  state="{= 
+                    ${Status} === 'Created' ? 'None' : 
+                    ${Status} === 'Released' ? 'Warning' : 
+                    ${Status} === 'Partially Completed' ? 'Information' : 
+                    ${Status} === 'Delivered' ? 'Success' : 'None'
+                  }"/>
+              </cells>
+            </ColumnListItem>
+          </items>
+        </Table>
+
+      </VBox>
+    </Panel>
+
+  </content>
+</Page>
+</mvc:View>
