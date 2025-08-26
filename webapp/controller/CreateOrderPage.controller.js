@@ -8,13 +8,12 @@ sap.ui.define(
       "com.ordermanagement.ordermanagement.controller.CreateOrderPage",
       {
         onInit: function () {
-          // Panel Product(0)
+          // Real time total number of items of the Product table
           var oTable = this.byId("tbProd");
-
           oTable.attachUpdateFinished(this.updateProductTitle.bind(this));
         },
 
-        // Real time total number of items of the Product table
+        // Get table length
         updateProductTitle: function () {
           var oTable = this.byId("tbProd");
           var iItemCount = oTable.getItems().length;
@@ -61,97 +60,6 @@ sap.ui.define(
               oDialog.open();
             });
           }
-        },
-
-        // Create Order upon confirmation
-        onConfirmCreateOrder: function () {},
-
-        // Add New Product to model
-        onAddProduct: function () {
-          var oModel = this.getOwnerComponent().getModel();
-          var oView = this.getView();
-
-          //Get inputs
-          var oNewProductName = oView.byId("inpAddProductName");
-          var oNewQuantity = oView.byId("inpAddQuantity");
-          var oNewPricePerQuantity = oView.byId("inpAddPricePerQuantity");
-
-          var sNewProductName = oNewProductName.getValue();
-          var sNewQuantity = oNewQuantity.getValue();
-          var sNewPricePerQuantity = oNewPricePerQuantity.getValue();
-
-          var bValid = true;
-
-          // Validations for inputs
-          if (sNewProductName === "") {
-            oNewProductName.setValueState("Error");
-            oNewProductName.setValueStateText("Product Name is required.");
-            bValid = false;
-          } else {
-            oNewProductName.setValueState("None");
-          }
-
-          if (sNewQuantity === "") {
-            oNewQuantity.setValueState("Error");
-            oNewQuantity.setValueStateText("Quantity is required.");
-            bValid = false;
-          } else {
-            oNewQuantity.setValueState("None");
-          }
-
-          if (sNewPricePerQuantity === "") {
-            oNewPricePerQuantity.setValueState("Error");
-            oNewPricePerQuantity.setValueStateText("Quantity is required.");
-            bValid = false;
-          } else {
-            oNewPricePerQuantity.setValueState("None");
-          }
-
-          if (!bValid) {
-            sap.m.MessageToast.show("Please fill required fields.");
-            return;
-          } else {
-            var that = this;
-
-            // Get current date when the product is created
-            var oDate = new Date();
-            var iTime = oDate.getTime();
-            var sFormattedDate = "/Date(" + iTime + ")/";
-
-            // Add data to model
-            var oData = {
-              ProductName: sNewProductName,
-              Quantity: sNewQuantity,
-              PricePerQuantity: sNewPricePerQuantity,
-              Status: "Created",
-              CreationDate: sFormattedDate,
-            };
-
-            oModel.create("/Orders", oData, {
-              success: function (data) {
-                sap.m.MessageToast.show(sNewProductName + " was added.");
-                that.onCloseDialog();
-              },
-              error: function (data) {},
-            });
-          }
-        },
-
-        // Close  CreateOrderdialog
-        onCloseDialog: function () {
-          const oDialog = this.byId("dialogCreateOrder");
-
-          // Clear input fields when reusing the Add Dialog
-          this.byId("inpAddProductName").setValue("");
-          this.byId("inpAddQuantity").setValue("");
-          this.byId("inpAddPricePerQuantity").setValue("");
-
-          // Setting the state to none for the red outline to be removed when reusing
-          this.byId("inpAddProductName").setValueState("None");
-          this.byId("inpAddQuantity").setValueState("None");
-          this.byId("inpAddPricePerQuantity").setValueState("None");
-
-          oDialog.close();
         },
 
         // Ticked all checkbox on every items when checkbox header is ticked
@@ -331,6 +239,8 @@ sap.ui.define(
             var iTime = oDate.getTime();
             var sFormattedDate = "/Date(" + iTime + ")/";
 
+            var that = this;
+
             // Add data to model
             var oData = {
               ProductName: oSelectedProduct,
@@ -346,11 +256,48 @@ sap.ui.define(
                 sap.m.MessageToast.show(oSelectedProduct + " is added");
                 oQuantity.setValue(""); // reset value for reuse
                 // that.onCloseDialog();
+                that.onCloseFragment(oEvent);
               },
               error: function (data) {},
             });
           }
           // }
+        },
+        
+        // Delete ticked cb order from the table
+        onPressDelete: function () {
+          var oTable = this.getView().byId("tbProd");
+          var oModel = this.getOwnerComponent().getModel();
+          var aItems = oTable.getItems();
+          var aToDelete = [];
+
+          // Loop through table items to find selected order
+          aItems.forEach(function (oItem) {
+            var oContext = oItem.getBindingContext();
+            var bSelected = oItem.getCells()[0].getSelected(); 
+            if (bSelected) {
+              aToDelete.push(oContext);
+            }
+          });
+
+          // Delete selected items from the model
+          aToDelete.forEach(function (oContext) {
+            var sPath = oContext.getPath();
+            oModel.remove(sPath, {
+              success: function () {
+                sap.m.MessageToast.show("Order deleted successfully.");
+              },
+              error: function () {
+                sap.m.MessageToast.show("Error deleting order.");
+              },
+            });
+          });
+
+          // Uncheck all checkboxes
+          aItems.forEach(function (oItem) {
+            var oCheckBox = oItem.getCells()[0];
+            oCheckBox.setSelected(false);
+          });
         },
 
         onCloseFragment: function (oEvent) {
