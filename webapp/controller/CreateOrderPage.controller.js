@@ -24,15 +24,43 @@ sap.ui.define(
 
         // Open CreateOrder Dialog
         onPressCreate: function () {
-          if (!this.oCreateOrderDialog) {
-            this.oCreateOrderDialog = this.loadFragment({
-              name: "com.ordermanagement.ordermanagement.fragment.CreateOrderDialog",
-              controller: this,
+          var oView = this.getView();
+          var oReceivingPlant = oView.byId("inpReceivingPlant");
+          var oDeliveringPlant = oView.byId("inpDeliveringPlant");
+          var sReceivingPlant = oView.byId("inpReceivingPlant").getValue();
+          var sDeliveringPlant = oView.byId("inpDeliveringPlant").getValue();
+          var bValid = true;
+
+          if (sReceivingPlant === "") {
+            oReceivingPlant.setValueState("Error");
+            oReceivingPlant.setValueStateText("Receiving Plant is required.");
+            bValid = false;
+          } else {
+            oReceivingPlant.setValueState("None");
+          }
+
+          if (sDeliveringPlant === "") {
+            oDeliveringPlant.setValueState("Error");
+            oDeliveringPlant.setValueStateText("Delivering Plant is required.");
+            bValid = false;
+          } else {
+            oReceivingPlant.setValueState("None");
+          }
+
+          if (!bValid) {
+            sap.m.MessageToast.show("Please fill required fields.");
+            return;
+          } else {
+            if (!this.oCreateOrderDialog) {
+              this.oCreateOrderDialog = this.loadFragment({
+                name: "com.ordermanagement.ordermanagement.fragment.CreateOrderDialog",
+                controller: this,
+              });
+            }
+            this.oCreateOrderDialog.then(function (oDialog) {
+              oDialog.open();
             });
           }
-          this.oCreateOrderDialog.then(function (oDialog) {
-            oDialog.open();
-          });
         },
 
         // Create Order upon confirmation
@@ -294,6 +322,10 @@ sap.ui.define(
             // get the Product selected
             var oSelectedProduct = oView.byId("inpSelectedProduct").getValue();
 
+            // Get receiving and delivering plant
+            var oReceivingPlant = oView.byId("inpReceivingPlant").getValue();
+            var oDeliveringPlant = oView.byId("inpDeliveringPlant").getValue();
+
             // Get current date when the order is created
             var oDate = new Date();
             var iTime = oDate.getTime();
@@ -302,21 +334,32 @@ sap.ui.define(
             // Add data to model
             var oData = {
               ProductName: oSelectedProduct,
+              ReceivingPlantDescription: oReceivingPlant,
+              DeliveringPlantDescription: oDeliveringPlant,
               Quantity: sQuantity,
               Status: "Created",
               CreationDate: sFormattedDate,
-              
             };
 
             oModel.create("/Orders", oData, {
               success: function (data) {
-                sap.m.MessageToast.show("Naitiponen");
+                sap.m.MessageToast.show(oSelectedProduct + " is added");
+                oQuantity.setValue(""); // reset value for reuse
                 // that.onCloseDialog();
               },
               error: function (data) {},
             });
           }
           // }
+        },
+
+        onCloseFragment: function (oEvent) {
+          var oSource = oEvent.getSource();
+          var oDialog = oSource.getParent();
+
+          if (oDialog) {
+            oDialog.close();
+          }
         },
       }
     );

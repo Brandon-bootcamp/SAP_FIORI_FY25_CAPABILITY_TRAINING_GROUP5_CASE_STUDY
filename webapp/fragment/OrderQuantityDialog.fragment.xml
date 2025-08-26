@@ -12,7 +12,7 @@
         </beginButton>
 
         <endButton>
-            <Button id="idButtonCancelialog" text="Cancel" type="Reject" press="" />
+            <Button id="idButtonCancelialog" text="Cancel" type="Reject" press="onCloseFragment" />
         </endButton>
 
     </Dialog>
