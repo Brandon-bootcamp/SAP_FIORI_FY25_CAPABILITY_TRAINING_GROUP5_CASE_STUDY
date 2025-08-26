@@ -1,7 +1,7 @@
 <mvc:View controllerName="com.ordermanagement.ordermanagement.controller.DetailPage"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page id="editPage" floatingFooter="true" title="{i18n>DetailTitle}">  
+    <Page id="EditPage" floatingFooter="true" title="{i18n>DetailTitle}">  
     <content>
       <Panel headerText="{i18n>Order Detail}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel0">
         <content>
@@ -38,7 +38,7 @@
               </Column>
             </columns>
             <items>
-              <ColumnListItem id="productListItem">
+              <ColumnListItem id="ProductListItem">
                 <cells>
                   <Text id="textProductName" text="{orderModel>productName}" />
                   <Text id="textQuantity" text="{orderModel>quantity}" />
@@ -53,7 +53,7 @@
     </content>
 
     <footer>
-      <OverflowToolbar id="footerToolbar">
+      <OverflowToolbar id=" FooterToolbar">
         <ToolbarSpacer id="footerSpacer" />
         <Button id="Edit" text="{i18n>Edit}" tooltip="{i18n>edit}" press="onEdit" />
         <Button id="Cancel" text="{i18n>Cancel}" tooltip="{i18n>cancel}" press="onCancel" />
