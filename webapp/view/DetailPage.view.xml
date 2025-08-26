@@ -1,7 +1,7 @@
-<mvc:View controllerName="casestudy.controller.g5_CaseStudy"
+<mvc:View controllerName="com.ordermanagement.ordermanagement.controller.DetailPage"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page id="editPage" floatingFooter="true" title="{i18n>title}">  
+    <Page id="editPage" floatingFooter="true" title="{i18n>DetailTitle}">  
     <content>
       <Panel headerText="{i18n>Order Detail}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel0">
         <content>
