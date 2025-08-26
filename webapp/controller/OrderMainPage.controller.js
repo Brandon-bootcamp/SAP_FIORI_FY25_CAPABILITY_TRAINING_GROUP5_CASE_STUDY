@@ -11,7 +11,14 @@ sap.ui.define([
 
     // 🚀 Initialization
     onInit() {
-      // Initialization logic if needed
+      // Prevent pasting non-numeric characters into Order Number input
+      const input = this.byId("orderNumberInput");
+      input.attachBrowserEvent("paste", (e) => {
+        const pasted = (e.clipboardData || window.clipboardData).getData("text");
+        if (/[^0-9]/.test(pasted)) {
+          e.preventDefault();
+        }
+      });
     },
 
     // 🔍 Filter Orders
@@ -97,17 +104,37 @@ sap.ui.define([
 
     // 📋 Order Row Press
     onOrderSelect(oEvent) {
-      // const oBundle = this.getView().getModel("i18n").getResourceBundle();
       const selectedOrder = oEvent.getSource().getBindingContext().getObject();
-      // const sMessage = oBundle.getText("selectedOrderMessage", [selectedOrder.OrderNumber]);
-      // MessageToast.show(sMessage);
-      var oRouter = this.getOwnerComponent().getRouter();
-      oRouter.navTo("RouteDetailPage", {selectedOrder});
+      const oRouter = this.getOwnerComponent().getRouter();
+      oRouter.navTo("RouteDetailPage", { 
+        orderId: selectedOrder.OrderNumber 
+      });
     },
 
-    onPressCreateOrder: function(){
-      var oRouter = this.getOwnerComponent().getRouter();
+    // ➕ Navigate to Create Order Page
+    onPressCreateOrder() {
+      const oRouter = this.getOwnerComponent().getRouter();
       oRouter.navTo("RouteCreateOrderPage");
+    },
+
+    // 🔢 Restrict Order Number to Digits Only
+    onOrderNumberLiveChange(oEvent) {
+      const input = oEvent.getSource();
+      const value = input.getValue();
+      const cleaned = value.replace(/[^0-9]/g, "");
+      if (value !== cleaned) {
+        input.setValue(cleaned);
+      }
+    },
+
+    // 📅 Restrict Creation Date to Digits and Dashes
+    onCreationDateLiveChange(oEvent) {
+      const input = oEvent.getSource();
+      const value = input.getValue();
+      const cleaned = value.replace(/[^0-9\-]/g, "");
+      if (value !== cleaned) {
+        input.setValue(cleaned);
+      }
     }
 
   });

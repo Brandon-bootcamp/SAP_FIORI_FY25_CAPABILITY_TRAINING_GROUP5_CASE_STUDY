@@ -10,23 +10,38 @@ sap.ui.define([
 
         onInit: function () {
             var oData = {
-                OrderNumber: "ORD12345",
-                CreatedOn: "2025-08-18",
-                ReceivingPlant: "Plant A",
-                DeliveringPlant: "Plant B",
-                Status: "Created",
-                products: [
-                    {
-                        ProductName: "Widget A",
-                        Quantity: 10,
-                        PricePerQuantity: 5,
-                        TotalPrice: 50,
-                        selected: false
-                    }
-                ]
-            };
-            var oModel = new JSONModel(oData);
-            this.getView().setModel(oModel);
+                    OrderNumber: "ORD12345",
+                    CreatedOn: "2025-08-18",
+                    ReceivingPlant: "Plant A",
+                    DeliveringPlant: "Plant B",
+                    Status: "Created",
+                    products: [
+                        {
+                            ProductName: "Widget A",
+                            Quantity: 10,
+                            PricePerQuantity: 5,
+                            TotalPrice: 50,
+                            selected: false
+                        }
+                    ]
+                };
+                this.getView().setModel(new JSONModel(oData));
+
+                // Product master list with plant mapping
+                var oProductMaster = new JSONModel([
+                    { id: "Widget A", name: "Widget A", plant: "Plant B" },
+                    { id: "Widget B", name: "Widget B", plant: "Plant A" },
+                    { id: "Widget C", name: "Widget C", plant: "Plant B" }
+                ]);
+                this.getView().setModel(oProductMaster, "productMaster");
+
+                this.byId("productTable").attachUpdateFinished(this.updateProductTitle.bind(this));
+            },
+        updateProductTitle: function () {
+          var oTable = this.byId("productTable");
+          var iItemCount = oTable.getItems().length;
+ 
+          this.byId("productTitle").setText("Products (" + iItemCount + ")");
         },
 
         onChangeStatus: function (oEvent) {
@@ -36,21 +51,24 @@ sap.ui.define([
         },
 
         onAddProduct: function () {
+            var sDeliveringPlant = this.getView().getModel().getProperty("/DeliveringPlant");
+            var aAllProducts = this.getView().getModel("productMaster").getData();
+
+            var aFilteredProducts = aAllProducts.filter(function (product) {
+                return product.plant === sDeliveringPlant;
+            });
+
             var oDialogModel = new JSONModel({
                 selectedProductId: "",
-                quantity: " ",
-                availableProducts: [
-                    { id: "Widget A", name: "Widget A" },
-                    { id: "Widget B", name: "Widget B" },
-                    { id: "Widget C", name: "Widget C" }
-                ]
+                quantity: "",
+                availableProducts: aFilteredProducts
             });
             this.getView().setModel(oDialogModel, "dialog");
 
             if (!this._pDialog) {
                 this._pDialog = this.loadFragment({
-                    name: "casestudy.fragment.ProductDialog",
-                    controller: this // ensure event handlers are bound
+                    name: "com.ordermanagement.ordermanagement.fragment.ProductDialog",
+                    controller: this
                 });
             }
 
@@ -66,10 +84,10 @@ sap.ui.define([
 
             var sProductName = oDialogModel.getProperty("/selectedProductId");
             var iQuantity = parseInt(oDialogModel.getProperty("/quantity"), 10);
-            var iPrice = 10; // Static price, can be dynamic
+            var iPrice = 10;
 
-            if (!sProductName || iQuantity <= 0) {
-                MessageBox.error("Please enter valid product and quantity.");
+            if (!sProductName || isNaN(iQuantity) || iQuantity <= 0) {
+                MessageBox.error("Please enter a valid product and quantity.");
                 return;
             }
 
@@ -85,11 +103,15 @@ sap.ui.define([
             oMainModel.setProperty("/products", aProducts);
             MessageToast.show("Product added.");
 
-            this.byId("_IDGenDialog1").close();
+            this._pDialog.then(function (oDialog) {
+                oDialog.close();
+            });
         },
 
         onCancelAddProduct: function () {
-            this.byId("_IDGenDialog1").close();
+            this._pDialog.then(function (oDialog) {
+                oDialog.close();
+            });
         },
 
         onSelectAllProducts: function (oEvent) {

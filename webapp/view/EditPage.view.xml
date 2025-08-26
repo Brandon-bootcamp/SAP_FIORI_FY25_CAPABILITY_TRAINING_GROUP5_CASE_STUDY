@@ -1,5 +1,5 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" controllerName="com.ordermanagement.ordermanagement.controller.EditPage">
-    <Page id="editPage" floatingFooter="true" title="{i18n>title}">
+    <Page id="EditPage" floatingFooter="true" title="{i18n>title}">
         <content>
 
             <!-- Order Details Panel -->
@@ -18,11 +18,11 @@
                             <Label id="lblCreatedOn" text="Created On"/>
                             <Input id="inpCreatedOn" value="{CreatedOn}" editable="false" width="50%"/>
 
-                            <Label id="lblReceivingPlant" text="Receiving Plant"/>
-                            <Input id="inpReceivingPlant" value="{ReceivingPlant}" editable="false" width="50%"/>
+                            <Label id="lbl_ReceivingPlant" text="Receiving Plant"/>
+                            <Input id="inp_ReceivingPlant" value="{ReceivingPlant}" editable="false" width="50%"/>
 
-                            <Label id="lblDeliveringPlant" text="Delivering Plant"/>
-                            <Input id="inpDeliveringPlant" value="{DeliveringPlant}" editable="false" width="50%"/>
+                            <Label id="lbl_DeliveringPlant" text="Delivering Plant"/>
+                            <Input id="inp_DeliveringPlant" value="{DeliveringPlant}" editable="false" width="50%"/>
 
                             <Label id="lblStatus" text="Status"/>
                             <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%">
@@ -64,7 +64,7 @@
                             </Column>
                             <Column id="colQuantity">
                                 <header>
-                                    <Label id="lblQuantity" text="Quantity"/>
+                                    <Label id="lbl_Quantity" text="Quantity"/>
                                 </header>
                             </Column>
                             <Column id="colPricePerQuantity">
@@ -72,20 +72,20 @@
                                     <Label id="lblPricePerQuantity" text="Price Per Quantity"/>
                                 </header>
                             </Column>
-                            <Column id="colTotalPrice">
+                            <Column id="col_TotalPrice">
                                 <header>
-                                    <Label id="lblTotalPrice" text="Total Price"/>
+                                    <Label id="lbl_TotalPrice" text="Total Price"/>
                                 </header>
                             </Column>
                         </columns>
                         <items>
-                            <ColumnListItem id="productListItem" type="Active">
+                            <ColumnListItem id="_productListItem" type="Active">
                                 <cells>
                                     <CheckBox id="chkSelectProduct" selected="{selected}" select="onSelectProduct"/>
                                     <Text id="txtProductName" text="{ProductName}"/>
-                                    <Text id="txtQuantity" text="{Quantity}"/>
-                                    <Text id="txtPricePerQuantity" text="{PricePerQuantity}"/>
-                                    <Text id="txtTotalPrice" text="{TotalPrice}"/>
+                                    <Text id="_txtQuantity" text="{Quantity}"/>
+                                    <Text id="_txtPricePerQuantity" text="{PricePerQuantity}"/>
+                                    <Text id="_txtTotalPrice" text="{TotalPrice}"/>
                                 </cells>
                             </ColumnListItem>
                         </items>
@@ -96,10 +96,10 @@
 
         <!-- Footer Toolbar -->
         <footer>
-            <OverflowToolbar id="footerToolbar">
+            <OverflowToolbar id="_footerToolbar">
                 <ToolbarSpacer id="footerToolbarSpacer"/>
-                <Button id="btnSave" type="Emphasized" text="Save" press="onSave"/>
-                <Button id="btnCancel" type="Reject" text="Cancel" press="onCancel"/>
+                <Button id="_btnSave" type="Emphasized" text="Save" press="onSave"/>
+                <Button id="_btnCancel" type="Reject" text="Cancel" press="onCancel"/>
             </OverflowToolbar>
         </footer>
     </Page>
