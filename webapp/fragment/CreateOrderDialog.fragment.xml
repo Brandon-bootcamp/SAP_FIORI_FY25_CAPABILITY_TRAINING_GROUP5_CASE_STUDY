@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog id="CreateOrderDialog"
+        noDataText="No Product Found"
+        title="Create Order"
+        search=".onSearchProduct"
+        selectionChange="onSelectProduct"
+        searchPlaceholder="Search Product..."
+        confirm=".onValueHelpProductName"
+        items="{
+            path: '/Orders'
+        }">
+        <StandardListItem id="StandardListItemProduct" 
+            title="{ProductName}"
+            iconDensityAware="false"
+            iconInset="false"
+            type="Active" />
+    </SelectDialog>
+</core:FragmentDefinition>
