@@ -9,15 +9,30 @@ sap.ui.define([
 
   return Controller.extend("com.ordermanagement.ordermanagement.controller.OrderMainPage", {
 
+    // 📅 Format date as "01 Jan 2025"
+    formatDate: function (dateString) {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      if (isNaN(date)) return "";
+      const options = { day: "2-digit", month: "short", year: "numeric" };
+      return date.toLocaleDateString("en-GB", options);
+    },
+
     // 🚀 Initialization
     onInit() {
-      // Prevent pasting non-numeric characters into Order Number input
       const input = this.byId("orderNumberInput");
       input.attachBrowserEvent("paste", (e) => {
         const pasted = (e.clipboardData || window.clipboardData).getData("text");
         if (/[^0-9]/.test(pasted)) {
           e.preventDefault();
         }
+      });
+
+      // Attach updateFinished to count visible rows
+      const oTable = this.byId("ordersTable");
+      oTable.attachUpdateFinished((oEvent) => {
+        const totalItems = oEvent.getParameter("total");
+        this.byId("ordersTitle").setText(`Orders (${totalItems})`);
       });
     },
 
@@ -55,8 +70,6 @@ sap.ui.define([
       const oTable = this.byId("ordersTable");
       const oBinding = oTable.getBinding("items");
       oBinding.filter(aFilters);
-
-      MessageToast.show(oBundle.getText("showingResults"));
     },
 
     // 🧹 Clear Filters
@@ -106,8 +119,8 @@ sap.ui.define([
     onOrderSelect(oEvent) {
       const selectedOrder = oEvent.getSource().getBindingContext().getObject();
       const oRouter = this.getOwnerComponent().getRouter();
-      oRouter.navTo("RouteDetailPage", { 
-        orderId: selectedOrder.OrderNumber 
+      oRouter.navTo("RouteDetailPage", {
+        orderId: selectedOrder.OrderNumber
       });
     },
 
