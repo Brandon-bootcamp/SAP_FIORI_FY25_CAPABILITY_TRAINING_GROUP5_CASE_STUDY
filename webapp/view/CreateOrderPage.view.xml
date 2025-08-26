@@ -23,7 +23,7 @@
                     <Title id="ttlProd" text="{i18n>ttlProducts}" class="productTitle"/> <!--No Data Fed, number of products is still undefined-->
                     <ToolbarSpacer id="tsProduct"/>
                     <Button id="btnCreate" icon="sap-icon://add" press="onPressCreate"/>
-                    <Button id="btnDelete" icon="sap-icon://delete" press="onPressDelete"/>
+                    <Button id="btnDelete" icon="sap-icon://delete" press="onOpenDelete"/>
                     </Toolbar>               
             </headerToolbar>
             <content>

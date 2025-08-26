@@ -263,9 +263,45 @@ sap.ui.define(
           }
           // }
         },
-        
+
+        // Validation if there is tick in the table, if so then open ConfirmatDeleteDialog
+        onOpenDelete: function (oEvent) {
+          var oTable = this.getView().byId("tbProd");
+          var aItems = oTable.getItems();
+          var aToDelete = [];
+
+          // Loop through table items to find selected order
+          aItems.forEach(function (oItem) {
+            var bSelected = oItem.getCells()[0].getSelected();
+            if (bSelected) {
+              aToDelete.push(oItem);
+            }
+          });
+
+          // Validation: Check if any checkbox is ticked
+          if (aToDelete.length === 0) {
+            sap.m.MessageToast.show(
+              "Please select at least one order to delete."
+            );
+          } else {
+            // Open confirmation dialog
+            if (!this.oConfirmationDialog) {
+              this.oConfirmationDialog = this.loadFragment({
+                name: "com.ordermanagement.ordermanagement.fragment.ConfirmatDeleteDialog",
+                controller: this,
+              });
+
+              this.oConfirmationDialog.then(function (oDialog) {
+                oDialog.open();
+              });
+            } else {
+              this.oConfirmationDialog.open();
+            }
+          }
+        },
+
         // Delete ticked cb order from the table
-        onPressDelete: function () {
+        onConfirmDeleteOrder: function (oEvent) {
           var oTable = this.getView().byId("tbProd");
           var oModel = this.getOwnerComponent().getModel();
           var aItems = oTable.getItems();
@@ -274,18 +310,20 @@ sap.ui.define(
           // Loop through table items to find selected order
           aItems.forEach(function (oItem) {
             var oContext = oItem.getBindingContext();
-            var bSelected = oItem.getCells()[0].getSelected(); 
+            var bSelected = oItem.getCells()[0].getSelected();
             if (bSelected) {
               aToDelete.push(oContext);
             }
           });
 
           // Delete selected items from the model
+          var that = this;
           aToDelete.forEach(function (oContext) {
             var sPath = oContext.getPath();
             oModel.remove(sPath, {
               success: function () {
                 sap.m.MessageToast.show("Order deleted successfully.");
+                that.onCloseFragment(oEvent);
               },
               error: function () {
                 sap.m.MessageToast.show("Error deleting order.");

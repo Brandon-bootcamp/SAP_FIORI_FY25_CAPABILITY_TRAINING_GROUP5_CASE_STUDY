@@ -3,7 +3,6 @@
     <Dialog id="idProductDialog" title="Enter Quantity">
 
         <form:SimpleForm id="sformQuantity">
-            <!-- <Title id="txtSelectedProduct" text="Product:"/> -->
             <Input id="inpQuantity" placeholder="Enter quantity..." type="Number" />
         </form:SimpleForm>
 
@@ -12,7 +11,7 @@
         </beginButton>
 
         <endButton>
-            <Button id="idButtonCancelialog" text="Cancel" type="Reject" press="onCloseFragment" />
+            <Button id="idButtonCanceldialog" text="Cancel" type="Reject" press="onCloseFragment" />
         </endButton>
 
     </Dialog>
