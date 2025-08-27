@@ -24,6 +24,29 @@ sap.ui.define(
               e.preventDefault();
             }
           });
+  // ✅ Get the model safely
+          const oModel = this.getOwnerComponent().getModel(); // safer than getView().getModel() // or this.getOwnerComponent().getModel()
+
+          if (!oModel) {
+            console.error("OData model is not available");
+            return;
+          }
+
+          // 🔍 Read Orders with expanded Products
+          oModel.read("/Orders", {
+            urlParameters: {
+              "$expand": "Products"
+            },
+            success: (oData) => {
+              const oLocalModel = new sap.ui.model.json.JSONModel({
+                Orders: oData.results || []
+              });
+              this.getView().setModel(oLocalModel, "local");
+            },
+            error: (err) => {
+              console.error("Failed to fetch orders:", err);
+            }
+          });
         },
 
         // 🔍 Filter Orders
@@ -114,16 +137,63 @@ sap.ui.define(
         },
 
         // 📋 Order Row Press
+        // onOrderSelect(oEvent) {
+        //   const selectedOrder = oEvent
+        //     .getSource()
+        //     .getBindingContext()
+        //     .getObject();
+        //   const oRouter = this.getOwnerComponent().getRouter();
+        //   oRouter.navTo("RouteDetailPage", {
+        //     orderId: selectedOrder.OrderNumber,
+        //   });
+        // },
+
+        // 🎯 Handle Order Selection
         onOrderSelect(oEvent) {
-          const selectedOrder = oEvent
-            .getSource()
-            .getBindingContext()
-            .getObject();
+          // 🧠 Get the binding context from the selected item
+          const oContext = oEvent.getSource().getBindingContext("local");
+          if (!oContext) {
+            console.error("No binding context found for selected order.");
+            return;
+          }
+
+          // 🚦 Navigate to the detail page using the router
           const oRouter = this.getOwnerComponent().getRouter();
+          const orderId = oContext.getProperty("OrderNumber");
+
+          if (!orderId) {
+            console.warn("OrderNumber is missing in the selected context.");
+            return;
+          }
+
           oRouter.navTo("RouteDetailPage", {
-            orderId: selectedOrder.OrderNumber,
+            orderId: orderId
+          });
+
+          // 📦 Load related products for the selected order
+          const oModel = this.getOwnerComponent().getModel(); // safer than getView().getModel()
+          if (!oModel) {
+            console.error("Main OData model is not available.");
+            return;
+          }
+
+          const sProductsPath = `${oContext.getPath()}/Products`;
+          oModel.read(sProductsPath, {
+            success: (oData) => {
+              const aProducts = oData.results || [];
+              console.log("✅ Related Products loaded:", aProducts);
+
+              // Optional: Store products in a local model or pass to detail page
+              const oProductModel = new sap.ui.model.json.JSONModel({ Products: aProducts });
+              this.getView().setModel(oProductModel, "relatedProducts");
+            },
+            error: (err) => {
+              console.error("❌ Failed to load related products:", err);
+              sap.m.MessageBox.error("Unable to fetch related products for the selected order.");
+            }
           });
         },
+
 
         // ➕ Navigate to Create Order Page
         onPressCreateOrder() {

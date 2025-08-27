@@ -4,13 +4,13 @@
     "CreationDate": "/Date(1680000000000)/",
     "ReceivingPlantCode": 101,
     "ReceivingPlantDescription": "Philippines",
-    "DeliveringPlantCode": 106,
-    "DeliveringPlantDescription": "Vietnam",
     "Status": "Created",
     "Products": [
       {
         "ProductID": 6001,
         "ProductName": "Refrigerator",
+        "DeliveringPlantCode": 104,
+        "DeliveringPlantDescription": "Japan",
         "Quantity": 20,
         "PricePerQuantity": 15000
       }
@@ -21,19 +21,21 @@
     "CreationDate": "/Date(1680500000000)/",
     "ReceivingPlantCode": 102,
     "ReceivingPlantDescription": "Thailand",
-    "DeliveringPlantCode": 107,
-    "DeliveringPlantDescription": "Malaysia",
     "Status": "Released",
     "Products": [
       {
         "ProductID": 6001,
         "ProductName": "Refrigerator",
+        "DeliveringPlantCode": 101,
+        "DeliveringPlantDescription": "Philippines",
         "Quantity": 20,
         "PricePerQuantity": 15000
       },
       {
         "ProductID": 6005,
         "ProductName": "Air Conditioner",
+        "DeliveringPlantCode": 104,
+        "DeliveringPlantDescription": "Japan",
         "Quantity": 25,
         "PricePerQuantity": 22000
       }
@@ -44,13 +46,13 @@
     "CreationDate": "/Date(1681000000000)/",
     "ReceivingPlantCode": 103,
     "ReceivingPlantDescription": "Indonesia",
-    "DeliveringPlantCode": 108,
-    "DeliveringPlantDescription": "Singapore",
     "Status": "Partially Completed",
     "Products": [
       {
         "ProductID": 6004,
         "ProductName": "Electric Fan",
+        "DeliveringPlantCode": 101,
+        "DeliveringPlantDescription": "Philippines",
         "Quantity": 100,
         "PricePerQuantity": 1800
       }
@@ -61,25 +63,29 @@
     "CreationDate": "/Date(1681500000000)/",
     "ReceivingPlantCode": 104,
     "ReceivingPlantDescription": "Japan",
-    "DeliveringPlantCode": 109,
-    "DeliveringPlantDescription": "South Korea",
     "Status": "Delivered",
     "Products": [
       {
         "ProductID": 6002,
         "ProductName": "Microwave Oven",
+        "DeliveringPlantCode": 111,
+        "DeliveringPlantDescription": "USA",
         "Quantity": 50,
         "PricePerQuantity": 4500
       },
       {
         "ProductID": 6003,
         "ProductName": "Washing Machine",
+        "DeliveringPlantCode": 101,
+        "DeliveringPlantDescription": "Philippines",
         "Quantity": 30,
         "PricePerQuantity": 12000
       },
       {
         "ProductID": 6004,
         "ProductName": "Electric Fan",
+        "DeliveringPlantCode": 102,
+        "DeliveringPlantDescription": "Thailand",
         "Quantity": 100,
         "PricePerQuantity": 1800
       }
@@ -90,13 +96,13 @@
     "CreationDate": "/Date(1682000000000)/",
     "ReceivingPlantCode": 105,
     "ReceivingPlantDescription": "China",
-    "DeliveringPlantCode": 110,
-    "DeliveringPlantDescription": "India",
     "Status": "Created",
     "Products": [
       {
         "ProductID": 6003,
         "ProductName": "Washing Machine",
+        "DeliveringPlantCode": 102,
+        "DeliveringPlantDescription": "Thailand",
         "Quantity": 30,
         "PricePerQuantity": 12000
       }

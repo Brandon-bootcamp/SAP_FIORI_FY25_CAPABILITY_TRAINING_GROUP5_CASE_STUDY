@@ -480,11 +480,7 @@ sap.ui.define(
               var sOrderNumber = data.OrderNumber;
               sap.m.MessageToast.show("The Order " + sOrderNumber + " has been successfully created.");
 
-              // var oModel = new sap.ui.model.json.JSONModel();
-              // oModel.loadData("localService/data/Orders.json"); // false = synchronous
-
-              // Log the entire data
-              // console.log("Orders Data:", oModel);
+              
               console.log("Full Order Data:\n", JSON.stringify(data, null, 2));
             },
             error: function (data) {

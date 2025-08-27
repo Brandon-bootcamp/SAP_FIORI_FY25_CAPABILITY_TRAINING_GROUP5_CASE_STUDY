@@ -73,7 +73,7 @@
         </Toolbar>
 
         <!-- 📋 Orders Table -->
-        <Table id="ordersTable" items="{/Orders}" mode="MultiSelect">
+        <Table id="ordersTable" items="{local>/Orders}" mode="MultiSelect">
           <columns>
             <Column><Text text="{i18n>orderNumberLabel}"/></Column>
             <Column><Text text="{i18n>creationDateLabel}"/></Column>
@@ -84,12 +84,12 @@
           <items>
             <ColumnListItem type="Active" press="onOrderSelect">
               <cells>
-                <Text text="{OrderNumber}"/>
-                <Text text="{CreationDate}"/>
-                <Text text="{ReceivingPlantCode} - {ReceivingPlantDescription}"/>
-                <Text text="{DeliveringPlantCode} - {DeliveringPlantDescription}"/>
+                <Text text="{local>OrderNumber}"/>
+                <Text text="{local>CreationDate}"/>
+                <Text text="{local>ReceivingPlantCode} - {local>ReceivingPlantDescription}"/>
+                <Text text="{local>Products/results/0/DeliveringPlantCode} - {local>Products/results/0/DeliveringPlantDescription}"/>
                 <ObjectStatus
-                  text="{Status}"
+                  text="{local>Status}"
                   state="{= 
                     ${Status} === 'Created' ? 'None' : 
                     ${Status} === 'Released' ? 'Warning' : 

@@ -11,8 +11,6 @@
                 <Property Name="CreationDate" Type="Edm.DateTime" Nullable="false" />
                 <Property Name="ReceivingPlantCode" Type="Edm.Int32" />
                 <Property Name="ReceivingPlantDescription" Type="Edm.String" />
-                <Property Name="DeliveringPlantCode" Type="Edm.Int32" />
-                <Property Name="DeliveringPlantDescription" Type="Edm.String" />
                 <Property Name="Status" Type="Edm.String" />
                 <NavigationProperty Name="Products" Relationship="OrderService.Order_Product" FromRole="Order" ToRole="Product" />
             </EntityType>
