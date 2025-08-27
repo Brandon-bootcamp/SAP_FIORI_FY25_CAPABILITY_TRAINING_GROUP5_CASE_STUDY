@@ -34,6 +34,11 @@ sap.ui.define([
         const totalItems = oEvent.getParameter("total");
         this.byId("ordersTitle").setText(`Orders (${totalItems})`);
       });
+      
+      const oModel = oTable.getModel();
+      console.log("Component model:", this.getOwnerComponent().getModel());
+
+
     },
 
     // 🔍 Filter Orders
@@ -120,7 +125,7 @@ sap.ui.define([
       const selectedOrder = oEvent.getSource().getBindingContext().getObject();
       const oRouter = this.getOwnerComponent().getRouter();
       oRouter.navTo("RouteDetailPage", {
-        orderId: selectedOrder.OrderNumber
+        orderId: selectedOrder.OrderNumber // assuming OrderNumber is the key
       });
     },
 

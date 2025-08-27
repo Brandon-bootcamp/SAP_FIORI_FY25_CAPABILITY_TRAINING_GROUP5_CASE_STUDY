@@ -46,10 +46,14 @@
     "DeliveringPlantCode": 204,
     "DeliveringPlantDescription": "Depot D",
     "Status": "Delivered",
-    "ProductID": 304,
-    "ProductName": "Smartphone",
-    "Quantity": 4,
-    "PricePerQuantity": 300
+    "Products": [
+      {
+        "ProductID": 304,
+        "ProductName": "Smartphone",
+        "Quantity": 4,
+        "PricePerQuantity": 300
+      }
+    ]
   },
   {
     "OrderNumber": 1005,
@@ -59,9 +63,13 @@
     "DeliveringPlantCode": 205,
     "DeliveringPlantDescription": "Depot E",
     "Status": "Created",
-    "ProductID": 305,
-    "ProductName": "Tablet",
-    "Quantity": 6,
-    "PricePerQuantity": 250
+    "Products": [
+      {
+        "ProductID": 305,
+        "ProductName": "Tablet",
+        "Quantity": 6,
+        "PricePerQuantity": 250
+      }
+    ]
   }
 ]

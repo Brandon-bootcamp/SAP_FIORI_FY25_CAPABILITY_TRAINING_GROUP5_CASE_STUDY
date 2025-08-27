@@ -18,11 +18,11 @@
                             <Label id="lblCreatedOn" text="Created On"/>
                             <Input id="inpCreatedOn" value="{CreatedOn}" editable="false" width="50%"/>
 
-                            <Label id="lblReceivingPlant" text="Receiving Plant"/>
-                            <Input id="inpReceivingPlant" value="{ReceivingPlant}" editable="false" width="50%"/>
+                            <Label id="receivingPlantLabel" text="Receiving Plant"/>
+                            <Input id="ReceivingPlantInput" value="{ReceivingPlant}" editable="false" width="50%"/>
 
-                            <Label id="lblDeliveringPlant" text="Delivering Plant"/>
-                            <Input id="inpDeliveringPlant" value="{DeliveringPlant}" editable="false" width="50%"/>
+                            <Label id="DeliveringPlantLabel" text="Delivering Plant"/>
+                            <Input id="DeliveringPlantInput" value="{DeliveringPlant}" editable="false" width="50%"/>
 
                             <Label id="lblStatus" text="Status"/>
                             <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%">
@@ -59,33 +59,33 @@
                             </Column>
                             <Column id="colProductName">
                                 <header>
-                                    <Text id="lblProductName" text="Product Name"/>
+                                    <Text id="productNameLabel" text="Product Name"/>
                                 </header>
                             </Column>
                             <Column id="colQuantity">
                                 <header>
-                                    <Label id="lblQuantity" text="Quantity"/>
+                                    <Label id="QuantityLabel" text="Quantity"/>
                                 </header>
                             </Column>
                             <Column id="colPricePerQuantity">
                                 <header>
-                                    <Label id="lblPricePerQuantity" text="Price Per Quantity"/>
+                                    <Label id="pricePerQuantityLabel" text="Price Per Quantity"/>
                                 </header>
                             </Column>
-                            <Column id="colTotalPrice">
+                            <Column id="colmTotalPrice">
                                 <header>
-                                    <Label id="lblTotalPrice" text="Total Price"/>
+                                    <Label id="totalPriceLabel" text="Total Price"/>
                                 </header>
                             </Column>
                         </columns>
                         <items>
-                            <ColumnListItem id="productListItem" type="Active">
+                            <ColumnListItem id="prodListItem" type="Active">
                                 <cells>
                                     <CheckBox id="chkSelectProduct" selected="{selected}" select="onSelectProduct"/>
-                                    <Text id="txtProductName" text="{ProductName}"/>
-                                    <Text id="txtQuantity" text="{Quantity}"/>
-                                    <Text id="txtPricePerQuantity" text="{PricePerQuantity}"/>
-                                    <Text id="txtTotalPrice" text="{TotalPrice}"/>
+                                    <Text id="prodNameText" text="{ProductName}"/>
+                                    <Text id="qauntityText" text="{Quantity}"/>
+                                    <Text id="pricePerQuantityText" text="{PricePerQuantity}"/>
+                                    <Text id="totalPriceText" text="{TotalPrice}"/>
                                 </cells>
                             </ColumnListItem>
                         </items>
@@ -96,10 +96,10 @@
 
         <!-- Footer Toolbar -->
         <footer>
-            <OverflowToolbar id="footerToolbar">
+            <OverflowToolbar id="toolbarFooter">
                 <ToolbarSpacer id="footerToolbarSpacer"/>
-                <Button id="btnSave" type="Emphasized" text="Save" press="onSave"/>
-                <Button id="btnCancel" type="Reject" text="Cancel" press="onCancel"/>
+                <Button id="buttonSave" type="Emphasized" text="Save" press="onSave"/>
+                <Button id="buttonCancel" type="Reject" text="Cancel" press="onCancel"/>
             </OverflowToolbar>
         </footer>
     </Page>

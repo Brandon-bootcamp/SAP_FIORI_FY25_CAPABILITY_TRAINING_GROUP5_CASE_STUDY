@@ -105,7 +105,7 @@
         },
         {
           "name": "RouteDetailPage",
-          "pattern": "detail/{orderId}",
+          "pattern": "OrderDetail/{orderId}",
           "target": [
             "TargetDetailPage"
           ]
