@@ -17,7 +17,7 @@ sap.ui.define([
             console.log(sPath);
             this.getView().bindElement({
                 path: sPath
-            });
+            });       
         },
  
         onEdit: function (oEvent) {

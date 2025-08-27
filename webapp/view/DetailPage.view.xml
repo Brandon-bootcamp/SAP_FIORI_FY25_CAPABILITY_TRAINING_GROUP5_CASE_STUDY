@@ -11,18 +11,18 @@
             <Label id="labelCreatedOn" text="{i18n>Created On}"/>
             <Text id="textCreatedOn" text="{CreationDate}"/>
             <Label id="labelReceivingPlant" text="{i18n>Receiving Plant}"/>
-            <Text id="textReceivingPlant" text="{ReceivingPlantCode}"/>
+            <Text id="textReceivingPlant" text=" {ReceivingPlantCode} - {ReceivingPlantDescription}"/>
             <Label id="labelDeliveringPlant" text="{i18n>Delivering Plant}"/>
-            <Text id="textDeliveringPlant" text="{DeliveringPlantCode}"/>
+            <Text id="textDeliveringPlant" text=" {DeliveringPlantCode} - {DeliveringPlantDescription} "/>
             <Label id="labelStatus" text="{i18n>Status}"/>
             <Text id="textStatus" text="{Status}"/>
           </sap.ui.layout.form:SimpleForm >
         </content>
       </Panel >
  
-      <Panel headerText="{i18n>Product}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel1" >
+      <Panel headerText="{i18n>Product}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="ProductTitle" >
         <content>
-          <Table id="table0" items="{products}" >
+          <Table id="ProductTable" items="{products}" >
             <columns>
               <Column id="columnProductName" >
                 <Text id="labelProductName" text="{i18n>Product Name}"/>
@@ -40,7 +40,7 @@
             <items> 
               <ColumnListItem id="ProductListItem"> 
                 <cells> 
-                  <Text id="textProductName" text="{ProductName}" />
+                  <Text id="textProductName" text="{ProductID} - {ProductName}" />
                   <Text id="textQuantity" text="{Quantity}" />
                   <Text id="textPrice" text="{PricePerQuantity}" />
                   <Text id="textTotal" text="{= ${Quantity} * ${PricePerQuantity} }" />
