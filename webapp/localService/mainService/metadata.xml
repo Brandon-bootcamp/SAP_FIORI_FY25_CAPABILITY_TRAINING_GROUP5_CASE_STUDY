@@ -15,7 +15,8 @@
 
                 <!-- Product -->
                  <Key>
-                    <PropertyRef Name="ProductID" />
+                    <PropertyRef Name="OrderNumber" />
+                    <!-- <PropertyRef Name="ProductID" /> -->
                 </Key>
                 <Property Name="ProductID" Type="Edm.Int32" Nullable="false" sap:label="Product ID" />
                 <Property Name="ProductName" Type="Edm.String" Nullable="false" sap:label="Product Name" />

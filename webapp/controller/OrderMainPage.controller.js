@@ -9,7 +9,7 @@ sap.ui.define([
 
   return Controller.extend("com.ordermanagement.ordermanagement.controller.OrderMainPage", {
 
-    // 📅 Format date as "01 Jan 2025"
+    // Format date as "01 Jan 2025"
     formatDate: function (dateString) {
       if (!dateString) return "";
       const date = new Date(dateString);
@@ -18,7 +18,7 @@ sap.ui.define([
       return date.toLocaleDateString("en-GB", options);
     },
 
-    // 🚀 Initialization
+    // Initialization
     onInit() {
       const input = this.byId("orderNumberInput");
       input.attachBrowserEvent("paste", (e) => {
@@ -36,7 +36,7 @@ sap.ui.define([
       });
     },
 
-    // 🔍 Filter Orders
+    // Filter Orders
     onFilter() {
       const oBundle = this.getView().getModel("i18n").getResourceBundle();
       const orderValue = this.byId("orderNumberInput").getValue();
@@ -72,7 +72,7 @@ sap.ui.define([
       oBinding.filter(aFilters);
     },
 
-    // 🧹 Clear Filters
+    // Clear Filters
     onClear() {
       const oView = this.getView();
       oView.byId("orderNumberInput").setValue("");
@@ -84,7 +84,7 @@ sap.ui.define([
       oBinding.filter([]);
     },
 
-    // 🗑️ Delete Selected Orders
+    // Delete Selected Orders
     onDeletePress() {
       const oTable = this.byId("ordersTable");
       const aSelectedItems = oTable.getSelectedItems();
@@ -115,7 +115,7 @@ sap.ui.define([
       );
     },
 
-    // 📋 Order Row Press
+    // Order Row Press
     onOrderSelect(oEvent) {
       const selectedOrder = oEvent.getSource().getBindingContext().getObject();
       const oRouter = this.getOwnerComponent().getRouter();
@@ -124,13 +124,13 @@ sap.ui.define([
       });
     },
 
-    // ➕ Navigate to Create Order Page
+    // Navigate to Create Order Page
     onPressCreateOrder() {
       const oRouter = this.getOwnerComponent().getRouter();
       oRouter.navTo("RouteCreateOrderPage");
     },
 
-    // 🔢 Restrict Order Number to Digits Only
+    // Restrict Order Number to Digits Only
     onOrderNumberLiveChange(oEvent) {
       const input = oEvent.getSource();
       const value = input.getValue();
@@ -140,7 +140,7 @@ sap.ui.define([
       }
     },
 
-    // 📅 Restrict Creation Date to Digits and Dashes
+    // Restrict Creation Date to Digits and Dashes
     onCreationDateLiveChange(oEvent) {
       const input = oEvent.getSource();
       const value = input.getValue();
