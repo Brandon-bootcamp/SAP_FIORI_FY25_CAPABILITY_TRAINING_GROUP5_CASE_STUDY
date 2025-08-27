@@ -3,6 +3,7 @@
     <Dialog id="idProductDialog" title="Enter Quantity">
 
         <form:SimpleForm id="sformQuantity">
+            <Label id="lblProductSelected"  required="true" text="Quantity"/>
             <Input id="inpQuantity" placeholder="Enter quantity..." type="Number" />
         </form:SimpleForm>
 

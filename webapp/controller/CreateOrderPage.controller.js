@@ -8,13 +8,23 @@ sap.ui.define(
       "com.ordermanagement.ordermanagement.controller.CreateOrderPage",
       {
         onInit: function () {
-          // Panel Product(0)
+          // Real time total number of items of the Product table
           var oTable = this.byId("tbProd");
-
           oTable.attachUpdateFinished(this.updateProductTitle.bind(this));
+
+          // temp data for added products
+          // var oModel = new JSONModel({
+          //   Products: [],
+          // });
+          // this.getView().setModel(oModel);
         },
 
-        // Real time total number of items of the Product table
+        // _initModel: function () {
+        //   var oProductHolderModel = new JSONModel("/model/ProductHolder.json");
+        //   this.getView().setModel(oProductHolderModel, "ProductsHolder");
+        // },
+
+        // Get table length
         updateProductTitle: function () {
           var oTable = this.byId("tbProd");
           var iItemCount = oTable.getItems().length;
@@ -24,106 +34,45 @@ sap.ui.define(
 
         // Open CreateOrder Dialog
         onPressCreate: function () {
-          if (!this.oCreateOrderDialog) {
-            this.oCreateOrderDialog = this.loadFragment({
-              name: "com.ordermanagement.ordermanagement.fragment.CreateOrderDialog",
-              controller: this,
-            });
-          }
-          this.oCreateOrderDialog.then(function (oDialog) {
-            oDialog.open();
-          });
-        },
-
-        // Create Order upon confirmation
-        onConfirmCreateOrder: function () {},
-
-        // Add New Product to model
-        onAddProduct: function () {
-          var oModel = this.getOwnerComponent().getModel();
           var oView = this.getView();
-
-          //Get inputs
-          var oNewProductName = oView.byId("inpAddProductName");
-          var oNewQuantity = oView.byId("inpAddQuantity");
-          var oNewPricePerQuantity = oView.byId("inpAddPricePerQuantity");
-
-          var sNewProductName = oNewProductName.getValue();
-          var sNewQuantity = oNewQuantity.getValue();
-          var sNewPricePerQuantity = oNewPricePerQuantity.getValue();
-
+          var oReceivingPlant = oView.byId("inpReceivingPlant");
+          var oDeliveringPlant = oView.byId("inpDeliveringPlant");
+          var sReceivingPlant = oView.byId("inpReceivingPlant").getValue();
+          var sDeliveringPlant = oView.byId("inpDeliveringPlant").getValue();
           var bValid = true;
 
-          // Validations for inputs
-          if (sNewProductName === "") {
-            oNewProductName.setValueState("Error");
-            oNewProductName.setValueStateText("Product Name is required.");
+          if (sReceivingPlant === "") {
+            oReceivingPlant.setValueState("Error");
+            oReceivingPlant.setValueStateText("Receiving Plant is required.");
             bValid = false;
           } else {
-            oNewProductName.setValueState("None");
+            oReceivingPlant.setValueState("None");
           }
 
-          if (sNewQuantity === "") {
-            oNewQuantity.setValueState("Error");
-            oNewQuantity.setValueStateText("Quantity is required.");
+          if (sDeliveringPlant === "") {
+            oDeliveringPlant.setValueState("Error");
+            oDeliveringPlant.setValueStateText("Delivering Plant is required.");
             bValid = false;
           } else {
-            oNewQuantity.setValueState("None");
-          }
-
-          if (sNewPricePerQuantity === "") {
-            oNewPricePerQuantity.setValueState("Error");
-            oNewPricePerQuantity.setValueStateText("Quantity is required.");
-            bValid = false;
-          } else {
-            oNewPricePerQuantity.setValueState("None");
+            oReceivingPlant.setValueState("None");
           }
 
           if (!bValid) {
             sap.m.MessageToast.show("Please fill required fields.");
             return;
           } else {
-            var that = this;
-
-            // Get current date when the product is created
-            var oDate = new Date();
-            var iTime = oDate.getTime();
-            var sFormattedDate = "/Date(" + iTime + ")/";
-
-            // Add data to model
-            var oData = {
-              ProductName: sNewProductName,
-              Quantity: sNewQuantity,
-              PricePerQuantity: sNewPricePerQuantity,
-              Status: "Created",
-              CreationDate: sFormattedDate,
-            };
-
-            oModel.create("/Orders", oData, {
-              success: function (data) {
-                sap.m.MessageToast.show(sNewProductName + " was added.");
-                that.onCloseDialog();
-              },
-              error: function (data) {},
+            oReceivingPlant.setValueState("None");
+            oReceivingPlant.setValueState("None");
+            if (!this.oCreateOrderDialog) {
+              this.oCreateOrderDialog = this.loadFragment({
+                name: "com.ordermanagement.ordermanagement.fragment.createOrder.CreateOrderDialog",
+                controller: this,
+              });
+            }
+            this.oCreateOrderDialog.then(function (oDialog) {
+              oDialog.open();
             });
           }
-        },
-
-        // Close  CreateOrderdialog
-        onCloseDialog: function () {
-          const oDialog = this.byId("dialogCreateOrder");
-
-          // Clear input fields when reusing the Add Dialog
-          this.byId("inpAddProductName").setValue("");
-          this.byId("inpAddQuantity").setValue("");
-          this.byId("inpAddPricePerQuantity").setValue("");
-
-          // Setting the state to none for the red outline to be removed when reusing
-          this.byId("inpAddProductName").setValueState("None");
-          this.byId("inpAddQuantity").setValueState("None");
-          this.byId("inpAddPricePerQuantity").setValueState("None");
-
-          oDialog.close();
         },
 
         // Ticked all checkbox on every items when checkbox header is ticked
@@ -142,7 +91,7 @@ sap.ui.define(
         onReceivingPlant: function () {
           if (!this.oReceivingDialog) {
             this.oReceivingDialog = this.loadFragment({
-              name: "com.ordermanagement.ordermanagement.fragment.ReceivingPlantDialog",
+              name: "com.ordermanagement.ordermanagement.fragment.createOrder.ReceivingPlantDialog",
               controller: this,
             });
           }
@@ -155,7 +104,7 @@ sap.ui.define(
         onDeliveringPlant: function () {
           if (!this.oDeliveringDialog) {
             this.oDeliveringDialog = this.loadFragment({
-              name: "com.ordermanagement.ordermanagement.fragment.DeliveringPlantDialog",
+              name: "com.ordermanagement.ordermanagement.fragment.createOrder.DeliveringPlantDialog",
               controller: this,
             });
           }
@@ -240,7 +189,7 @@ sap.ui.define(
         onValueHelpReceivingPlantDialogClose: function (oEvent) {
           var oSelectedItem = oEvent.getParameter("selectedItem");
           if (oSelectedItem) {
-            var sTitle = oSelectedItem.getTitle(); // Assuming ProductName is in title
+            var sTitle = oSelectedItem.getTitle();
             var oInput = this.byId("inpReceivingPlant");
             oInput.setValue(sTitle);
           }
@@ -250,7 +199,7 @@ sap.ui.define(
         onValueHelpDeliveringPlantDialogClose: function (oEvent) {
           var oSelectedItem = oEvent.getParameter("selectedItem");
           if (oSelectedItem) {
-            var sTitle = oSelectedItem.getTitle(); // Assuming ProductName is in title
+            var sTitle = oSelectedItem.getTitle();
             var oInput = this.byId("inpDeliveringPlant");
             oInput.setValue(sTitle);
           }
@@ -262,7 +211,7 @@ sap.ui.define(
           if (oSelectedItem) {
             if (!this.oOrderQuantityDialog) {
               this.oOrderQuantityDialog = this.loadFragment({
-                name: "com.ordermanagement.ordermanagement.fragment.OrderQuantityDialog",
+                name: "com.ordermanagement.ordermanagement.fragment.createOrder.OrderQuantityDialog",
                 controller: this,
               });
             }
@@ -272,55 +221,187 @@ sap.ui.define(
             var sTitle = oSelectedItem.getTitle();
             var oInput = this.byId("inpSelectedProduct");
             oInput.setValue(sTitle);
+            // var oProductSelected = oView.byId("lblProductSelected");
+            // oProductSelected.setValue(sTitle);
+
           }
         },
 
+        // Confirm to Create the order
         onPressConfirmCreateOrder: function (oEvent) {
           var oView = this.getView();
           var oQuantity = oView.byId("inpQuantity");
           var sQuantity = oQuantity.getValue();
-          // bValid = true;
 
           if (sQuantity === "") {
             oQuantity.setValueState("Error");
             oQuantity.setValueStateText("Quantity is required.");
-            // bValid = false;
           } else {
             oQuantity.setValueState("Success");
 
-            // Get the Model Orders
-            var oModel = this.getOwnerComponent().getModel();
+            // Get Receiving and delivering plant from inp
+            var oSelectedProduct = oView.byId("inpSelectedProduct");
+            var oReceivingPlant = oView.byId("inpReceivingPlant");
+            var oDeliveringPlant = oView.byId("inpDeliveringPlant");
 
-            // get the Product selected
-            var oSelectedProduct = oView.byId("inpSelectedProduct").getValue();
+            var sSelectedProduct = oSelectedProduct.getValue();
+            var sReceivingPlant = oReceivingPlant.getValue();
+            var sDeliveringPlant = oDeliveringPlant.getValue();
 
-            // Get current date when the order is created
+            // Get date today and format it
             var oDate = new Date();
             var iTime = oDate.getTime();
             var sFormattedDate = "/Date(" + iTime + ")/";
 
-            // Add data to model
-            var oData = {
-              ProductName: oSelectedProduct,
-              Quantity: sQuantity,
+            // Get product.json for price quantity
+
+            // var oProductsModel = new sap.ui.model.json.JSONModel();
+            // oProductsModel.loadData("localService/data/Products.json");
+            // this.getView().setModel(oProductsModel, "ProductsModel");
+
+            // var oProductsModel = oView.getModel("ProductsModel");
+            // var aProducts = oProductsModel.getProperty("/");
+
+            // // Find the product by name
+            // var oMatchedProduct = aProducts.find(function (product) {
+            //   return product.ProductName === oSelectedProduct;
+            // });
+
+            // var fPricePerQuantity = oMatchedProduct
+            //   ? oMatchedProduct.PricePerQuantity
+            //   : 0;
+
+            var oAddProduct = {
+              ProductName: sSelectedProduct,
+              // ReceivingPlantDescription: oReceivingPlant,
+              // DeliveringPlantDescription: oDeliveringPlant,
+              Quantity: parseFloat(sQuantity),
+              PricePerQuantity: 321,
               Status: "Created",
               CreationDate: sFormattedDate,
-              
             };
 
-            oModel.create("/Orders", oData, {
-              success: function (data) {
-                sap.m.MessageToast.show("Naitiponen");
-                // that.onCloseDialog();
-              },
-              error: function (data) {},
-            });
+            // Get or create temporary model for new orders
+            var oTempModel = oView.getModel("TempOrders");
+            if (!oTempModel) {
+              oTempModel = new sap.ui.model.json.JSONModel({ Products: [] });
+              oView.setModel(oTempModel, "TempOrders");
+            }
+
+            // Add new product to temporary model
+            var aTempProducts = oTempModel.getProperty("/Products") || [];
+            aTempProducts.push(oAddProduct);
+            oTempModel.setProperty("/Products", aTempProducts);
+
+            sap.m.MessageToast.show(sSelectedProduct + " is added");
+
+            // reset value
+            oQuantity.setValue("");
+            // oQuantity.setValueState("Default");
+            this.onCloseFragment(oEvent);
           }
-          // }
         },
 
+        // Validation if there is tick in the table, if so then open ConfirmatDeleteDialog
+        onOpenDelete: function () {
+          var oTable = this.getView().byId("tbProd");
+          var aItems = oTable.getItems();
+          var aToDelete = [];
+
+          // Loop through table items to find selected order
+          aItems.forEach(function (oItem) {
+            var bSelected = oItem.getCells()[0].getSelected();
+            if (bSelected) {
+              aToDelete.push(oItem);
+            }
+          });
+
+          // Validation: Check if any checkbox is ticked
+          if (aToDelete.length === 0) {
+            sap.m.MessageToast.show(
+              "Please select at least one order to delete."
+            );
+          } else {
+            // Open confirmation dialog
+            if (!this.oConfirmationDialog) {
+              this.loadFragment({
+                name: "com.ordermanagement.ordermanagement.fragment.createOrder.ConfirmatDeleteDialog",
+                controller: this,
+              }).then(
+                function (oDialog) {
+                  this.oConfirmationDialog = oDialog;
+                  oDialog.open();
+                }.bind(this)
+              ); // Make sure to bind 'this'
+            } else {
+              this.oConfirmationDialog.open(); // Reuse the dialog
+            }
+          }
+        },
+
+        // Delete ticked cb order from the table
+        onConfirmDeleteOrder: function (oEvent) {
+          var oTable = this.getView().byId("tbProd");
+          var oModel = this.getView().getModel("TempOrders");
+          var aItems = oTable.getItems();
+          var aToDeleteIndexes = [];
+
+          // Loop through table items to find selected orders
+          aItems.forEach(function (oItem, index) {
+            var bSelected = oItem.getCells()[0].getSelected();
+            if (bSelected) {
+              aToDeleteIndexes.push(index);
+            }
+          });
+
+          // Get current product data
+          var aProducts = oModel.getProperty("/Products");
+
+          // Remove selected items by index (reverse order to avoid shifting)
+          aToDeleteIndexes
+            .sort((a, b) => b - a)
+            .forEach(function (iIndex) {
+              aProducts.splice(iIndex, 1);
+            });
+
+          // Update the model with the new data
+          oModel.setProperty("/Products", aProducts);
+
+          this.byId("cbSelectProd").setSelected(false);
+
+          // Show confirmation and close dialog
+          sap.m.MessageToast.show("Selected product/s deleted.");
+          this.onCloseFragment(oEvent);
+
+          // Optional: Uncheck all checkboxes
+          aItems.forEach(function (oItem) {
+            oItem.getCells()[0].setSelected(false);
+          });
+        },
+
+        // Close Fragment Dialog (reusable)
+        onCloseFragment: function (oEvent) {
+          var oSource = oEvent.getSource();
+          var oDialog = oSource.getParent();
+
+          if (oDialog) {
+            oDialog.close();
+          }
+        },
+
+        // Cancel Orders and route to main page
         onCancelPressed: function () {
           var oRouter = this.getOwnerComponent().getRouter();
+
+          var oView = this.getView();
+          var oReceivingPlant = oView.byId("inpReceivingPlant");
+          var oDeliveringPlant = oView.byId("inpDeliveringPlant");
+
+          // reset value state for reuse
+          oReceivingPlant.setValueState("None");
+          oDeliveringPlant.setValueState("None");
+
+          // Route to Order Main Page
           oRouter.navTo("RouteOrderMainPage");
         },
       }

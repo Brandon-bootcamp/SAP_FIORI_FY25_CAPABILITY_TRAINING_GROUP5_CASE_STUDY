@@ -4,11 +4,10 @@
         noDataText="No Product Found"
         title="Create Order"
         search=".onSearchProduct"
-        selectionChange="onSelectProduct"
         searchPlaceholder="Search Product..."
         confirm=".onValueHelpProductName"
         items="{
-            path: '/Orders'
+            path: '/Products'
         }">
         <StandardListItem id="StandardListItemProduct" 
             title="{ProductName}"
