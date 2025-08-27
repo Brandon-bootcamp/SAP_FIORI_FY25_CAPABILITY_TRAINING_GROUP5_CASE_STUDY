@@ -3,17 +3,17 @@
   xmlns:mvc="sap.ui.core.mvc"
   xmlns="sap.m"
   xmlns:core="sap.ui.core">
-<Page id="orderPage" title="{i18n>Order Management}" floatingFooter="true" xmlns="sap.m" xmlns:core="sap.ui.core">
+<Page id="orderPage" title="{i18n>OrderMainPageTitle}" floatingFooter="true" xmlns="sap.m" xmlns:core="sap.ui.core">
   <content>
 
     <!-- 🔍 Filter Panel -->
     <Panel id="filterPanel" headerText="" expandable="false" class="sapUiMediumMarginBottom">
-      <VBox id="filterVBox" justifyContent="Center" alignItems="Center">
-        <HBox id="filterHBox" justifyContent="Center" alignItems="Center">
+      <VBox justifyContent="Center" alignItems="Center">
+        <HBox justifyContent="Center" alignItems="Center">
 
           <!-- Order Number -->
-          <VBox id="orderNumberVBox" class="sapUiSmallMarginEnd">
-            <Label id="orderNumberLabel" text="{i18n>orderNumberLabel}" labelFor="orderNumberInput"/>
+          <VBox class="sapUiSmallMarginEnd">
+            <Label text="{i18n>orderNumberLabel}" labelFor="orderNumberInput"/>
             <Input
               id="orderNumberInput"
               placeholder="{i18n>orderNumberPlaceholder}"
@@ -23,8 +23,8 @@
           </VBox>
 
           <!-- Creation Date -->
-          <VBox id="creationDateVBox" class="sapUiSmallMarginEnd">
-            <Label id="creationDateLabel" text="{i18n>creationDateLabel}" labelFor="creationDateInput"/>
+          <VBox class="sapUiSmallMarginEnd">
+            <Label text="{i18n>creationDateLabel}" labelFor="creationDateInput"/>
             <DatePicker
               id="creationDateInput"
               placeholder="{i18n>creationDatePlaceholder}"
@@ -35,24 +35,24 @@
           </VBox>
 
           <!-- Status -->
-          <VBox id="statusVBox" class="sapUiSmallMarginEnd">
-            <Label id="statusLabel" text="{i18n>statusLabel}" labelFor="statusMultiCombo"/>
+          <VBox class="sapUiSmallMarginEnd">
+            <Label text="{i18n>statusLabel}" labelFor="statusMultiCombo"/>
             <MultiComboBox id="statusMultiCombo" width="220px">
               <items>
-                <core:Item id="statusItemCreated" key="Created" text="{i18n>statusCreated}"/>
-                <core:Item id="statusItemReleased" key="Released" text="{i18n>statusReleased}"/>
-                <core:Item id="statusItemPartiallyCompleted" key="PartiallyCompleted" text="{i18n>statusPartiallyCompleted}"/>
-                <core:Item id="statusItemDelivered" key="Delivered" text="{i18n>statusDelivered}"/>
+                <core:Item key="Created" text="{i18n>statusCreated}"/>
+                <core:Item key="Released" text="{i18n>statusReleased}"/>
+                <core:Item key="Partially Completed" text="{i18n>statusPartiallyCompleted}"/>
+                <core:Item key="Delivered" text="{i18n>statusDelivered}"/>
               </items>
             </MultiComboBox>
           </VBox>
 
           <!-- Action Buttons -->
-          <VBox id="actionButtonsVBox">
-            <Label id="actionSpacerLabel" text=" "/>
-            <HBox id="actionButtonsHBox">
-              <Button id="goButton" text="{i18n>goButton}" press="onFilter"/>
-              <Button id="clearButton" text="{i18n>clearButton}" press="onClear"/>
+          <VBox>
+            <Label text=" "/>
+            <HBox>
+              <Button text="{i18n>goButton}" press="onFilter"/>
+              <Button text="{i18n>clearButton}" press="onClear"/>
             </HBox>
           </VBox>
 
@@ -61,40 +61,39 @@
     </Panel>
 
     <!-- 📋 Orders Panel -->
-    <Panel id="ordersPanel" expandable="false">
-      <VBox id="ordersVBox">
+    <Panel expandable="false">
+      <VBox>
 
         <!-- 🔘 Toolbar -->
-        <Toolbar id="ordersToolbar">
-          <Title id="ordersTitle" text="Orders (0)"/>
-          <ToolbarSpacer id="toolbarSpacer"/>
+        <Toolbar>
+          <Title text="{i18n>ordersTitle}"/>
+          <ToolbarSpacer/>
           <Button id="addOrderButton" icon="sap-icon://add" tooltip="{i18n>addOrderTooltip}" press="onPressCreateOrder"/>
           <Button id="deleteOrderButton" icon="sap-icon://delete" tooltip="{i18n>deleteOrderTooltip}" press="onDeletePress"/>
         </Toolbar>
 
         <!-- 📋 Orders Table -->
-        <Table id="ordersTable" items="{/Orders}" mode="MultiSelect">
+        <Table id="ordersTable" items="{local>/Orders}" mode="MultiSelect">
           <columns>
-            <Column id="orderNumberColumn"><Text id="orderNumberColumnText" text="{i18n>orderNumberLabel}"/></Column>
-            <Column id="creationDateColumn"><Text id="creationDateColumnText" text="{i18n>creationDateLabel}"/></Column>
-            <Column id="receivingPlantColumn"><Text id="receivingPlantColumnText" text="Receiving Plant"/></Column>
-            <Column id="deliveringPlantColumn"><Text id="deliveringPlantColumnText" text="Delivering Plant"/></Column>
-            <Column id="statusColumn"><Text id="statusColumnText" text="{i18n>statusLabel}"/></Column>
+            <Column><Text text="{i18n>orderNumberLabel}"/></Column>
+            <Column><Text text="{i18n>creationDateLabel}"/></Column>
+            <Column><Text text="Receiving Plant"/></Column>
+            <Column><Text text="Delivering Plant"/></Column>
+            <Column><Text text="{i18n>statusLabel}"/></Column>
           </columns>
           <items>
-            <ColumnListItem id="orderRowItem" type="Active" press="onOrderSelect">
+            <ColumnListItem type="Active" press="onOrderSelect">
               <cells>
-                <Text id="orderNumberCell" text="{OrderNumber}"/>
-                <Text id="creationDateCell" text="{path: 'CreationDate', formatter: '.formatDate'}"/>
-                <Text id="receivingPlantCell" text="{ReceivingPlantCode} - {ReceivingPlantDescription}"/>
-                <Text id="deliveringPlantCell" text="{DeliveringPlantCode} - {DeliveringPlantDescription}"/>
+                <Text text="{local>OrderNumber}"/>
+                <Text text="{local>CreationDate}"/>
+                <Text text="{local>ReceivingPlantCode} - {local>ReceivingPlantDescription}"/>
+                <Text text="{local>Products/results/0/DeliveringPlantCode} - {local>Products/results/0/DeliveringPlantDescription}"/>
                 <ObjectStatus
-                  id="orderStatusObject"
-                  text="{Status}"
+                  text="{local>Status}"
                   state="{= 
                     ${Status} === 'Created' ? 'None' : 
                     ${Status} === 'Released' ? 'Warning' : 
-                    ${Status} === 'PartiallyCompleted' ? 'Information' : 
+                    ${Status} === 'Partially Completed' ? 'Information' : 
                     ${Status} === 'Delivered' ? 'Success' : 'None'
                   }"/>
               </cells>

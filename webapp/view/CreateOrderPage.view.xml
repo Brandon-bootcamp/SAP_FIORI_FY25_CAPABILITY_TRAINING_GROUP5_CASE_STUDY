@@ -1,4 +1,4 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ordermanagement.ordermanagement.controller.CreateOrderPage">    
+<mvc:View xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ordermanagement.ordermanagement.controller.CreateOrderPage">    
     <Page id="pageCreateOrder" title="{i18n>pageCreateOrder}" floatingFooter="true" class="headerTitle">
     <!-- Panel: Order Details -->
         <Panel xmlns="sap.m" width="auto" expandable="false" expanded="false" id="panOrderDetails" class="sapUiResponsiveMargin" headerText="Order Detail">
@@ -7,9 +7,9 @@
                     <sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" xmlns:sap.ui.core="sap.ui.core" editable="true" layout="ColumnLayout" id="formOrderDetails" width="100%" >
                         <sap.ui.layout.form:content>
                             <Label text="{i18n>lblReceivingPlant}" id="lblReceivingPlant" required="true"/>
-                            <MultiInput id="inpReceivingPlant" width="70%" showValueHelp="true" value="{ReceivingPlant}" valueHelpRequest=".onReceivingPlant"/>                    
+                            <MultiInput id="inpReceivingPlant" width="70%" showValueHelp="true" valueHelpOnly="true" value="{ReceivingPlant}" valueHelpRequest=".onReceivingPlant"/>                    
                             <Label text="{i18n>lbldeliveringPlant}" id="lblDeliveringPlant" required="true"/>
-                            <MultiInput id="inpDeliveringPlant" width="70%" showValueHelp="true" valueHelpRequest=".onDeliveringPlant"/>
+                            <MultiInput id="inpDeliveringPlant" width="70%" showValueHelp="true" valueHelpOnly="true" valueHelpRequest=".onDeliveringPlant"/>
                         </sap.ui.layout.form:content>
                     </sap.ui.layout.form:SimpleForm>
                 </HBox>
@@ -23,20 +23,20 @@
                     <Title id="ttlProd" text="{i18n>ttlProducts}" class="productTitle"/> <!--No Data Fed, number of products is still undefined-->
                     <ToolbarSpacer id="tsProduct"/>
                     <Button id="btnCreate" icon="sap-icon://add" press="onPressCreate"/>
-                    <Button id="btnDelete" icon="sap-icon://delete" press="onPressDelete"/>
+                    <Button id="btnDelete" icon="sap-icon://delete" press="onOpenDelete"/>
                     </Toolbar>               
             </headerToolbar>
             <content>
-                <Table noDataText="No Data" id="tbProd" items="{/Orders}">
+                <Table noDataText="No Data" id="tbProd" items="{TempOrders>/Products}">
                 <!-- <Table noDataText="No Data" id="tbProd"> -->
                     <items>            
                         <ColumnListItem type="Active" id="colListProd">            
                             <cells>
-                                <CheckBox id="cbSelectAllProd" selected="{Selected}" visible="{= !!${ProductName} }"/>
-                                <Text id="txtProdName" text="{ProductName}"/>
-                                <Text id="txtQuantity" text="{Quantity}"/>
-                                <Text id="txtPricePerQuantity" text="{PricePerQuantity}"/>
-                                <Text id="txtTotalPrice" text="{= ${Quantity} * ${PricePerQuantity}}" visible="{= !!${ProductName} }"/>
+                                <CheckBox id="cbSelectAllProd" selected="{Selected}" visible="{= !!${TempOrders>ProductName} }"/>
+                                <Text id="txtProdName" text="{TempOrders>ProductName}"/>
+                                <Text id="txtQuantity" text="{TempOrders>Quantity}"/>
+                                <Text id="txtPricePerQuantity" text="{TempOrders>PricePerQuantity}"/>
+                                <Text id="txtTotalPrice" text="{= ${TempOrders>Quantity} * ${TempOrders>PricePerQuantity}}" visible="{= !!${TempOrders>ProductName} }"/>
                             </cells>
                         </ColumnListItem>
                     </items>
@@ -70,8 +70,13 @@
                 </Table>
             </content>
         </Panel>
+
+        <!-- Product added placeholder -->
         <Input id="inpSelectedProduct" visible="false"/>
-    <content/>
+        <Input id="inpSelectedProductID" visible="false"/>
+        <Input id="inpPricePerQuantity" visible="false"/>
+        <Input id="inpDeliveringPlantCode" visible="false"/>
+        <Input id="inpRecievingPlantCode" visible="false"/>
     
     <!-- Footer -->
     <footer>

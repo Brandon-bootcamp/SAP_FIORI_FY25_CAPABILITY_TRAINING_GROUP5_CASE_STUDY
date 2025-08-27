@@ -1,60 +1,53 @@
 sap.ui.define([
-  "sap/ui/core/mvc/Controller",
-  "sap/m/MessageToast"
-], (Controller, MessageToast) => {
-  "use strict";
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], (Controller, JSONModel, Filter, FilterOperator) => {
+    "use strict";
 
-  return Controller.extend("com.ordermanagement.ordermanagement.controller.DetailPage", {
+    return Controller.extend("com.ordermanagement.ordermanagement.controller.DetailPage", {
 
-    onInit: function () {
-      const oRouter = this.getOwnerComponent().getRouter();
-      oRouter.getRoute("RouteDetailPage").attachPatternMatched(this._onRouteMatched, this);
-    },
-    
-    _onRouteMatched: function (oEvent) {
-        const oArgs = oEvent.getParameter("arguments");
-        const sOrderNumber = oArgs.orderId; // assuming your route is configured with 'OrderNumber' as a parameter
-        const oModel = this.getView().getModel(); // or this.getOwnerComponent().getModel()
+        onInit: function () {
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.getRoute("RouteDetailPage").attachPatternMatched(this._onObjectMatched, this);
+        },
 
-        oModel.read("/Orders", {
-            filters: [
-                new sap.ui.model.Filter("OrderNumber", sap.ui.model.FilterOperator.EQ, sOrderNumber)
-            ],
+        _onObjectMatched: function (oEvent) {
+            const sOrderNumber = oEvent.getParameter("arguments").orderId;
+            const oModel = this.getView().getModel();
+
+            // Read the specific Order and expand Products
+            oModel.read(`/Orders(${sOrderNumber})`, {
+                urlParameters: {
+                    "$expand": "Products"
+                },
                 success: (oData) => {
-                    const aResults = oData.results;
-                    if (aResults.length > 0) {
-                        const aResult = aResults[0];
-
-                    const oLocalModel = new sap.ui.model.json.JSONModel({
-                        Order: aResult // wrap the single order object
+                    const oLocalModel = new JSONModel({
+                        Order: oData,
+                        Products: oData.Products || []
                     });
-
-                        // Set it to the view
                     this.getView().setModel(oLocalModel, "localOrders");
                     console.log(oLocalModel);
-
-                    } else {
-                        console.warn("No order found with OrderNumber:", sOrderNumber);
-                    }
                 },
-                
                 error: (err) => {
-                    console.error("Read failed:", err);
+                    console.error("Failed to fetch order details:", err);
                 }
-        });
-    },
+            });
+        },
 
+        onEdit: function (oEvent) {
+            const selectedOrder = oEvent.getSource().getBindingContext("localOrders").getObject();
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo("RouteEditPage", {
+                orderId: selectedOrder.OrderNumber
+            });
+        },
 
+        onCancel: function () {
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo("RouteOrderMainPage");
+        }
 
-    onEdit: function () {
-      const oRouter = this.getOwnerComponent().getRouter();
-      oRouter.navTo("RouteEditPage");
-    },
-
-    onCancel: function () {
-      const oRouter = this.getOwnerComponent().getRouter();
-      oRouter.navTo("RouteOrderMainPage");
-    },
-
-  });
+    });
 });
