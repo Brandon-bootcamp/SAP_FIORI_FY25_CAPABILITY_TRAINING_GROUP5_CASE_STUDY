@@ -16,16 +16,16 @@
                             <Input id="inpOrderNumber" value="{OrderNumber}" editable="false" width="50%"/>
 
                             <Label id="lblCreatedOn" text="Created On"/>
-                            <Input id="inpCreatedOn" value="{CreatedOn}" editable="false" width="50%"/>
+                            <Input id="inpCreatedOn" value="{CreationDate}" editable="false" width="50%"/>
 
                             <Label id="lbl_ReceivingPlant" text="Receiving Plant"/>
-                            <Input id="inp_ReceivingPlant" value="{ReceivingPlant}" editable="false" width="50%"/>
+                            <Input id="inp_ReceivingPlant" value="{ReceivingPlantCode} - {ReceivingPlantDescription}" editable="false" width="50%"/>
 
                             <Label id="lbl_DeliveringPlant" text="Delivering Plant"/>
-                            <Input id="inp_DeliveringPlant" value="{DeliveringPlant}" editable="false" width="50%"/>
+                            <Input id="inp_DeliveringPlant" value="{DeliveringPlantCode} - {DeliveringPlantDescription}" editable="false" width="50%"/>
 
                             <Label id="lblStatus" text="Status"/>
-                            <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%">
+                            <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%" selectedKey="{Status}">
                                 <items>
                                     <core:Item id="statusCreated" text="Created" key="Created"/>
                                     <core:Item id="statusReleased" text="Released" key="Released"/>
@@ -50,7 +50,7 @@
                 </headerToolbar>
 
                 <content>
-                    <Table id="productTable" items="{/products}" noDataText="Drop column list items here and columns in the area above">
+                    <Table id="productTable" items="{Products}" noDataText="No data">
                         <columns>
                             <Column id="colCheckBox" width="5rem">
                                 <header>
