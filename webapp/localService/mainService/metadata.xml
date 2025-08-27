@@ -5,8 +5,8 @@
             <EntityType Name="Order">
                 <!-- Orders -->
                 <Key>
-                    <PropertyRef Name="OrderNumber" />
-                    <PropertyRef Name="ProductID" />
+                    <PropertyRef Name="OrderNumber"/>
+                    <PropertyRef Name="ProductID"/>
                 </Key>
                 <Property Name="OrderNumber" Type="Edm.Int32" Nullable="false" sap:label="Order Number" />
                 <Property Name="CreationDate" Type="Edm.DateTime" Nullable="false" sap:label="Creation Date" />
