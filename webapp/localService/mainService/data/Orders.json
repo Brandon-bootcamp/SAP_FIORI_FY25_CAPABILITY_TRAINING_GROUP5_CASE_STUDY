@@ -23,7 +23,21 @@
     "ReceivingPlantDescription": "Thailand",
     "DeliveringPlantCode": 202,
     "DeliveringPlantDescription": "Malaysia",
-    "Status": "Released"
+    "Status": "Released",
+    "Products": [
+      {
+        "ProductID": 6001,
+        "ProductName": "Refrigerator",
+        "Quantity": 20,
+        "PricePerQuantity": 15000
+      },
+      {
+        "ProductID": 6005,
+        "ProductName": "Air Conditioner",
+        "Quantity": 25,
+        "PricePerQuantity": 22000
+      }
+    ]
   },
   {
     "OrderNumber": 1002,
@@ -32,7 +46,15 @@
     "ReceivingPlantDescription": "Indonesia",
     "DeliveringPlantCode": 203,
     "DeliveringPlantDescription": "Singapore",
-    "Status": "Partially Completed"
+    "Status": "Partially Completed",
+    "Products": [
+      {
+        "ProductID": 6004,
+        "ProductName": "Electric Fan",
+        "Quantity": 100,
+        "PricePerQuantity": 1800
+      }
+    ]
   },
   {
     "OrderNumber": 1003,
@@ -41,7 +63,27 @@
     "ReceivingPlantDescription": "Japan",
     "DeliveringPlantCode": 204,
     "DeliveringPlantDescription": "South Korea",
-    "Status": "Delivered"
+    "Status": "Delivered",
+    "Products": [
+      {
+        "ProductID": 6002,
+        "ProductName": "Microwave Oven",
+        "Quantity": 50,
+        "PricePerQuantity": 4500
+      },
+      {
+        "ProductID": 6003,
+        "ProductName": "Washing Machine",
+        "Quantity": 30,
+        "PricePerQuantity": 12000
+      },
+      {
+        "ProductID": 6004,
+        "ProductName": "Electric Fan",
+        "Quantity": 100,
+        "PricePerQuantity": 1800
+      }
+    ]
   },
   {
     "OrderNumber": 1004,
@@ -50,6 +92,14 @@
     "ReceivingPlantDescription": "China",
     "DeliveringPlantCode": 205,
     "DeliveringPlantDescription": "India",
-    "Status": "Created"
+    "Status": "Created",
+    "Products": [
+      {
+        "ProductID": 6003,
+        "ProductName": "Washing Machine",
+        "Quantity": 30,
+        "PricePerQuantity": 12000
+      }
+    ]
   }
 ]

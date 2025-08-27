@@ -2,30 +2,40 @@
   {
     "ProductID": 6001,
     "ProductName": "Refrigerator",
+    "DeliveringPlantCode": 101,
+    "DeliveringPlantDescription": "Vietnam",
     "Quantity": 20,
     "PricePerQuantity": 15000
   },
   {
     "ProductID": 6002,
     "ProductName": "Microwave Oven",
+    "DeliveringPlantCode": 102,
+    "DeliveringPlantDescription": "Philippines",
     "Quantity": 50,
     "PricePerQuantity": 4500
   },
   {
     "ProductID": 6003,
     "ProductName": "Washing Machine",
+    "DeliveringPlantCode": 103,
+    "DeliveringPlantDescription": "Thailand",
     "Quantity": 30,
     "PricePerQuantity": 12000
   },
   {
     "ProductID": 6004,
     "ProductName": "Electric Fan",
+    "DeliveringPlantCode": 104,
+    "DeliveringPlantDescription": "USA",
     "Quantity": 100,
     "PricePerQuantity": 1800
   },
   {
     "ProductID": 6005,
     "ProductName": "Air Conditioner",
+    "DeliveringPlantCode": 105,
+    "DeliveringPlantDescription": "Japan",
     "Quantity": 25,
     "PricePerQuantity": 22000
   }

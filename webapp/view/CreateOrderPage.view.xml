@@ -70,11 +70,12 @@
                 </Table>
             </content>
         </Panel>
+
+        <!-- Product added placeholder -->
         <Input id="inpSelectedProduct" visible="false"/>
-        <!-- <List id="listEmployee" items="{/Orders}">
-            <StandardListItem id="listItem" title="{Products>ProductName} - {OrderID}"/>
-        </List>
-    <content/> -->
+        <Input id="inpSelectedProductID" visible="false"/>
+        <Input id="inpPricePerQuantity" visible="false"/>
+        <Input id="inpDeliveringPlantCode" visible="false"/>
     
     <!-- Footer -->
     <footer>

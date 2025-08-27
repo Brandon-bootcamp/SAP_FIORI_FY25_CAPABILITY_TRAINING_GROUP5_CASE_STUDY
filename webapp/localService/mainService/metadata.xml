@@ -5,9 +5,9 @@
             <!-- Order Entity -->
             <EntityType Name="Order">
                 <Key>
-                    <PropertyRef Name="OrderID" />
+                    <PropertyRef Name="OrderNumber" />
                 </Key>
-                <Property Name="OrderID" Type="Edm.String" Nullable="false" />
+                <Property Name="OrderNumber" Type="Edm.Int32" Nullable="false" />
                 <Property Name="CreationDate" Type="Edm.DateTime" Nullable="false" />
                 <Property Name="ReceivingPlantCode" Type="Edm.Int32" />
                 <Property Name="ReceivingPlantDescription" Type="Edm.String" />
@@ -26,6 +26,8 @@
                 <Property Name="ProductName" Type="Edm.String" />
                 <Property Name="Quantity" Type="Edm.Int32" />
                 <Property Name="PricePerQuantity" Type="Edm.Decimal" />
+                <Property Name="DeliveringPlantCode" Type="Edm.Int32" />
+                <Property Name="DeliveringPlantDescription" Type="Edm.String" />
             </EntityType>
 
             <!-- Association between Order and Product -->

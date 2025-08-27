@@ -8,7 +8,7 @@
         confirm=".onValueHelpDeliveringPlantDialogClose"
         cancel=".onValueHelpDeliveringPlantDialogClose"
         items="{
-            path: '/Orders'
+            path: '/Products'
         }">
         <StandardListItem id="StandardListItemDeliveringPlant" 
             title="{DeliveringPlantDescription}"

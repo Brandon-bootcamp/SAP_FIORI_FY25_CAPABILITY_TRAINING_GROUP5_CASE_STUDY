@@ -3,7 +3,7 @@
     <Dialog id="idConfirm" title="Confirmation">
 
         <form:SimpleForm id="sformConfirm">
-            <Text id="txtConfirmation" text="Are you sure you want to delete?" />
+            <Text id="txtConfirmation" text="Are you sure you want to delete items?" />
         </form:SimpleForm>
 
         <beginButton>
