@@ -3,8 +3,11 @@
         <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="OrderModel">
             <!-- Entity Definition -->
             <EntityType Name="Order">
-
                 <!-- Orders -->
+                <Key>
+                    <PropertyRef Name="OrderNumber" />
+                    <PropertyRef Name="ProductID" />
+                </Key>
                 <Property Name="OrderNumber" Type="Edm.Int32" Nullable="false" sap:label="Order Number" />
                 <Property Name="CreationDate" Type="Edm.DateTime" Nullable="false" sap:label="Creation Date" />
                 <Property Name="ReceivingPlantCode" Type="Edm.Int32" Nullable="false" sap:label="Receiving Plant Code" />
@@ -12,16 +15,13 @@
                 <Property Name="DeliveringPlantCode" Type="Edm.Int32" Nullable="false" sap:label="Delivering Plant Code" />
                 <Property Name="DeliveringPlantDescription" Type="Edm.String" Nullable="false" sap:label="Delivering Plant Description" />
                 <Property Name="Status" Type="Edm.String" Nullable="false" sap:label="Order Status" />
-
+ 
                 <!-- Product -->
-                 <Key>
-                    <PropertyRef Name="ProductID" />
-                </Key>
                 <Property Name="ProductID" Type="Edm.Int32" Nullable="false" sap:label="Product ID" />
                 <Property Name="ProductName" Type="Edm.String" Nullable="false" sap:label="Product Name" />
                 <Property Name="Quantity" Type="Edm.Int32" Nullable="false" sap:label="Quantity" />
                 <Property Name="PricePerQuantity" Type="Edm.Int32" Nullable="false" sap:label="Price Per Quantity" />
-                </EntityType>
+            </EntityType>
  
             <!-- Entity Container -->
             <EntityContainer Name="OrderEntities" m:IsDefaultEntityContainer="true">
@@ -30,4 +30,3 @@
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>
- 

@@ -112,7 +112,7 @@
         },
         {
           "name": "RouteEditPage",
-          "pattern": "EditPage",
+          "pattern": "EditPage/{orderId}",
           "target": [
             "TargetEditPage"
           ]
