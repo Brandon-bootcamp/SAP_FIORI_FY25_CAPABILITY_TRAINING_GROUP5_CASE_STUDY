@@ -1,5 +1,5 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" controllerName="com.ordermanagement.ordermanagement.controller.EditPage">
-    <Page id="editPage" floatingFooter="true" title="{i18n>title}">
+    <Page id="EditPage" floatingFooter="true" title="{i18n>title}">
         <content>
 
             <!-- Order Details Panel -->
@@ -16,16 +16,16 @@
                             <Input id="inpOrderNumber" value="{OrderNumber}" editable="false" width="50%"/>
 
                             <Label id="lblCreatedOn" text="Created On"/>
-                            <Input id="inpCreatedOn" value="{CreatedOn}" editable="false" width="50%"/>
+                            <Input id="inpCreatedOn" value="{CreationDate}" editable="false" width="50%"/>
 
-                            <Label id="receivingPlantLabel" text="Receiving Plant"/>
-                            <Input id="ReceivingPlantInput" value="{ReceivingPlant}" editable="false" width="50%"/>
+                            <Label id="lbl_ReceivingPlant" text="Receiving Plant"/>
+                            <Input id="inp_ReceivingPlant" value="{ReceivingPlantCode} - {ReceivingPlantDescription}" editable="false" width="50%"/>
 
-                            <Label id="DeliveringPlantLabel" text="Delivering Plant"/>
-                            <Input id="DeliveringPlantInput" value="{DeliveringPlant}" editable="false" width="50%"/>
+                            <Label id="lbl_DeliveringPlant" text="Delivering Plant"/>
+                            <Input id="inp_DeliveringPlant" value="{DeliveringPlantCode} - {DeliveringPlantDescription}" editable="false" width="50%"/>
 
                             <Label id="lblStatus" text="Status"/>
-                            <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%">
+                            <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%" selectedKey="{Status}">
                                 <items>
                                     <core:Item id="statusCreated" text="Created" key="Created"/>
                                     <core:Item id="statusReleased" text="Released" key="Released"/>
@@ -50,7 +50,7 @@
                 </headerToolbar>
 
                 <content>
-                    <Table id="productTable" items="{/products}" noDataText="Drop column list items here and columns in the area above">
+                    <Table id="productTable" items="{Products}" noDataText="No data">
                         <columns>
                             <Column id="colCheckBox" width="5rem">
                                 <header>
@@ -59,33 +59,33 @@
                             </Column>
                             <Column id="colProductName">
                                 <header>
-                                    <Text id="productNameLabel" text="Product Name"/>
+                                    <Text id="lblProductName" text="Product Name"/>
                                 </header>
                             </Column>
                             <Column id="colQuantity">
                                 <header>
-                                    <Label id="QuantityLabel" text="Quantity"/>
+                                    <Label id="lbl_Quantity" text="Quantity"/>
                                 </header>
                             </Column>
                             <Column id="colPricePerQuantity">
                                 <header>
-                                    <Label id="pricePerQuantityLabel" text="Price Per Quantity"/>
+                                    <Label id="lblPricePerQuantity" text="Price Per Quantity"/>
                                 </header>
                             </Column>
-                            <Column id="colmTotalPrice">
+                            <Column id="col_TotalPrice">
                                 <header>
-                                    <Label id="totalPriceLabel" text="Total Price"/>
+                                    <Label id="lbl_TotalPrice" text="Total Price"/>
                                 </header>
                             </Column>
                         </columns>
                         <items>
-                            <ColumnListItem id="prodListItem" type="Active">
+                            <ColumnListItem id="_productListItem" type="Active">
                                 <cells>
                                     <CheckBox id="chkSelectProduct" selected="{selected}" select="onSelectProduct"/>
-                                    <Text id="prodNameText" text="{ProductName}"/>
-                                    <Text id="qauntityText" text="{Quantity}"/>
-                                    <Text id="pricePerQuantityText" text="{PricePerQuantity}"/>
-                                    <Text id="totalPriceText" text="{TotalPrice}"/>
+                                    <Text id="txtProductName" text="{ProductName}"/>
+                                    <Text id="_txtQuantity" text="{Quantity}"/>
+                                    <Text id="_txtPricePerQuantity" text="{PricePerQuantity}"/>
+                                    <Text id="_txtTotalPrice" text="{TotalPrice}"/>
                                 </cells>
                             </ColumnListItem>
                         </items>
@@ -96,10 +96,10 @@
 
         <!-- Footer Toolbar -->
         <footer>
-            <OverflowToolbar id="toolbarFooter">
+            <OverflowToolbar id="_footerToolbar">
                 <ToolbarSpacer id="footerToolbarSpacer"/>
-                <Button id="buttonSave" type="Emphasized" text="Save" press="onSave"/>
-                <Button id="buttonCancel" type="Reject" text="Cancel" press="onCancel"/>
+                <Button id="_btnSave" type="Emphasized" text="Save" press="onSave"/>
+                <Button id="_btnCancel" type="Reject" text="Cancel" press="onCancel"/>
             </OverflowToolbar>
         </footer>
     </Page>
