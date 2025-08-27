@@ -34,7 +34,7 @@
                 <Text id="labelPricePerQuantity" text="{i18n>Price Per Quantity}"/>
               </Column >
               <Column id="columnTotalPrice"> 
-                <Text id="labelTotalPrice" text="{i18n>Total Price}"/>
+                <Text id="labelTotalPrice" text="{i18n>TotalPrice}"/>
               </Column> 
             </columns> 
             <items> 
@@ -43,7 +43,7 @@
                   <Text id="textProductName" text="{ProductName}" />
                   <Text id="textQuantity" text="{Quantity}" />
                   <Text id="textPrice" text="{PricePerQuantity}" />
-                  <Text id="textTotal" text="{Total Price}" />
+                  <Text id="textTotal" text="{= ${Quantity} * ${PricePerQuantity} }" />
                 </cells> 
               </ColumnListItem> 
             </items> 
