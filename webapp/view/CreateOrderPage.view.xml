@@ -76,6 +76,7 @@
         <Input id="inpSelectedProductID" visible="false"/>
         <Input id="inpPricePerQuantity" visible="false"/>
         <Input id="inpDeliveringPlantCode" visible="false"/>
+        <Input id="inpRecievingPlantCode" visible="false"/>
     
     <!-- Footer -->
     <footer>

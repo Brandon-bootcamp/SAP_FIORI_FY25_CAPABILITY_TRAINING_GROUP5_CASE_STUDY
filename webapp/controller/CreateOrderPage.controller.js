@@ -450,10 +450,10 @@ sap.ui.define(
           // var aTempProducts = oTempModel.getProperty("/Products");
 
           // Get productname and id,
-          var oSelectedProductName = this.byId("inpSelectedProduct").getValue();
-          // var sDeliveringPlantCode = oView
-          //   .byId("inpDeliveringPlantCode")
-          //   .getValue();
+          // var oSelectedProductName = this.byId("inpSelectedProduct").getValue();
+          var sDeliveringPlantCode = oView
+            .byId("inpDeliveringPlantCode")
+            .getValue();
 
           // Get date today and format it
           var oDate = new Date();
@@ -467,9 +467,8 @@ sap.ui.define(
           // };
 
           var oDataOrder = {
-            ReceivingPlantCode: oSelectedProductName,
             ReceivingPlantDescription: sReceivingPlant,
-
+            DeliveringPlantCode: sDeliveringPlantCode,
             DeliveringPlantDescription: sDeliveringPlant,
             CreationDate: sFormattedDate,
             Status: "Created",
