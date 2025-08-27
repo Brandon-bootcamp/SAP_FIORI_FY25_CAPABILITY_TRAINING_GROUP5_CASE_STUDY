@@ -1,4 +1,4 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ordermanagement.ordermanagement.controller.CreateOrderPage">    
+<mvc:View xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ordermanagement.ordermanagement.controller.CreateOrderPage">    
     <Page id="pageCreateOrder" title="{i18n>pageCreateOrder}" floatingFooter="true" class="headerTitle">
     <!-- Panel: Order Details -->
         <Panel xmlns="sap.m" width="auto" expandable="false" expanded="false" id="panOrderDetails" class="sapUiResponsiveMargin" headerText="Order Detail">
@@ -71,7 +71,10 @@
             </content>
         </Panel>
         <Input id="inpSelectedProduct" visible="false"/>
-    <content/>
+        <!-- <List id="listEmployee" items="{/Orders}">
+            <StandardListItem id="listItem" title="{Products>ProductName} - {OrderID}"/>
+        </List>
+    <content/> -->
     
     <!-- Footer -->
     <footer>

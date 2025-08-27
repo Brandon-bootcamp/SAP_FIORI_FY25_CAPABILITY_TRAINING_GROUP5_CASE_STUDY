@@ -1,47 +1,55 @@
 [
-    {
-        "OrderID": 1000,
-        "CreationDate": "/Date(1680000000000)/",
-        "ReceivingPlantCode": 101,
-        "ReceivingPlantDescription": "Philippines",
-        "DeliveringPlantCode": 201,
-        "DeliveringPlantDescription": "Vietnam",
-        "Status": "Created"
-    },
-    {
-        "OrderID": 1001,
-        "CreationDate": "/Date(1680500000000)/",
-        "ReceivingPlantCode": 102,
-        "ReceivingPlantDescription": "Thailand",
-        "DeliveringPlantCode": 202,
-        "DeliveringPlantDescription": "Malaysia",
-        "Status": "Released"
-    },
-    {
-        "OrderID": 1002,
-        "CreationDate": "/Date(1681000000000)/",
-        "ReceivingPlantCode": 103,
-        "ReceivingPlantDescription": "Indonesia",
-        "DeliveringPlantCode": 203,
-        "DeliveringPlantDescription": "Singapore",
-        "Status": "Partially Completed"
-    },
-    {
-        "OrderID": 1003,
-        "CreationDate": "/Date(1681500000000)/",
-        "ReceivingPlantCode": 104,
-        "ReceivingPlantDescription": "Japan",
-        "DeliveringPlantCode": 204,
-        "DeliveringPlantDescription": "South Korea",
-        "Status": "Delivered"
-    },
-    {
-        "OrderID": 1004,
-        "CreationDate": "/Date(1682000000000)/",
-        "ReceivingPlantCode": 105,
-        "ReceivingPlantDescription": "China",
-        "DeliveringPlantCode": 205,
-        "DeliveringPlantDescription": "India",
-        "Status": "Created"
-    }
+  {
+    "OrderNumber": 1000,
+    "CreationDate": "/Date(1680000000000)/",
+    "ReceivingPlantCode": 101,
+    "ReceivingPlantDescription": "Philippines",
+    "DeliveringPlantCode": 201,
+    "DeliveringPlantDescription": "Vietnam",
+    "Status": "Created",
+    "Products": [
+      {
+        "ProductID": 6001,
+        "ProductName": "Refrigerator",
+        "Quantity": 20,
+        "PricePerQuantity": 15000
+      }
+    ]
+  },
+  {
+    "OrderNumber": 1001,
+    "CreationDate": "/Date(1680500000000)/",
+    "ReceivingPlantCode": 102,
+    "ReceivingPlantDescription": "Thailand",
+    "DeliveringPlantCode": 202,
+    "DeliveringPlantDescription": "Malaysia",
+    "Status": "Released"
+  },
+  {
+    "OrderNumber": 1002,
+    "CreationDate": "/Date(1681000000000)/",
+    "ReceivingPlantCode": 103,
+    "ReceivingPlantDescription": "Indonesia",
+    "DeliveringPlantCode": 203,
+    "DeliveringPlantDescription": "Singapore",
+    "Status": "Partially Completed"
+  },
+  {
+    "OrderNumber": 1003,
+    "CreationDate": "/Date(1681500000000)/",
+    "ReceivingPlantCode": 104,
+    "ReceivingPlantDescription": "Japan",
+    "DeliveringPlantCode": 204,
+    "DeliveringPlantDescription": "South Korea",
+    "Status": "Delivered"
+  },
+  {
+    "OrderNumber": 1004,
+    "CreationDate": "/Date(1682000000000)/",
+    "ReceivingPlantCode": 105,
+    "ReceivingPlantDescription": "China",
+    "DeliveringPlantCode": 205,
+    "DeliveringPlantDescription": "India",
+    "Status": "Created"
+  }
 ]

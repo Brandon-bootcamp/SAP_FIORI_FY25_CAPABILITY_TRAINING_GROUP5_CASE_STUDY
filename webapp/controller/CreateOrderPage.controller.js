@@ -11,18 +11,7 @@ sap.ui.define(
           // Real time total number of items of the Product table
           var oTable = this.byId("tbProd");
           oTable.attachUpdateFinished(this.updateProductTitle.bind(this));
-
-          // temp data for added products
-          // var oModel = new JSONModel({
-          //   Products: [],
-          // });
-          // this.getView().setModel(oModel);
         },
-
-        // _initModel: function () {
-        //   var oProductHolderModel = new JSONModel("/model/ProductHolder.json");
-        //   this.getView().setModel(oProductHolderModel, "ProductsHolder");
-        // },
 
         // Get table length
         updateProductTitle: function () {
@@ -113,42 +102,6 @@ sap.ui.define(
           });
         },
 
-        //Before saving, checks input is valid/blank
-        onSavePressed: function () {
-          var oReceivingPlantInput = this.byId("inpReceivingPlant");
-          var oDeliveringPlantInput = this.byId("inpDeliveringPlant");
-          var sReceivingPlant = oReceivingPlantInput.getValue();
-          var sDeliveringPlant = oDeliveringPlantInput.getValue();
-          var bValid = true;
-
-          if (!sReceivingPlant) {
-            oReceivingPlantInput.setValueState("Error");
-            oReceivingPlantInput.setValueStateText(
-              "Receiving Plant is required."
-            );
-            bValid = false;
-          } else {
-            oReceivingPlantInput.setValueState("None");
-          }
-
-          if (!sDeliveringPlant) {
-            oDeliveringPlantInput.setValueState("Error");
-            oDeliveringPlantInput.setValueStateText(
-              "Delivering Plant is required."
-            );
-            bValid = false;
-          } else {
-            oDeliveringPlantInput.setValueState("None");
-          }
-
-          if (!bValid) {
-            MessageBox.error(
-              "Please select both Receiving and Delivering Plants."
-            );
-            return;
-          }
-        },
-
         // Search filter for ReceivingPlant Dialog
         onSearchReceivingPlant: function (oEvent) {
           var sValue = oEvent.getParameter("value");
@@ -223,7 +176,6 @@ sap.ui.define(
             oInput.setValue(sTitle);
             // var oProductSelected = oView.byId("lblProductSelected");
             // oProductSelected.setValue(sTitle);
-
           }
         },
 
@@ -389,6 +341,112 @@ sap.ui.define(
           }
         },
 
+        //Before saving, checks input is valid/blank
+        onSavePressed: function () {
+          var oReceivingPlantInput = this.byId("inpReceivingPlant");
+          var oDeliveringPlantInput = this.byId("inpDeliveringPlant");
+          var sReceivingPlant = oReceivingPlantInput.getValue();
+          var sDeliveringPlant = oDeliveringPlantInput.getValue();
+          var bValid = true;
+
+          //  Get the temporary products from the model
+          var oView = this.getView();
+          var oTempModel = oView.getModel("TempOrders");
+          var aTempProducts = oTempModel.getProperty("/Products") || [];
+
+          if (!sReceivingPlant) {
+            oReceivingPlantInput.setValueState("Error");
+            oReceivingPlantInput.setValueStateText(
+              "Receiving Plant is required."
+            );
+            bValid = false;
+          } else {
+            oReceivingPlantInput.setValueState("None");
+          }
+
+          if (!sDeliveringPlant) {
+            oDeliveringPlantInput.setValueState("Error");
+            oDeliveringPlantInput.setValueStateText(
+              "Delivering Plant is required."
+            );
+            bValid = false;
+          } else {
+            oDeliveringPlantInput.setValueState("None");
+          }
+
+          // if (!bValid || aTempProducts.length === 0) {
+          if (!bValid || aTempProducts === 0) {
+            MessageBox.error(
+              "Please select both Receiving and Delivering Plants."
+            );
+            return;
+          } else {
+            var oModelOrders = this.getOwnerComponent().getModel();
+            // var oModelProducts = this.getOwnerComponent.getModel("Products");
+            // var aTempProducts = oTempModel.getProperty("/Products");
+
+            // Get productname, Receiving and Delivering Plant
+            var oSelectedProduct = this.byId("inpSelectedProduct").getValue();
+
+            // Get date today and format it
+            var oDate = new Date();
+            var iTime = oDate.getTime();
+            var sFormattedDate = "/Date(" + iTime + ")/";
+
+            // var oDataProducts = {
+            //   ProductName: oSelectedProduct,
+            //   Quantity: 231,
+            //   PricePerQuantity: 123,
+            // };
+
+            var oDataOrder = {
+              ReceivingPlantCode: oSelectedProduct,
+              ReceivingPlantDescription: sReceivingPlant,
+              DeliveringPlantDescription: sDeliveringPlant,
+              CreationDate: sFormattedDate,
+              Status: "Created",
+              Products: aTempProducts,
+            };
+
+            oModelOrders.create("/Orders", oDataOrder, {
+              success: function (data) {
+                sap.m.MessageToast.show("Order has been added");
+
+                // var oModel = new sap.ui.model.json.JSONModel();
+                // oModel.loadData("localService/data/Orders.json"); // false = synchronous
+
+                // // Log the entire data
+                // console.log("Orders Data:", oModel);
+              },
+              error: function (data) {
+                console.log("Something went wrong");
+              },
+            });
+
+            var oRouter = this.getOwnerComponent().getRouter();
+
+            var oView = this.getView();
+            var oReceivingPlant = oView.byId("inpReceivingPlant");
+            var oDeliveringPlant = oView.byId("inpDeliveringPlant");
+
+            // reset value state for reuse
+            oReceivingPlant.setValueState("None");
+            oDeliveringPlant.setValueState("None");
+            oReceivingPlant.setValue("");
+            oDeliveringPlant.setValue("");
+
+            // Clear temporary orders data when cancel order
+            var oTempModel = oView.getModel("TempOrders");
+            if (oTempModel) {
+              oTempModel.setProperty("/Products", []);
+            }
+
+            var oRouter = this.getOwnerComponent().getRouter();
+            // Route to Order Main Page when saved
+            oRouter.navTo("RouteOrderMainPage");
+          }
+        },
+
         // Cancel Orders and route to main page
         onCancelPressed: function () {
           var oRouter = this.getOwnerComponent().getRouter();
@@ -400,6 +458,14 @@ sap.ui.define(
           // reset value state for reuse
           oReceivingPlant.setValueState("None");
           oDeliveringPlant.setValueState("None");
+          oReceivingPlant.setValue("");
+          oDeliveringPlant.setValue("");
+
+          // Clear temporary orders data when cancel order
+          var oTempModel = oView.getModel("TempOrders");
+          if (oTempModel) {
+            oTempModel.setProperty("/Products", []);
+          }
 
           // Route to Order Main Page
           oRouter.navTo("RouteOrderMainPage");
