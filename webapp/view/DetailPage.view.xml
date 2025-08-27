@@ -7,26 +7,26 @@
         <content>
           <sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" editable="true" layout="ColumnLayout" columnsL="1" columnsM="1" columnsXL="1" width="100%" id="form0">
             <Label id="labelOrderNumber" text="{i18n>Order Number}" />
-            <Text id="textOrderNumber" text="{OrderNumber}" />
+            <Text id="textOrderNumber" text="{localOrders>/Order/OrderNumber}" />
 
             <Label id="labelCreatedOn" text="{i18n>Created On}" />
-            <Text id="textCreatedOn" text="{CreatedOn}" />
+            <Text id="textCreatedOn" text="{localOrders>/Order/CreationDate}" />
 
             <Label id="labelReceivingPlant" text="{i18n>Receiving Plant}" />
-            <Text id="textReceivingPlant" text="{ReceivingPlant}" />
+            <Text id="textReceivingPlant" text="{localOrders>/Order/ReceivingPlantDescription}" />
 
             <Label id="labelDeliveringPlant" text="{i18n>Delivering Plant}" />
-            <Text id="textDeliveringPlant" text="{DeliveringPlant}" />
+            <Text id="textDeliveringPlant" text="{localOrders>/Order/DeliveringPlantDescription}" />
 
             <Label id="labelStatus" text="{i18n>Status}" />
-            <Text id="textStatus" text="{Status}" />
+            <Text id="textStatus" text="{localOrders>/Order/Status}" />
           </sap.ui.layout.form:SimpleForm>
         </content>
       </Panel>
 
       <Panel headerText="{i18n>Product}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel1">
         <content>
-          <Table id="table0" items="{Products}">
+          <Table id="table0" items="{localOrders>/Order/Products}">
             <columns>
               <Column id="columnProductName">
                 <Text id="labelProductName" text="{i18n>Product Name}" />
@@ -44,10 +44,10 @@
             <items>
               <ColumnListItem id="productListItem">
                 <cells>
-                  <Text id="textProductName" text="{ProductName}" />
-                  <Text id="textQuantity" text="{Quantity}" />
-                  <Text id="textPrice" text="{Price}" />
-                  <Text id="textTotal" text="{Total}" />
+                  <Text id="textProductName" text="{localOrders>ProductName}" />
+                  <Text id="textQuantity" text="{localOrders>Quantity}" />
+                  <Text id="textPrice" text="{localOrders>PricePerQuantity}" />
+                  <Text id="textTotal" text="{localOrders>Total}" />
                 </cells>
               </ColumnListItem>
             </items>
@@ -61,6 +61,7 @@
         <ToolbarSpacer id="footerSpacer" />
         <Button id="Edit" text="{i18n>Edit}" tooltip="{i18n>edit}" press="onEdit" />
         <Button id="Cancel" text="{i18n>Cancel}" tooltip="{i18n>cancel}" press="onCancel" />
+
       </OverflowToolbar>
     </footer>
     
