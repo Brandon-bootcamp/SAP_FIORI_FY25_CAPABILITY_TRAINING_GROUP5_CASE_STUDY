@@ -7,12 +7,12 @@
             </Select>
             <Label id="_IDGenLabel1" text="Quantity" labelFor="quantityInput"/>
             <Input id="_IDGenInput" value="{dialog>/quantity}" type="Number" placeholder="Enter quantity" required="true" liveChange="onQuantityChange"/>
-        </VBox>
-        <endButton>
-           <Button id="_IDGenButton" text="Add" press="onConfirmAddProduct"  />
-        </endButton>
+        </VBox>        
         <beginButton>
             <Button id="_IDGenButton1" text="Cancel"  press="onCancelAddProduct" />
         </beginButton>
+        <endButton>
+           <Button id="_IDGenButton" text="Add" press="onConfirmAddProduct"  />
+        </endButton>
     </Dialog>
 </core:FragmentDefinition>
