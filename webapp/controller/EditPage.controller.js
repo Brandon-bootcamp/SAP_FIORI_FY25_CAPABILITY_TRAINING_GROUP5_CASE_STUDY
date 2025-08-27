@@ -14,26 +14,26 @@ sap.ui.define([
 
         },
 
-_onObjectMatched: function (oEvent) {
-    var sOrderNumber = oEvent.getParameter("arguments").orderId;
-    var sPath = "/Orders(" + sOrderNumber + ")";
-    this.getView().bindElement({ path: sPath });
+        _onObjectMatched: function (oEvent) {
+            var sOrderNumber = oEvent.getParameter("arguments").orderId;
+            var sPath = "/Orders(" + sOrderNumber + ")";
+            this.getView().bindElement({ path: sPath });
 
-    // Example: filter Products from backend or dataset
-    var oModel = this.getView().getModel();
-    var aAllOrders = oModel.getProperty("/Orders") || [];
-    var aProducts = aAllOrders
-          .filter(o => o.OrderNumber === parseInt(sOrderNumber))
-          .map(o => ({
-              ProductName: o.ProductName,
-              Quantity: o.Quantity,
-              PricePerQuantity: o.PricePerQuantity,
-              TotalPrice: o.Quantity * o.PricePerQuantity,
-              selected: false
-          }));
-    oModel.setProperty("/products", aProducts);
-    console.log("Products set for order", sOrderNumber, aProducts);
-},
+            // Example: filter Products from backend or dataset
+            var oModel = this.getView().getModel();
+            var aAllOrders = oModel.getProperty("/Orders") || [];
+            var aProducts = aAllOrders
+                .filter(o => o.OrderNumber === parseInt(sOrderNumber))
+                .map(o => ({
+                    ProductName: o.ProductName,
+                    Quantity: o.Quantity,
+                    PricePerQuantity: o.PricePerQuantity,
+                    TotalPrice: o.Quantity * o.PricePerQuantity,
+                    selected: false
+                }));
+            oModel.setProperty("/products", aProducts);
+            console.log("Products set for order", sOrderNumber, aProducts);
+        },
 
         updateProductTitle: function () {
             var oTable = this.byId("productTable");
@@ -48,34 +48,34 @@ _onObjectMatched: function (oEvent) {
             MessageToast.show("Status updated to: " + sKey);
         },
 
-onAddProduct: function () {
-    const oModel = this.getView().getModel();
-    const sDeliveringPlant = oModel.getProperty("/DeliveringPlant");
-    const aOrders = oModel.getProperty("/Orders") || [];
+        onAddProduct: function () {
+            const oModel = this.getView().getModel();
+            const sDeliveringPlant = oModel.getProperty("/DeliveringPlant");
+            const aOrders = oModel.getProperty("/Orders") || [];
 
-    const aFilteredProducts = aOrders
-        .filter(order => order.DeliveringPlantCode === sDeliveringPlant)
-        .map(order => ({
-            ProductID: order.ProductID,
-            ProductName: order.ProductName
-        }));
+            const aFilteredProducts = aOrders
+                .filter(order => order.DeliveringPlantCode === sDeliveringPlant)
+                .map(order => ({
+                    ProductID: order.ProductID,
+                    ProductName: order.ProductName
+                }));
 
-    const oDialogModel = new sap.ui.model.json.JSONModel({
-        selectedProductId: "",
-        quantity: "",
-        availableProducts: aFilteredProducts
-    });
-    this.getView().setModel(oDialogModel, "dialog");
+            const oDialogModel = new sap.ui.model.json.JSONModel({
+                selectedProductId: "",
+                quantity: "",
+                availableProducts: aFilteredProducts
+            });
+            this.getView().setModel(oDialogModel, "dialog");
 
-    if (!this._pDialog) {
-        this._pDialog = this.loadFragment({
-            name: "com.ordermanagement.ordermanagement.fragment.ProductDialog",
-            controller: this
-        });
-    }
+            if (!this._pDialog) {
+                this._pDialog = this.loadFragment({
+                    name: "com.ordermanagement.ordermanagement.fragment.ProductDialog",
+                    controller: this
+                });
+            }
 
-    this._pDialog.then(oDialog => oDialog.open());
-},
+            this._pDialog.then(oDialog => oDialog.open());
+        },
 
         onConfirmAddProduct: function () {
             var oDialogModel = this.getView().getModel("dialog");
@@ -126,62 +126,62 @@ onAddProduct: function () {
             oModel.setProperty("/products", aProducts);
         },
 
-onDeleteProduct: function () {
-    var oModel = this.getView().getModel();
-    var aProducts = oModel.getProperty("/products") || [];
-    var aSelected = aProducts.filter(p => p.selected);
+        onDeleteProduct: function () {
+            var oModel = this.getView().getModel();
+            var aProducts = oModel.getProperty("/products") || [];
+            var aSelected = aProducts.filter(p => p.selected);
 
-    if (aSelected.length === 0) {
-        MessageBox.error("Please select an item from the table");
-        return;
-    }
-
-    MessageBox.confirm("Are you sure you want to delete " + aSelected.length + " items?", {
-        onClose: function (sAction) {
-            if (sAction === MessageBox.Action.OK) {
-                var aRemaining = aProducts.filter(p => !p.selected);
-                oModel.setProperty("/products", aRemaining);
-                MessageToast.show("Selected items deleted.");
+            if (aSelected.length === 0) {
+                MessageBox.error("Please select an item from the table");
+                return;
             }
-        }
-    });
-},
 
-onSave: function () {
-    const oCtx = this.getView().getBindingContext();
-    const sOrderNumber = oCtx.getProperty("OrderNumber");
-    const oModel = this.getView().getModel();
-    const oRouter = this.getOwnerComponent().getRouter();
-
-    MessageBox.confirm("Are you sure you want to save these changes?", {
-        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-        emphasizedAction: MessageBox.Action.OK,
-
-        onClose: function (sAction) {
-            if (sAction === MessageBox.Action.OK) {
-                // Commit changes to backend
-                oModel.submitChanges({
-                    success: function () {
-                        MessageBox.success(
-                            "The Order " + sOrderNumber + " has been successfully updated.",
-                            {
-                                onClose: function () {
-                                    // Navigate to detail page again
-                                    oRouter.navTo("RouteDetailPage", {
-                                        orderId: sOrderNumber
-                                    });
-                                }.bind(this)
-                            }
-                        );
-                    }.bind(this),
-                    error: function () {
-                        MessageBox.error("Failed to update Order " + sOrderNumber + ".");
+            MessageBox.confirm("Are you sure you want to delete " + aSelected.length + " items?", {
+                onClose: function (sAction) {
+                    if (sAction === MessageBox.Action.OK) {
+                        var aRemaining = aProducts.filter(p => !p.selected);
+                        oModel.setProperty("/products", aRemaining);
+                        MessageToast.show("Selected items deleted.");
                     }
-                });
-            }
-        }.bind(this)
-    });
-},
+                }
+            });
+        },
+
+        onSave: function () {
+            const oCtx = this.getView().getBindingContext();
+            const sOrderNumber = oCtx.getProperty("OrderNumber");
+            const oModel = this.getView().getModel();
+            const oRouter = this.getOwnerComponent().getRouter();
+
+            MessageBox.confirm("Are you sure you want to save these changes?", {
+                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                emphasizedAction: MessageBox.Action.OK,
+
+                onClose: function (sAction) {
+                    if (sAction === MessageBox.Action.OK) {
+                        // Commit changes to backend
+                        oModel.submitChanges({
+                            success: function () {
+                                MessageBox.success(
+                                    "The Order " + sOrderNumber + " has been successfully updated.",
+                                    {
+                                        onClose: function () {
+                                            // Navigate to detail page again
+                                            oRouter.navTo("RouteDetailPage", {
+                                                orderId: sOrderNumber
+                                            });
+                                        }.bind(this)
+                                    }
+                                );
+                            }.bind(this),
+                            error: function () {
+                                MessageBox.error("Failed to update Order " + sOrderNumber + ".");
+                            }
+                        });
+                    }
+                }.bind(this)
+            });
+        },
 
         onCancel: function () {
             MessageBox.confirm("Are you sure you want to cancel the changes done in the page?", {
