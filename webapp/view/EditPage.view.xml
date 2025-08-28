@@ -1,5 +1,5 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" controllerName="com.ordermanagement.ordermanagement.controller.EditPage">
-    <Page id="EditPage" floatingFooter="true" title="{i18n>title}">
+    <Page id="EditPage" floatingFooter="true" title="{i18n>editPageTitle}">
         <content>
 
             <!-- Order Details Panel -->
@@ -13,19 +13,19 @@
                     <f:SimpleForm id="orderDetailsForm" editable="true" layout="ColumnLayout" columnsL="1" columnsM="1" columnsXL="1" width="100%">
                         <f:content>
                             <Label id="lblOrderNumber" text="Order Number"/>
-                            <Input id="inpOrderNumber" value="{OrderNumber}" editable="false" width="50%"/>
+                            <Input id="inpOrderNumber" value="{localOrders>/Order/OrderNumber}" editable="false" width="50%"/>
 
                             <Label id="lblCreatedOn" text="Created On"/>
-                            <Input id="inpCreatedOn" value="{CreationDate}" editable="false" width="50%"/>
+                            <Input id="inpCreatedOn" value="{localOrders>/Order/CreationDate}" editable="false" width="50%"/>
 
                             <Label id="lbl_ReceivingPlant" text="Receiving Plant"/>
-                            <Input id="inp_ReceivingPlant" value="{ReceivingPlantCode} - {ReceivingPlantDescription}" editable="false" width="50%"/>
+                            <Input id="inp_ReceivingPlant" value="{localOrders>/Order/ReceivingPlantCode} - {localOrders>/Order/ReceivingPlantDescription}" editable="false" width="50%"/>
 
                             <Label id="lbl_DeliveringPlant" text="Delivering Plant"/>
-                            <Input id="inp_DeliveringPlant" value="{DeliveringPlantCode} - {DeliveringPlantDescription}" editable="false" width="50%"/>
+                            <Input id="inp_DeliveringPlant" value="{localOrders>/Order/Products/results/0/DeliveringPlantCode} - {localOrders>/Order/Products/results/0/DeliveringPlantDescription}" editable="false" width="50%"/>
 
                             <Label id="lblStatus" text="Status"/>
-                            <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%" selectedKey="{Status}">
+                            <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%" selectedKey="{localOrders>/Order/Status}">
                                 <items>
                                     <core:Item id="statusCreated" text="Created" key="Created"/>
                                     <core:Item id="statusReleased" text="Released" key="Released"/>
@@ -44,13 +44,13 @@
                     <Toolbar id="productToolbar">
                         <Title id="productTitle" text="Product"/>
                         <ToolbarSpacer id="productToolbarSpacer"/>
-                        <Button id="btnAddProduct" icon="sap-icon://add" press="onAddProduct"/>
+                        <Button id="btnAddProduct" icon="sap-icon://add" press="onAddProduct" bindingContexts="{localOrders}"/>
                         <Button id="btnDeleteProduct" icon="sap-icon://delete" press="onDeleteProduct"/>
                     </Toolbar>
                 </headerToolbar>
 
                 <content>
-                    <Table id="productTable" items="{Products}" noDataText="No data">
+                    <Table id="productTable" items="{localOrders>/Order/Products/results}" noDataText="No data">
                         <columns>
                             <Column id="colCheckBox" width="5rem">
                                 <header>
@@ -82,10 +82,10 @@
                             <ColumnListItem id="_productListItem" type="Active">
                                 <cells>
                                     <CheckBox id="chkSelectProduct" selected="{selected}" select="onSelectProduct"/>
-                                    <Text id="txtProductName" text="{ProductName}"/>
-                                    <Text id="_txtQuantity" text="{Quantity}"/>
-                                    <Text id="_txtPricePerQuantity" text="{PricePerQuantity}"/>
-                                    <Text id="_txtTotalPrice" text="{TotalPrice}"/>
+                                    <Text id="txtProductName" text="{localOrders>ProductName}"/>
+                                    <Text id="_txtQuantity" text="{localOrders>Quantity}"/>
+                                    <Text id="_txtPricePerQuantity" text="{localOrders>PricePerQuantity}"/>
+                                    <Text id="_txtTotalPrice" text="{localOrders>TotalPrice}"/>
                                 </cells>
                             </ColumnListItem>
                         </items>

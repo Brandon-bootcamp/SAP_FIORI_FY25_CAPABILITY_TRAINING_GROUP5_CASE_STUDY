@@ -1,64 +1,68 @@
-<mvc:View controllerName="com.ordermanagement.ordermanagement.controller.DetailPage"
+<mvc:View controllerName="com.ordermanagement.ordermanagement.controller.DetailPage" 
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="editPage" floatingFooter="true" title="{i18n>DetailTitle}">  
-    <content>
-      <Panel headerText="{i18n>Order Detail}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel0">
-        <content>
+    xmlns="sap.m"> 
+    <Page id="DetailPage" floatingFooter="true" title="{i18n>DetailTitle}">  
+    <content> 
+      <Panel headerText="{i18n>Order Detail}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel0"> 
+        <content> 
           <sap.ui.layout.form:SimpleForm xmlns:sap.ui.layout.form="sap.ui.layout.form" editable="true" layout="ColumnLayout" columnsL="1" columnsM="1" columnsXL="1" width="100%" id="form0">
-            <Label id="labelOrderNumber" text="{i18n>Order Number}" />
-            <Text id="textOrderNumber" text="{orderModel>/orderNumber}" />
-            <Label id="labelCreatedOn" text="{i18n>Created On}" />
-            <Text id="textCreatedOn" text="{orderModel>/createdOn}" />
-            <Label id="labelReceivingPlant" text="{i18n>Receiving Plant}" />
-            <Text id="textReceivingPlant" text="{orderModel>/receivingPlant}" />
-            <Label id="labelDeliveringPlant" text="{i18n>Delivering Plant}" />
-            <Text id="textDeliveringPlant" text="{orderModel>/deliveringPlant}" />
-            <Label id="labelStatus" text="{i18n>Status}" />
-            <Text id="textStatus" text="{orderModel>/status}" />
-          </sap.ui.layout.form:SimpleForm>
-        </content>
-      </Panel>
+            <Label id="labelOrderNumber" text="{i18n>Order Number}"/>
+            <Text id="textOrderNumber" text="{localOrders>/Order/OrderNumber}"/>
 
-      <Panel headerText="{i18n>Product}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel1">
+            <Label id="labelCreatedOn" text="{i18n>Created On}"/>
+            <Text id="textCreatedOn" text="{localOrders>/Order/CreationDate}"/>
+
+            <Label id="labelReceivingPlant" text="{i18n>Receiving Plant}"/>
+            <Text id="textReceivingPlant" text="{localOrders>/Order/ReceivingPlantCode} - {localOrders>/Order/ReceivingPlantDescription}"/>
+
+            <Label id="labelDeliveringPlant" text="{i18n>Delivering Plant}"/>
+            <Text id="textDeliveringPlant" text="{localOrders>/Order/Products/results/0/DeliveringPlantCode} - {localOrders>/Order/Products/results/0/DeliveringPlantDescription}"/>
+
+            <Label id="labelStatus" text="{i18n>Status}"/>
+            <Text id="textStatus" text="{localOrders>/Order/Status}"/>
+          </sap.ui.layout.form:SimpleForm >
+        </content>
+      </Panel >
+ 
+      <Panel headerText="{i18n>Product}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel1" >
         <content>
-          <Table id="table0" items="{orderModel>/products}">
+          <Table id="table0" items="{localOrders>/Order/Products/results}" >
             <columns>
-              <Column id="columnProductName">
-                <Text id="labelProductName" text="{i18n>Product Name}" />
-              </Column>
-              <Column id="columnQuantity">
-                <Text id="labelQuantity" text="{i18n>Quantity}" />
-              </Column>
-              <Column id="columnPricePerQuantity">
-                <Text id="labelPricePerQuantity" text="{i18n>Price Per Quantity}" />
-              </Column>
-              <Column id="columnTotalPrice">
-                <Text id="labelTotalPrice" text="{i18n>Total Price}" />
-              </Column>
-            </columns>
-            <items>
-              <ColumnListItem id="productListItem">
-                <cells>
-                  <Text id="textProductName" text="{orderModel>productName}" />
-                  <Text id="textQuantity" text="{orderModel>quantity}" />
-                  <Text id="textPrice" text="{orderModel>price}" />
-                  <Text id="textTotal" text="{orderModel>total}" />
-                </cells>
-              </ColumnListItem>
-            </items>
-          </Table>
-        </content>
-      </Panel>
-    </content>
-
-    <footer>
-      <OverflowToolbar id="footerToolbar">
+              <Column id="columnProductName" >
+                <Text id="labelProductName" text="{i18n>Product Name}"/>
+              </Column >
+              <Column id="columnQuantity" >
+                <Text id="labelQuantity" text="{i18n>Quantity}"/>
+              </Column >
+              <Column id="columnPricePerQuantity" >
+                <Text id="labelPricePerQuantity" text="{i18n>Price Per Quantity}"/>
+              </Column >
+              <Column id="columnTotalPrice"> 
+                <Text id="labelTotalPrice" text="{i18n>Total Price}"/>
+              </Column> 
+            </columns> 
+            <items> 
+              <ColumnListItem id="ProductListItem"> 
+                <cells> 
+                  <Text id="textProductName" text="{localOrders>ProductName}" />
+                  <Text id="textQuantity" text="{localOrders>Quantity}" />
+                  <Text id="textPrice" text="{localOrders>PricePerQuantity}" />
+                  <Text id="textTotal" text="{localOrders>Total Price}" />
+                </cells> 
+              </ColumnListItem> 
+            </items> 
+          </Table> 
+        </content> 
+      </Panel> 
+    </content> 
+ 
+    <footer> 
+      <OverflowToolbar id="FooterToolbar"> 
         <ToolbarSpacer id="footerSpacer" />
-        <Button id="Edit" text="{i18n>Edit}" tooltip="{i18n>edit}" press="onEdit" />
+        <Button id="Edit" text="{i18n>Edit}" tooltip="{i18n>edit}" press="onEdit" binding="{localOrders>Order}" />
         <Button id="Cancel" text="{i18n>Cancel}" tooltip="{i18n>cancel}" press="onCancel" />
       </OverflowToolbar>
     </footer>
-    
+   
   </Page>
 </mvc:View>

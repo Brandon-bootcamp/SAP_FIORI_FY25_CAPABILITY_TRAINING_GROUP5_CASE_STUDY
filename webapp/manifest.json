@@ -105,14 +105,14 @@
         },
         {
           "name": "RouteDetailPage",
-          "pattern": "detail/{orderId}",
+          "pattern": "OrderDetail/{orderId}",
           "target": [
             "TargetDetailPage"
           ]
         },
         {
           "name": "RouteEditPage",
-          "pattern": "EditPage",
+          "pattern": "EditOrder/{orderId}",
           "target": [
             "TargetEditPage"
           ]
