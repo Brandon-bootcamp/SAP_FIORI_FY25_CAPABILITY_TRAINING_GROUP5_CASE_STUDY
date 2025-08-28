@@ -204,56 +204,56 @@ sap.ui.define([
             });
         },
 
-onSave: function () {
-    const oView = this.getView();
-    const oModel = oView.getModel(); // OData model
-    const oLocalModel = oView.getModel("localOrders"); // JSON model
-    const oRouter = this.getOwnerComponent().getRouter();
+        onSave: function () {
+            const oView = this.getView();
+            const oModel = oView.getModel(); // OData model
+            const oLocalModel = oView.getModel("localOrders"); // JSON model
+            const oRouter = this.getOwnerComponent().getRouter();
 
-    if (!oModel || !oLocalModel || !oRouter) {
-        MessageBox.error("Unable to save. Missing model or router.");
-        return;
-    }
-
-    const orderData = oLocalModel.getProperty("/Order");
-    const sOrderNumber = orderData?.OrderNumber;
-
-    if (!sOrderNumber) {
-        MessageBox.error("Order number is missing. Cannot proceed with save.");
-        return;
-    }
-
-    // Construct correct path for update
-    const sOrderPath = `/Orders('${sOrderNumber}')`; // Use quotes if OrderNumber is a string
-
-    MessageBox.confirm("Are you sure you want to save these changes?", {
-        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-        emphasizedAction: MessageBox.Action.OK,
-
-        onClose: (sAction) => {
-            if (sAction === MessageBox.Action.OK) {
-                oModel.update(sOrderPath, orderData, {
-                    success: () => {
-                        MessageBox.success(
-                            `The Order ${sOrderNumber} has been successfully updated.`,
-                            {
-                                onClose: () => {
-                                    oModel.refresh(true); // force backend refresh
-                                    oRouter.navTo("RouteDetailPage", {
-                                        orderId: sOrderNumber
-                                    }, true); // force route reload
-                                }
-                            }
-                        );
-                    },
-                    error: () => {
-                        MessageBox.error(`Failed to update Order ${sOrderNumber}.`);
-                    }
-                });
+            if (!oModel || !oLocalModel || !oRouter) {
+                MessageBox.error("Unable to save. Missing model or router.");
+                return;
             }
-        }
-    });
-},
+
+            const orderData = oLocalModel.getProperty("/Order");
+            const sOrderNumber = orderData?.OrderNumber;
+
+            if (!sOrderNumber) {
+                MessageBox.error("Order number is missing. Cannot proceed with save.");
+                return;
+            }
+
+            // Construct correct path for update
+            const sOrderPath = `/Orders('${sOrderNumber}')`; // Use quotes if OrderNumber is a string
+
+            MessageBox.confirm("Are you sure you want to save these changes?", {
+                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                emphasizedAction: MessageBox.Action.OK,
+
+                onClose: (sAction) => {
+                    if (sAction === MessageBox.Action.OK) {
+                        oModel.update(sOrderPath, orderData, {
+                            success: () => {
+                                MessageBox.success(
+                                    `The Order ${sOrderNumber} has been successfully updated.`,
+                                    {
+                                        onClose: () => {
+                                            oModel.refresh(true); // force backend refresh
+                                            oRouter.navTo("RouteDetailPage", {
+                                                orderId: sOrderNumber
+                                            }, true); // force route reload
+                                        }
+                                    }
+                                );
+                            },
+                            error: () => {
+                                MessageBox.error(`Failed to update Order ${sOrderNumber}.`);
+                            }
+                        });
+                    }
+                }
+            });
+        },
 
         onCancel: function () {
             MessageBox.confirm("Are you sure you want to cancel the changes done in the page?", {
