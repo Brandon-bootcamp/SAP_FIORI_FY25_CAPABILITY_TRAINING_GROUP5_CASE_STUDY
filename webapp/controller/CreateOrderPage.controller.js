@@ -440,17 +440,18 @@ sap.ui.define(
           var oView = this.getView();
           var oTempModel = oView.getModel("TempOrders");
           var aTempProducts = oTempModel.getProperty("/Products") || [];
+          
+          var oSelectedProductName = this.byId("inpSelectedProduct").getValue();
 
-          // Get date today and format it
           var oDate = new Date();
           var iTime = oDate.getTime();
           var sFormattedDate = "/Date(" + iTime + ")/";
 
           var oDataOrder = {
-            // ReceivingPlantCode: oSelectedProductName,
+            ReceivingPlantCode: oSelectedProductName,
             ReceivingPlantDescription: sReceivingPlantDescription,
-            DeliveringPlantDescription: sDeliveringPlantDescription,
             DeliveringPlantCode: sDeliveringPlantCode,
+            DeliveringPlantDescription: sDeliveringPlantDescription,
             CreationDate: sFormattedDate,
             Status: "Created",
             Products: aTempProducts,

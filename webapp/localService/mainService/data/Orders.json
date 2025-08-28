@@ -4,7 +4,7 @@
     "CreationDate": "/Date(1680000000000)/",
     "ReceivingPlantCode": 101,
     "ReceivingPlantDescription": "Philippines",
-    "DeliveringPlantCode": 201,
+    "DeliveringPlantCode": 106,
     "DeliveringPlantDescription": "Vietnam",
     "Status": "Created",
     "Products": [
@@ -21,7 +21,7 @@
     "CreationDate": "/Date(1680500000000)/",
     "ReceivingPlantCode": 102,
     "ReceivingPlantDescription": "Thailand",
-    "DeliveringPlantCode": 202,
+    "DeliveringPlantCode": 107,
     "DeliveringPlantDescription": "Malaysia",
     "Status": "Released",
     "Products": [
@@ -44,7 +44,7 @@
     "CreationDate": "/Date(1681000000000)/",
     "ReceivingPlantCode": 103,
     "ReceivingPlantDescription": "Indonesia",
-    "DeliveringPlantCode": 203,
+    "DeliveringPlantCode": 108,
     "DeliveringPlantDescription": "Singapore",
     "Status": "Partially Completed",
     "Products": [
@@ -61,7 +61,7 @@
     "CreationDate": "/Date(1681500000000)/",
     "ReceivingPlantCode": 104,
     "ReceivingPlantDescription": "Japan",
-    "DeliveringPlantCode": 204,
+    "DeliveringPlantCode": 109,
     "DeliveringPlantDescription": "South Korea",
     "Status": "Delivered",
     "Products": [
@@ -90,7 +90,7 @@
     "CreationDate": "/Date(1682000000000)/",
     "ReceivingPlantCode": 105,
     "ReceivingPlantDescription": "China",
-    "DeliveringPlantCode": 205,
+    "DeliveringPlantCode": 110,
     "DeliveringPlantDescription": "India",
     "Status": "Created",
     "Products": [
