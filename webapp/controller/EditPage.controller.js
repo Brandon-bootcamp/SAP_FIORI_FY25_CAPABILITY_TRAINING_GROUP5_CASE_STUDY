@@ -53,9 +53,10 @@ sap.ui.define([
             MessageToast.show("Status updated to: " + sKey);
         },
 
-        onAddProduct: function () {
-            const oLocalModel = this.getView().getModel("localOrders");
-            const productData = oLocalModel.getProperty("/Order/Products/results/");
+onAddProduct: function () {
+    const oLocalModel = this.getView().getModel("localOrders");
+    const orderData = oLocalModel.getProperty("/Order");
+    const productData = oLocalModel.getProperty("/Products/results");
 
             // Defensive check: only block if productData is truly missing
             if (!Array.isArray(productData)) {
@@ -110,28 +111,16 @@ sap.ui.define([
         },
 
         onConfirmAddProduct: function () {
-            const oDialogModel = this.getView().getModel("dialog");
-            const oLocalModel = this.getView().getModel("localOrders");
+            var oDialogModel = this.getView().getModel("dialog");
+            var oMainModel = this.getView().getModel();
+            var aProducts = oMainModel.getProperty("/products");
 
-            const aCurrentProducts = oLocalModel.getProperty("/Order/Products/results") || [];
-            const aAvailableProducts = oDialogModel.getProperty("/availableProducts") || [];
-            console.log(aAvailableProducts);
+            var sProductName = oDialogModel.getProperty("/selectedProductId");
+            var iQuantity = parseInt(oDialogModel.getProperty("/quantity"), 10);
+            var iPrice = 10;
 
-            const sSelectedProductId = oDialogModel.getProperty("/selectedProductId");
-            const iQuantity = parseInt(oDialogModel.getProperty("/quantity"), 10);
-            if (isNaN(iQuantity) || iQuantity <= 0) {
-                MessageBox.error("Please enter a valid quantity greater than zero.");
-                return;
-            }
-
-            // Find full product details from filtered list
-            const oSelectedProduct = aAvailableProducts.find(product =>
-                String(product.ProductID) === String(sSelectedProductId)
-            );
-            console.log(oSelectedProduct);
-
-            if (!oSelectedProduct) {
-                MessageBox.error("Selected product not found in available list.");
+            if (!sProductName || isNaN(iQuantity) || iQuantity <= 0) {
+                MessageBox.error("Please enter a valid product and quantity.");
                 return;
             }
 
@@ -184,11 +173,9 @@ sap.ui.define([
         },
 
         onDeleteProduct: function () {
-            const oLocalModel = this.getView().getModel("localOrders");
-            const aProducts = oLocalModel.getProperty("/Order/Products/results") || [];
-
-            const aSelected = aProducts.filter(p => p.selected);
-            console.log(aProducts);
+            var oModel = this.getView().getModel();
+            var aProducts = oModel.getProperty("/products") || [];
+            var aSelected = aProducts.filter(p => p.selected);
 
             if (aSelected.length === 0) {
                 MessageBox.error("Please select at least one product to delete.");
@@ -207,53 +194,41 @@ sap.ui.define([
         },
 
         onSave: function () {
-            const oView = this.getView();
-            const oModel = oView.getModel(); // OData model
-            const oLocalModel = oView.getModel("localOrders"); // JSON model
+            const oCtx = this.getView().getBindingContext();
+            const sOrderNumber = oCtx.getProperty("OrderNumber");
+            const oModel = this.getView().getModel();
             const oRouter = this.getOwnerComponent().getRouter();
 
-            if (!oModel || !oLocalModel || !oRouter) {
-                MessageBox.error("Unable to save. Missing model or router.");
-                return;
-            }
+    MessageBox.confirm("Are you sure you want to save these changes?", {
+        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+        emphasizedAction: MessageBox.Action.OK,
 
-            const orderData = oLocalModel.getProperty("/Order");
-            const sOrderNumber = orderData?.OrderNumber;
-
-            if (!sOrderNumber) {
-                MessageBox.error("Order number is missing. Cannot proceed with save.");
-                return;
-            }
-
-            // Construct correct path for update
-            const sOrderPath = `/Orders('${sOrderNumber}')`; // Use quotes if OrderNumber is a string
-
-            MessageBox.confirm("Are you sure you want to save these changes?", {
-                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-                emphasizedAction: MessageBox.Action.OK,
-
-                onClose: (sAction) => {
+                onClose: function (sAction) {
                     if (sAction === MessageBox.Action.OK) {
-                        oModel.update(sOrderPath, orderData, {
-                            success: () => {
+                        // Commit changes to backend
+                        oModel.submitChanges({
+                            success: function () {
                                 MessageBox.success(
-                                    `The Order ${sOrderNumber} has been successfully updated.`,
+                                    "The Order " + sOrderNumber + " has been successfully updated.",
                                     {
-                                        onClose: () => {
-                                            oModel.refresh(true); 
+                                        onClose: function () {
+                                            // Navigate to detail page again
                                             oRouter.navTo("RouteDetailPage", {
                                                 orderId: sOrderNumber
-                                            }, true); 
-                                        }
+                                            });
+                                        }.bind(this)
                                     }
                                 );
-                            },
-                            error: () => {
-                                MessageBox.error(`Failed to update Order ${sOrderNumber}.`);
+                            }.bind(this),
+                            error: function () {
+                                MessageBox.error("Failed to update Order " + sOrderNumber + ".");
                             }
-                        });
+                        );
+                    },
+                    error: () => {
+                        MessageBox.error(`Failed to update Order ${sOrderNumber}.`);
                     }
-                }
+                }.bind(this)
             });
         },
 
