@@ -52,7 +52,7 @@
                 <content>
                     <Table id="productTable" items="{localOrders>/Order/Products/results}" noDataText="No data">
                         <columns>
-                            <Column id="colCheckBox" width="5rem">
+                            <Column id="colCheckBox"  width="5rem">
                                 <header>
                                    <CheckBox id="cbColCheckBox" select="onSelectAllProducts"/>
                                 </header>
@@ -81,11 +81,11 @@
                         <items>
                             <ColumnListItem id="_productListItem" type="Active">
                                 <cells>
-                                    <CheckBox id="chkSelectProduct" selected="{selected}" select="onSelectProduct"/>
+                                    <CheckBox id="chkSelectProduct" selected="{localOrders>selected}" select="onSelectProduct"/>
                                     <Text id="txtProductName" text="{localOrders>ProductName}"/>
                                     <Text id="_txtQuantity" text="{localOrders>Quantity}"/>
                                     <Text id="_txtPricePerQuantity" text="{localOrders>PricePerQuantity}"/>
-                                    <Text id="_txtTotalPrice" text="{localOrders>TotalPrice}"/>
+                                    <Text id="_txtTotalPrice" text="{= ${localOrders>Quantity} * ${localOrders>PricePerQuantity} }"/>
                                 </cells>
                             </ColumnListItem>
                         </items>

@@ -3,11 +3,9 @@
        <content>
         <VBox id="_IDGenVBox" class="sapUiSmallMargin">
             <Label id="_IDGenLabel" text="Select Product" labelFor="productSelect"/>
-            <ComboBox id="_IDGenComboBox1" selectedKey="{dialog>/selectedProductId}"
-                      items="{dialog>/availableProducts}">
-                <core:Item id="_IDGenItem" key="{dialog>ProductID}" text="{dialog>ProductName}" />
+            <ComboBox id="_IDGenComboBox1" selectedKey="{dialog>/selectedProductId}" items="{dialog>/availableProducts}">
+            <core:Item id="_IDGenItem" key="{dialog>ProductID}" text="{dialog>ProductName}" />
             </ComboBox>
-
             <Label id="_IDGenLabel1" text="Quantity" labelFor="quantityInput" />
             <Input id="quantityInput"
                    value="{dialog>/quantity}"
