@@ -53,17 +53,43 @@ sap.ui.define([
             MessageToast.show("Status updated to: " + sKey);
         },
 
-onAddProduct: function () {
-    const oLocalModel = this.getView().getModel("localOrders");
-    const orderData = oLocalModel.getProperty("/Order");
-    const productData = oLocalModel.getProperty("/Products/results");
+        onAddProduct: function () {
+            const oLocalModel = this.getView().getModel("localOrders");
+            const productData = oLocalModel.getProperty("/Order/Products/results/");
 
             // Defensive check: only block if productData is truly missing
             if (!Array.isArray(productData)) {
                 MessageBox.error("Product data is not available.");
                 return;
             }
+            // Defensive check: only block if productData is truly missing
+            if (!Array.isArray(productData)) {
+                MessageBox.error("Product data is not available.");
+                return;
+            }
 
+            const oProductsModel = this.getOwnerComponent().getModel(); // default OData model
+
+            if (!oProductsModel) {
+                MessageBox.error("Products model is not available.");
+                return;
+            }
+
+            oProductsModel.read("/Products", {
+                success: (oData) => {
+                    const aAllProducts = oData.results;
+
+                    // Extract valid plant codes
+                    const aPlantCodes = productData
+                        .map(product => product.DeliveringPlantCode)
+                        .filter(code => code !== null && code !== undefined && code !== "");
+
+                    // Filter products based on valid codes
+                    const aFilteredProducts = aPlantCodes.length === 0
+                        ? aAllProducts
+                        : aAllProducts.filter(product =>
+                            aPlantCodes.includes(product.DeliveringPlantCode)
+                        );
             const oProductsModel = this.getOwnerComponent().getModel(); // default OData model
 
             if (!oProductsModel) {
@@ -93,7 +119,19 @@ onAddProduct: function () {
                         availableProducts: aFilteredProducts
                     });
                     this.getView().setModel(oDialogModel, "dialog");
+                    const oDialogModel = new sap.ui.model.json.JSONModel({
+                        selectedProductId: "",
+                        quantity: "",
+                        availableProducts: aFilteredProducts
+                    });
+                    this.getView().setModel(oDialogModel, "dialog");
 
+                    if (!this._pDialog) {
+                        this._pDialog = this.loadFragment({
+                            name: "com.ordermanagement.ordermanagement.fragment.ProductDialog",
+                            controller: this
+                        });
+                    }
                     if (!this._pDialog) {
                         this._pDialog = this.loadFragment({
                             name: "com.ordermanagement.ordermanagement.fragment.ProductDialog",
@@ -109,18 +147,38 @@ onAddProduct: function () {
                 }
             });
         },
+                    this._pDialog.then(oDialog => oDialog.open());
+                },
+                error: (err) => {
+                    MessageBox.error("Failed to load products.");
+                    console.error("OData read error:", err);
+                }
+            });
+        },
 
         onConfirmAddProduct: function () {
-            var oDialogModel = this.getView().getModel("dialog");
-            var oMainModel = this.getView().getModel();
-            var aProducts = oMainModel.getProperty("/products");
+            const oDialogModel = this.getView().getModel("dialog");
+            const oLocalModel = this.getView().getModel("localOrders");
 
-            var sProductName = oDialogModel.getProperty("/selectedProductId");
-            var iQuantity = parseInt(oDialogModel.getProperty("/quantity"), 10);
-            var iPrice = 10;
+            const aCurrentProducts = oLocalModel.getProperty("/Order/Products/results") || [];
+            const aAvailableProducts = oDialogModel.getProperty("/availableProducts") || [];
+            console.log(aAvailableProducts);
 
-            if (!sProductName || isNaN(iQuantity) || iQuantity <= 0) {
-                MessageBox.error("Please enter a valid product and quantity.");
+            const sSelectedProductId = oDialogModel.getProperty("/selectedProductId");
+            const iQuantity = parseInt(oDialogModel.getProperty("/quantity"), 10);
+            if (isNaN(iQuantity) || iQuantity <= 0) {
+                MessageBox.error("Please enter a valid quantity greater than zero.");
+                return;
+            }
+
+            // Find full product details from filtered list
+            const oSelectedProduct = aAvailableProducts.find(product =>
+                String(product.ProductID) === String(sSelectedProductId)
+            );
+            console.log(oSelectedProduct);
+
+            if (!oSelectedProduct) {
+                MessageBox.error("Selected product not found in available list.");
                 return;
             }
 
@@ -131,9 +189,18 @@ onAddProduct: function () {
             const oNewProduct = {
                 ProductID: sSelectedProductId,
                 ProductName: oSelectedProduct.ProductName,
+            const iPrice = oSelectedProduct.PricePerQuantity;
+            const sPlantCode = oSelectedProduct.DeliveringPlantCode;
+            const sPlantDescription = oSelectedProduct.DeliveringPlantDescription;
+
+            const oNewProduct = {
+                ProductID: sSelectedProductId,
+                ProductName: oSelectedProduct.ProductName,
                 Quantity: iQuantity,
                 PricePerQuantity: iPrice,
                 TotalPrice: iQuantity * iPrice,
+                DeliveringPlantCode: sPlantCode,
+                DeliveringPlantDescription: sPlantDescription,
                 DeliveringPlantCode: sPlantCode,
                 DeliveringPlantDescription: sPlantDescription,
                 selected: false
@@ -150,7 +217,19 @@ onAddProduct: function () {
 
             oLocalModel.setProperty("/Order/Products/results", aCurrentProducts);
             MessageToast.show("Product added successfully.");
+            // Prevent duplicates 
+            const iExistingIndex = aCurrentProducts.findIndex(p => p.ProductID === sSelectedProductId);
+            if (iExistingIndex > -1) {
+                aCurrentProducts[iExistingIndex].Quantity += iQuantity;
+                aCurrentProducts[iExistingIndex].TotalPrice += iQuantity * iPrice;
+            } else {
+                aCurrentProducts.push(oNewProduct);
+            }
 
+            oLocalModel.setProperty("/Order/Products/results", aCurrentProducts);
+            MessageToast.show("Product added successfully.");
+
+            this._pDialog.then(oDialog => oDialog.close());
             this._pDialog.then(oDialog => oDialog.close());
         },
 
@@ -164,27 +243,40 @@ onAddProduct: function () {
             const bSelected = oEvent.getParameter("selected");
             const oLocalModel = this.getView().getModel("localOrders");
             const aProducts = oLocalModel.getProperty("/Order/Products/results") || [];
+            const bSelected = oEvent.getParameter("selected");
+            const oLocalModel = this.getView().getModel("localOrders");
+            const aProducts = oLocalModel.getProperty("/Order/Products/results") || [];
 
+            aProducts.forEach(product => {
             aProducts.forEach(product => {
                 product.selected = bSelected;
             });
 
             oLocalModel.setProperty("/Order/Products/results", aProducts);
+            oLocalModel.setProperty("/Order/Products/results", aProducts);
         },
 
         onDeleteProduct: function () {
-            var oModel = this.getView().getModel();
-            var aProducts = oModel.getProperty("/products") || [];
-            var aSelected = aProducts.filter(p => p.selected);
+            const oLocalModel = this.getView().getModel("localOrders");
+            const aProducts = oLocalModel.getProperty("/Order/Products/results") || [];
+
+            const aSelected = aProducts.filter(p => p.selected);
+            console.log(aProducts);
 
             if (aSelected.length === 0) {
+                MessageBox.error("Please select at least one product to delete.");
                 MessageBox.error("Please select at least one product to delete.");
                 return;
             }
 
             MessageBox.confirm(`Are you sure you want to delete ${aSelected.length} item(s)?`, {
                 onClose: (sAction) => {
+            MessageBox.confirm(`Are you sure you want to delete ${aSelected.length} item(s)?`, {
+                onClose: (sAction) => {
                     if (sAction === MessageBox.Action.OK) {
+                        const aRemaining = aProducts.filter(p => !p.selected);
+                        oLocalModel.setProperty("/Order/Products/results", aRemaining);
+                        MessageToast.show("Selected product(s) deleted.");
                         const aRemaining = aProducts.filter(p => !p.selected);
                         oLocalModel.setProperty("/Order/Products/results", aRemaining);
                         MessageToast.show("Selected product(s) deleted.");
@@ -194,41 +286,56 @@ onAddProduct: function () {
         },
 
         onSave: function () {
-            const oCtx = this.getView().getBindingContext();
-            const sOrderNumber = oCtx.getProperty("OrderNumber");
-            const oModel = this.getView().getModel();
+            const oView = this.getView();
+            const oModel = oView.getModel(); // OData model
+            const oLocalModel = oView.getModel("localOrders"); // JSON model
             const oRouter = this.getOwnerComponent().getRouter();
+
+            if (!oModel || !oLocalModel || !oRouter) {
+                MessageBox.error("Unable to save. Missing model or router.");
+                return;
+            }
+
+            const orderData = oLocalModel.getProperty("/Order");
+            const sOrderNumber = orderData?.OrderNumber;
+
+            if (!sOrderNumber) {
+                MessageBox.error("Order number is missing. Cannot proceed with save.");
+                return;
+            }
+
+            // Construct correct path for update
+            const sOrderPath = `/Orders('${sOrderNumber}')`; // Use quotes if OrderNumber is a string
 
     MessageBox.confirm("Are you sure you want to save these changes?", {
         actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
         emphasizedAction: MessageBox.Action.OK,
 
-                onClose: function (sAction) {
+                onClose: (sAction) => {
                     if (sAction === MessageBox.Action.OK) {
-                        // Commit changes to backend
-                        oModel.submitChanges({
-                            success: function () {
+                        oModel.update(sOrderPath, orderData, {
+                            success: () => {
                                 MessageBox.success(
-                                    "The Order " + sOrderNumber + " has been successfully updated.",
+                                    `The Order ${sOrderNumber} has been successfully updated.`,
                                     {
-                                        onClose: function () {
-                                            // Navigate to detail page again
+                                        onClose: () => {
+                                            oModel.refresh(true); 
                                             oRouter.navTo("RouteDetailPage", {
                                                 orderId: sOrderNumber
-                                            });
-                                        }.bind(this)
+                                            }, true); 
+                                        }
                                     }
                                 );
-                            }.bind(this),
-                            error: function () {
-                                MessageBox.error("Failed to update Order " + sOrderNumber + ".");
+                            },
+                            error: () => {
+                                MessageBox.error(`Failed to update Order ${sOrderNumber}.`);
                             }
                         );
                     },
                     error: () => {
                         MessageBox.error(`Failed to update Order ${sOrderNumber}.`);
                     }
-                }.bind(this)
+                }
             });
         },
 
