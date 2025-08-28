@@ -448,7 +448,7 @@ sap.ui.define(
           var sFormattedDate = "/Date(" + iTime + ")/";
 
           var oDataOrder = {
-            ReceivingPlantCode: oSelectedProductName,
+            // ReceivingPlantCode: oSelectedProductName,
             ReceivingPlantDescription: sReceivingPlantDescription,
             DeliveringPlantCode: sDeliveringPlantCode,
             DeliveringPlantDescription: sDeliveringPlantDescription,
