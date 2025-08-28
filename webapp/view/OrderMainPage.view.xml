@@ -6,7 +6,7 @@
 <Page id="orderPage" title="{i18n>OrderMainPageTitle}" floatingFooter="true" xmlns="sap.m" xmlns:core="sap.ui.core">
   <content>
 
-    <!-- 🔍 Filter Panel -->
+    <!-- Filter Panel -->
     <Panel id="filterPanel" headerText="" expandable="false" class="sapUiMediumMarginBottom">
       <VBox id="_IDGenVBox1" justifyContent="Center" alignItems="Center">
         <HBox id="_IDGenHBox" justifyContent="Center" alignItems="Center">
@@ -60,11 +60,11 @@
       </VBox>
     </Panel>
 
-    <!-- 📋 Orders Panel -->
+    <!-- Orders Panel -->
     <Panel id="_IDGenPanel" expandable="false">
       <VBox id="_IDGenVBox6">
 
-        <!-- 🔘 Toolbar -->
+        <!-- Toolbar -->
         <Toolbar id="_IDGenToolbar">
           <Title id="_IDGenTitle" text="{i18n>ordersTitle}"/>
           <ToolbarSpacer id="_IDGenToolbarSpacer"/>
@@ -72,7 +72,6 @@
           <Button id="deleteOrderButton" icon="sap-icon://delete" tooltip="{i18n>deleteOrderTooltip}" press="onDeletePress"/>
         </Toolbar>
 
-        <!-- 📋 Orders Table -->
         <Table id="ordersTable" items="{local>/Orders}" mode="MultiSelect">
           <columns>
             <Column id="_IDGenColumn1"><Text id="_IDGenText" text="{i18n>orderNumberLabel}"/></Column>

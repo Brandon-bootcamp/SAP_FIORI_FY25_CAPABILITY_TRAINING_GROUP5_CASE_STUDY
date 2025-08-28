@@ -12,7 +12,6 @@ sap.ui.define(
     return Controller.extend(
       "com.ordermanagement.ordermanagement.controller.OrderMainPage",
       {
-        // 🚀 Initialization
         onInit() {
           // Prevent pasting non-numeric characters into Order Number input
           const input = this.byId("orderNumberInput");
@@ -24,7 +23,7 @@ sap.ui.define(
               e.preventDefault();
             }
           });
-  // ✅ Get the model safely
+
           const oModel = this.getOwnerComponent().getModel(); // safer than getView().getModel() // or this.getOwnerComponent().getModel()
 
           if (!oModel) {
@@ -32,7 +31,6 @@ sap.ui.define(
             return;
           }
 
-          // 🔍 Read Orders with expanded Products
           oModel.read("/Orders", {
             urlParameters: {
               "$expand": "Products"
@@ -49,7 +47,6 @@ sap.ui.define(
           });
         },
 
-        // 🔍 Filter Orders
         onFilter() {
           const oBundle = this.getView().getModel("i18n").getResourceBundle();
           const orderValue = this.byId("orderNumberInput").getValue();
@@ -91,7 +88,6 @@ sap.ui.define(
           MessageToast.show(oBundle.getText("showingResults"));
         },
 
-        // 🧹 Clear Filters
         onClear() {
           const oView = this.getView();
           oView.byId("orderNumberInput").setValue("");
@@ -103,7 +99,6 @@ sap.ui.define(
           oBinding.filter([]);
         },
 
-        // 🗑️ Delete Selected Orders
         onDeletePress() {
           const oTable = this.byId("ordersTable");
           const aSelectedItems = oTable.getSelectedItems();
@@ -136,28 +131,13 @@ sap.ui.define(
           );
         },
 
-        // 📋 Order Row Press
-        // onOrderSelect(oEvent) {
-        //   const selectedOrder = oEvent
-        //     .getSource()
-        //     .getBindingContext()
-        //     .getObject();
-        //   const oRouter = this.getOwnerComponent().getRouter();
-        //   oRouter.navTo("RouteDetailPage", {
-        //     orderId: selectedOrder.OrderNumber,
-        //   });
-        // },
-
-        // 🎯 Handle Order Selection
         onOrderSelect(oEvent) {
-          // 🧠 Get the binding context from the selected item
           const oContext = oEvent.getSource().getBindingContext("local");
           if (!oContext) {
             console.error("No binding context found for selected order.");
             return;
           }
 
-          // 🚦 Navigate to the detail page using the router
           const oRouter = this.getOwnerComponent().getRouter();
           const orderId = oContext.getProperty("OrderNumber");
 
@@ -170,7 +150,6 @@ sap.ui.define(
             orderId: orderId
           });
 
-          // 📦 Load related products for the selected order
           const oModel = this.getOwnerComponent().getModel(); // safer than getView().getModel()
           if (!oModel) {
             console.error("Main OData model is not available.");
@@ -181,27 +160,21 @@ sap.ui.define(
           oModel.read(sProductsPath, {
             success: (oData) => {
               const aProducts = oData.results || [];
-              console.log("✅ Related Products loaded:", aProducts);
 
-              // Optional: Store products in a local model or pass to detail page
               const oProductModel = new sap.ui.model.json.JSONModel({ Products: aProducts });
               this.getView().setModel(oProductModel, "relatedProducts");
             },
             error: (err) => {
-              console.error("❌ Failed to load related products:", err);
               sap.m.MessageBox.error("Unable to fetch related products for the selected order.");
             }
           });
         },
 
-
-        // ➕ Navigate to Create Order Page
         onPressCreateOrder() {
           const oRouter = this.getOwnerComponent().getRouter();
           oRouter.navTo("RouteCreateOrderPage");
         },
 
-        // 🔢 Restrict Order Number to Digits Only
         onOrderNumberLiveChange(oEvent) {
           const input = oEvent.getSource();
           const value = input.getValue();
@@ -211,7 +184,6 @@ sap.ui.define(
           }
         },
 
-        // 📅 Restrict Creation Date to Digits and Dashes
         onCreationDateLiveChange(oEvent) {
           const input = oEvent.getSource();
           const value = input.getValue();

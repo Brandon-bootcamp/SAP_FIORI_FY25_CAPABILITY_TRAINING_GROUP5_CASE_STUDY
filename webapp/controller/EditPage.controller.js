@@ -56,6 +56,7 @@ sap.ui.define([
         onAddProduct: function () {
             const oLocalModel = this.getView().getModel("localOrders");
             const productData = oLocalModel.getProperty("/Order/Products/results/");
+            console.log(productData);
 
             // Defensive check: only block if productData is truly missing
             if (!Array.isArray(productData)) {
@@ -207,68 +208,82 @@ sap.ui.define([
             });
         },
 
-onSave: function () {
-    const oView = this.getView();
-    const oModel = oView.getModel(); // OData model
-    const oLocalModel = oView.getModel("localOrders"); // JSON model
-    const oRouter = this.getOwnerComponent().getRouter();
+        onSave: function () {
+            const oView = this.getView();
+            const oModel = oView.getModel(); // OData model
+            const oLocalModel = oView.getModel("localOrders"); // JSON model
+            const oRouter = this.getOwnerComponent().getRouter();
 
-    if (!oModel || !oLocalModel || !oRouter) {
-        MessageBox.error("Unable to save. Missing model or router.");
-        return;
-    }
-
-    const orderData = oLocalModel.getProperty("/Order");
-    const sOrderNumber = orderData?.OrderNumber;
-
-    if (!sOrderNumber) {
-        MessageBox.error("Order number is missing. Cannot proceed with save.");
-        return;
-    }
-
-    // Construct correct path for update
-    const sOrderPath = `/Orders('${sOrderNumber}')`; // Use quotes if OrderNumber is a string
-
-    MessageBox.confirm("Are you sure you want to save these changes?", {
-        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-        emphasizedAction: MessageBox.Action.OK,
-
-        onClose: (sAction) => {
-            if (sAction === MessageBox.Action.OK) {
-                oModel.update(sOrderPath, orderData, {
-                    success: () => {
-                        MessageBox.success(
-                            `The Order ${sOrderNumber} has been successfully updated.`,
-                            {
-                                onClose: () => {
-                                    oModel.refresh(true); // force backend refresh
-                                    oRouter.navTo("RouteDetailPage", {
-                                        orderId: sOrderNumber
-                                    }, true); // force route reload
-                                }
-                            }
-                        );
-                    },
-                    error: () => {
-                        MessageBox.error(`Failed to update Order ${sOrderNumber}.`);
-                    }
-                });
+            if (!oModel || !oLocalModel || !oRouter) {
+                MessageBox.error("Unable to save. Missing model or router.");
+                return;
             }
-        }
-    });
-},
 
-        onCancel: function () {
-            MessageBox.confirm("Are you sure you want to cancel the changes done in the page?", {
-                onClose: function (oAction) {
-                    if (oAction === MessageBox.Action.OK) {
-                        var sOrderNumber = this.getView().getBindingContext().getProperty("OrderNumber");
-                        var oRouter = this.getOwnerComponent().getRouter();
-                        oRouter.navTo("RouteDetailPage", {
-                            orderId: sOrderNumber
+            const orderData = oLocalModel.getProperty("/Order");
+            const sOrderNumber = orderData?.OrderNumber;
+
+            if (!sOrderNumber) {
+                MessageBox.error("Order number is missing. Cannot proceed with save.");
+                return;
+            }
+
+            // Construct correct path for update
+            const sOrderPath = `/Orders('${sOrderNumber}')`; // Use quotes if OrderNumber is a string
+
+            MessageBox.confirm("Are you sure you want to save these changes?", {
+                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                emphasizedAction: MessageBox.Action.OK,
+
+                onClose: (sAction) => {
+                    if (sAction === MessageBox.Action.OK) {
+                        oModel.update(sOrderPath, orderData, {
+                            success: () => {
+                                MessageBox.success(
+                                    `The Order ${sOrderNumber} has been successfully updated.`,
+                                    {
+                                        onClose: () => {
+                                            oModel.refresh(true); // force backend refresh
+                                            oRouter.navTo("RouteDetailPage", {
+                                                orderId: sOrderNumber
+                                            }, true); // force route reload
+                                        }
+                                    }
+                                );
+                            },
+                            error: () => {
+                                MessageBox.error(`Failed to update Order ${sOrderNumber}.`);
+                            }
                         });
                     }
-                }.bind(this)
+                }
+            });
+        },
+
+        onCancel: function () {
+            const oLocalModel = this.getView().getModel("localOrders");
+            const oRouter = this.getOwnerComponent().getRouter();
+
+            if (!oLocalModel || !oRouter) {
+                MessageBox.error("Unable to cancel. Missing model or router.");
+                return;
+            }
+
+            const orderData = oLocalModel.getProperty("/Order");
+            const sOrderNumber = orderData?.OrderNumber;
+
+            if (!sOrderNumber) {
+                MessageBox.error("Order number is missing. Cannot navigate back.");
+                return;
+            }
+
+            MessageBox.confirm("Are you sure you want to cancel the changes done in the page?", {
+                onClose: (oAction) => {
+                    if (oAction === MessageBox.Action.OK) {
+                        oRouter.navTo("RouteDetailPage", {
+                            orderId: sOrderNumber
+                        }, true); // force reload
+                    }
+                }
             });
         }
 
