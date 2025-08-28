@@ -136,18 +136,6 @@ sap.ui.define(
           );
         },
 
-        // 📋 Order Row Press
-        // onOrderSelect(oEvent) {
-        //   const selectedOrder = oEvent
-        //     .getSource()
-        //     .getBindingContext()
-        //     .getObject();
-        //   const oRouter = this.getOwnerComponent().getRouter();
-        //   oRouter.navTo("RouteDetailPage", {
-        //     orderId: selectedOrder.OrderNumber,
-        //   });
-        // },
-
         // 🎯 Handle Order Selection
         onOrderSelect(oEvent) {
           // 🧠 Get the binding context from the selected item

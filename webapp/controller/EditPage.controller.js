@@ -259,16 +259,30 @@ sap.ui.define([
         },
 
         onCancel: function () {
+            const oLocalModel = this.getView().getModel("localOrders");
+            const oRouter = this.getOwnerComponent().getRouter();
+
+            if (!oLocalModel || !oRouter) {
+                MessageBox.error("Unable to cancel. Missing model or router.");
+                return;
+            }
+
+            const orderData = oLocalModel.getProperty("/Order");
+            const sOrderNumber = orderData?.OrderNumber;
+
+            if (!sOrderNumber) {
+                MessageBox.error("Order number is missing. Cannot navigate back.");
+                return;
+            }
+
             MessageBox.confirm("Are you sure you want to cancel the changes done in the page?", {
-                onClose: function (oAction) {
+                onClose: (oAction) => {
                     if (oAction === MessageBox.Action.OK) {
-                        var sOrderNumber = this.getView().getBindingContext().getProperty("OrderNumber");
-                        var oRouter = this.getOwnerComponent().getRouter();
                         oRouter.navTo("RouteDetailPage", {
                             orderId: sOrderNumber
-                        });
+                        }, true); // force reload
                     }
-                }.bind(this)
+                }
             });
         }
 
