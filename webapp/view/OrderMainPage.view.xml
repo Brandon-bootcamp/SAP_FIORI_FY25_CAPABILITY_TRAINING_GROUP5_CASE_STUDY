@@ -8,12 +8,12 @@
 
     <!-- 🔍 Filter Panel -->
     <Panel id="filterPanel" headerText="" expandable="false" class="sapUiMediumMarginBottom">
-      <VBox justifyContent="Center" alignItems="Center">
-        <HBox justifyContent="Center" alignItems="Center">
+      <VBox id="_IDGenVBox1" justifyContent="Center" alignItems="Center">
+        <HBox id="_IDGenHBox" justifyContent="Center" alignItems="Center">
 
           <!-- Order Number -->
-          <VBox class="sapUiSmallMarginEnd">
-            <Label text="{i18n>orderNumberLabel}" labelFor="orderNumberInput"/>
+          <VBox id="_IDGenVBox2" class="sapUiSmallMarginEnd">
+            <Label id="_IDGenLabel2" text="{i18n>orderNumberLabel}" labelFor="orderNumberInput"/>
             <Input
               id="orderNumberInput"
               placeholder="{i18n>orderNumberPlaceholder}"
@@ -23,8 +23,8 @@
           </VBox>
 
           <!-- Creation Date -->
-          <VBox class="sapUiSmallMarginEnd">
-            <Label text="{i18n>creationDateLabel}" labelFor="creationDateInput"/>
+          <VBox id="_IDGenVBox3" class="sapUiSmallMarginEnd">
+            <Label id="_IDGenLabel3" text="{i18n>creationDateLabel}" labelFor="creationDateInput"/>
             <DatePicker
               id="creationDateInput"
               placeholder="{i18n>creationDatePlaceholder}"
@@ -35,24 +35,24 @@
           </VBox>
 
           <!-- Status -->
-          <VBox class="sapUiSmallMarginEnd">
-            <Label text="{i18n>statusLabel}" labelFor="statusMultiCombo"/>
+          <VBox id="_IDGenVBox4" class="sapUiSmallMarginEnd">
+            <Label id="_IDGenLabel4" text="{i18n>statusLabel}" labelFor="statusMultiCombo"/>
             <MultiComboBox id="statusMultiCombo" width="220px">
               <items>
-                <core:Item key="Created" text="{i18n>statusCreated}"/>
-                <core:Item key="Released" text="{i18n>statusReleased}"/>
-                <core:Item key="Partially Completed" text="{i18n>statusPartiallyCompleted}"/>
-                <core:Item key="Delivered" text="{i18n>statusDelivered}"/>
+                <core:Item id="_IDGenItem1" key="Created" text="{i18n>statusCreated}"/>
+                <core:Item id="_IDGenItem2" key="Released" text="{i18n>statusReleased}"/>
+                <core:Item id="_IDGenItem3" key="Partially Completed" text="{i18n>statusPartiallyCompleted}"/>
+                <core:Item id="_IDGenItem4" key="Delivered" text="{i18n>statusDelivered}"/>
               </items>
             </MultiComboBox>
           </VBox>
 
           <!-- Action Buttons -->
-          <VBox>
-            <Label text=" "/>
-            <HBox>
-              <Button text="{i18n>goButton}" press="onFilter"/>
-              <Button text="{i18n>clearButton}" press="onClear"/>
+          <VBox id="_IDGenVBox5">
+            <Label id="_IDGenLabel5" text=" "/>
+            <HBox id="_IDGenHBox1">
+              <Button id="_IDGenButton2" text="{i18n>goButton}" press="onFilter"/>
+              <Button id="_IDGenButton3" text="{i18n>clearButton}" press="onClear"/>
             </HBox>
           </VBox>
 
@@ -61,13 +61,13 @@
     </Panel>
 
     <!-- 📋 Orders Panel -->
-    <Panel expandable="false">
-      <VBox>
+    <Panel id="_IDGenPanel" expandable="false">
+      <VBox id="_IDGenVBox6">
 
         <!-- 🔘 Toolbar -->
-        <Toolbar>
-          <Title text="{i18n>ordersTitle}"/>
-          <ToolbarSpacer/>
+        <Toolbar id="_IDGenToolbar">
+          <Title id="_IDGenTitle" text="{i18n>ordersTitle}"/>
+          <ToolbarSpacer id="_IDGenToolbarSpacer"/>
           <Button id="addOrderButton" icon="sap-icon://add" tooltip="{i18n>addOrderTooltip}" press="onPressCreateOrder"/>
           <Button id="deleteOrderButton" icon="sap-icon://delete" tooltip="{i18n>deleteOrderTooltip}" press="onDeletePress"/>
         </Toolbar>
@@ -75,20 +75,20 @@
         <!-- 📋 Orders Table -->
         <Table id="ordersTable" items="{local>/Orders}" mode="MultiSelect">
           <columns>
-            <Column><Text text="{i18n>orderNumberLabel}"/></Column>
-            <Column><Text text="{i18n>creationDateLabel}"/></Column>
-            <Column><Text text="Receiving Plant"/></Column>
-            <Column><Text text="Delivering Plant"/></Column>
-            <Column><Text text="{i18n>statusLabel}"/></Column>
+            <Column id="_IDGenColumn1"><Text id="_IDGenText" text="{i18n>orderNumberLabel}"/></Column>
+            <Column id="_IDGenColumn2"><Text id="_IDGenText1" text="{i18n>creationDateLabel}"/></Column>
+            <Column id="_IDGenColumn3"><Text id="_IDGenText2" text="Receiving Plant"/></Column>
+            <Column id="_IDGenColumn4"><Text id="_IDGenText3" text="Delivering Plant"/></Column>
+            <Column id="_IDGenColumn5"><Text id="_IDGenText4" text="{i18n>statusLabel}"/></Column>
           </columns>
           <items>
-            <ColumnListItem type="Active" press="onOrderSelect">
+            <ColumnListItem id="_IDGenColumnListItem" type="Active" press="onOrderSelect">
               <cells>
-                <Text text="{local>OrderNumber}"/>
-                <Text text="{local>CreationDate}"/>
-                <Text text="{local>ReceivingPlantCode} - {local>ReceivingPlantDescription}"/>
-                <Text text="{local>Products/results/0/DeliveringPlantCode} - {local>Products/results/0/DeliveringPlantDescription}"/>
-                <ObjectStatus
+                <Text id="_IDGenText5" text="{local>OrderNumber}"/>
+                <Text id="_IDGenText6" text="{local>CreationDate}"/>
+                <Text id="_IDGenText7" text="{local>ReceivingPlantCode} - {local>ReceivingPlantDescription}"/>
+                <Text id="_IDGenText8" text="{local>Products/results/0/DeliveringPlantCode} - {local>Products/results/0/DeliveringPlantDescription}"/>
+                <ObjectStatus id="_IDGenObjectStatus"
                   text="{local>Status}"
                   state="{= 
                     ${Status} === 'Created' ? 'None' : 

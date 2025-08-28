@@ -9,24 +9,39 @@ sap.ui.define([
     return Controller.extend("com.ordermanagement.ordermanagement.controller.EditPage", {
 
         onInit: function () {
-            var oData = {
-                OrderNumber: "ORD12345",
-                CreatedOn: "2025-08-18",
-                ReceivingPlant: "Plant A",
-                DeliveringPlant: "Plant B",
-                Status: "Created",
-                products: [
-                    {
-                        ProductName: "Widget A",
-                        Quantity: 10,
-                        PricePerQuantity: 5,
-                        TotalPrice: 50,
-                        selected: false
-                    }
-                ]
-            };
-            var oModel = new JSONModel(oData);
-            this.getView().setModel(oModel);
+            var oRouter = this.getOwnerComponent().getRouter();
+            oRouter.getRoute("RouteEditPage").attachPatternMatched(this._onObjectMatched, this);
+            this.localOrdersModel = this.getView().getModel("localOrders");
+        },
+
+        _onObjectMatched: function (oEvent) {
+            const sOrderNumber = oEvent.getParameter("arguments").orderId;
+            const oModel = this.getView().getModel();
+
+            // Read the specific Order and expand Products
+            oModel.read(`/Orders(${sOrderNumber})`, {
+                urlParameters: {
+                    "$expand": "Products"
+                },
+                success: (oData) => {
+                    const oLocalModel = new JSONModel({
+                        Order: oData,
+                        Products: oData.Products || []
+                    });
+                    this.getView().setModel(oLocalModel, "localOrders");
+                    console.log(oLocalModel);
+                },
+                error: (err) => {
+                    console.error("Failed to fetch order details:", err);
+                }
+            });
+        },
+
+        updateProductTitle: function () {
+            var oTable = this.byId("productTable");
+            var iItemCount = oTable.getItems().length;
+
+            this.byId("productTitle").setText("Products (" + iItemCount + ")");
         },
 
         onChangeStatus: function (oEvent) {
@@ -34,125 +49,225 @@ sap.ui.define([
             this.getView().getModel().setProperty("/Status", sKey);
             MessageToast.show("Status updated to: " + sKey);
         },
-
+        
         onAddProduct: function () {
-            var oDialogModel = new JSONModel({
-                selectedProductId: "",
-                quantity: " ",
-                availableProducts: [
-                    { id: "Widget A", name: "Widget A" },
-                    { id: "Widget B", name: "Widget B" },
-                    { id: "Widget C", name: "Widget C" }
-                ]
-            });
-            this.getView().setModel(oDialogModel, "dialog");
+            const oLocalModel = this.getView().getModel("localOrders");
+            const productData = oLocalModel.getProperty("/Order/Products/results/");
 
-            if (!this._pDialog) {
-                this._pDialog = this.loadFragment({
-                    name: "casestudy.fragment.ProductDialog",
-                    controller: this // ensure event handlers are bound
-                });
+            // Defensive check: only block if productData is truly missing
+            if (!Array.isArray(productData)) {
+                MessageBox.error("Product data is not available.");
+                return;
             }
 
-            this._pDialog.then(function (oDialog) {
-                oDialog.open();
+            const oProductsModel = this.getOwnerComponent().getModel(); // default OData model
+
+            if (!oProductsModel) {
+                MessageBox.error("Products model is not available.");
+                return;
+            }
+
+            oProductsModel.read("/Products", {
+                success: (oData) => {
+                    const aAllProducts = oData.results;
+
+                    // Extract valid plant codes
+                    const aPlantCodes = productData
+                        .map(product => product.DeliveringPlantCode)
+                        .filter(code => code !== null && code !== undefined && code !== "");
+
+                    // Filter products based on valid codes
+                    const aFilteredProducts = aPlantCodes.length === 0
+                        ? aAllProducts
+                        : aAllProducts.filter(product =>
+                            aPlantCodes.includes(product.DeliveringPlantCode)
+                        );
+
+                    const oDialogModel = new sap.ui.model.json.JSONModel({
+                        selectedProductId: "",
+                        quantity: "",
+                        availableProducts: aFilteredProducts
+                    });
+                    this.getView().setModel(oDialogModel, "dialog");
+
+                    if (!this._pDialog) {
+                        this._pDialog = this.loadFragment({
+                            name: "com.ordermanagement.ordermanagement.fragment.ProductDialog",
+                            controller: this
+                        });
+                    }
+
+                    this._pDialog.then(oDialog => oDialog.open());
+                },
+                error: (err) => {
+                    MessageBox.error("Failed to load products.");
+                    console.error("OData read error:", err);
+                }
             });
         },
 
         onConfirmAddProduct: function () {
-            var oDialogModel = this.getView().getModel("dialog");
-            var oMainModel = this.getView().getModel();
-            var aProducts = oMainModel.getProperty("/products");
+            const oDialogModel = this.getView().getModel("dialog");
+            const oLocalModel = this.getView().getModel("localOrders");
 
-            var sProductName = oDialogModel.getProperty("/selectedProductId");
-            var iQuantity = parseInt(oDialogModel.getProperty("/quantity"), 10);
-            var iPrice = 10; // Static price, can be dynamic
+            const aCurrentProducts = oLocalModel.getProperty("/Order/Products/results") || [];
+            const aAvailableProducts = oDialogModel.getProperty("/availableProducts") || [];
+            console.log(aAvailableProducts);
+            
+            const sSelectedProductId = oDialogModel.getProperty("/selectedProductId");
+            const iQuantity = parseInt(oDialogModel.getProperty("/quantity"), 10);
+            if (isNaN(iQuantity) || iQuantity <= 0) {
+                MessageBox.error("Please enter a valid quantity greater than zero.");
+                return;
+            }
+                
+                // Find full product details from filtered list
+            const oSelectedProduct = aAvailableProducts.find(product =>
+                    String(product.ProductID) === String(sSelectedProductId)
+                );
+                console.log(oSelectedProduct);
 
-            if (!sProductName || iQuantity <= 0) {
-                MessageBox.error("Please enter valid product and quantity.");
+            if (!oSelectedProduct) {
+                MessageBox.error("Selected product not found in available list.");
                 return;
             }
 
-            var oNewProduct = {
-                ProductName: sProductName,
+            const iPrice = oSelectedProduct.PricePerQuantity;
+            const sPlantCode = oSelectedProduct.DeliveringPlantCode;
+            const sPlantDescription = oSelectedProduct.DeliveringPlantDescription;
+
+            const oNewProduct = {
+                ProductID: sSelectedProductId,
+                ProductName: oSelectedProduct.ProductName,
                 Quantity: iQuantity,
                 PricePerQuantity: iPrice,
                 TotalPrice: iQuantity * iPrice,
+                DeliveringPlantCode: sPlantCode,
+                DeliveringPlantDescription: sPlantDescription,
                 selected: false
             };
 
-            aProducts.push(oNewProduct);
-            oMainModel.setProperty("/products", aProducts);
-            MessageToast.show("Product added.");
+            // Prevent duplicates 
+            const iExistingIndex = aCurrentProducts.findIndex(p => p.ProductID === sSelectedProductId);
+            if (iExistingIndex > -1) {
+                aCurrentProducts[iExistingIndex].Quantity += iQuantity;
+                aCurrentProducts[iExistingIndex].TotalPrice += iQuantity * iPrice;
+            } else {
+                aCurrentProducts.push(oNewProduct);
+            }
 
-            this.byId("_IDGenDialog1").close();
+            oLocalModel.setProperty("/Order/Products/results", aCurrentProducts);
+            MessageToast.show("Product added successfully.");
+
+            this._pDialog.then(oDialog => oDialog.close());
         },
 
         onCancelAddProduct: function () {
-            this.byId("_IDGenDialog1").close();
+            this._pDialog.then(function (oDialog) {
+                oDialog.close();
+            });
         },
 
         onSelectAllProducts: function (oEvent) {
-            var bSelected = oEvent.getParameter("selected");
-            var oModel = this.getView().getModel();
-            var aProducts = oModel.getProperty("/products");
+            const bSelected = oEvent.getParameter("selected");
+            const oLocalModel = this.getView().getModel("localOrders");
+            const aProducts = oLocalModel.getProperty("/Order/Products/results") || [];
 
-            aProducts.forEach(function (product) {
+            aProducts.forEach(product => {
                 product.selected = bSelected;
             });
 
-            oModel.setProperty("/products", aProducts);
+            oLocalModel.setProperty("/Order/Products/results", aProducts);
         },
 
         onDeleteProduct: function () {
-            var oModel = this.getView().getModel();
-            var aProducts = oModel.getProperty("/products");
-            var aSelected = aProducts.filter(p => p.selected);
+            const oLocalModel = this.getView().getModel("localOrders");
+            const aProducts = oLocalModel.getProperty("/Order/Products/results") || [];
+
+            // 🔍 Find selected products
+            const aSelected = aProducts.filter(p => p.selected);
+            console.log(aProducts);
 
             if (aSelected.length === 0) {
-                MessageBox.error("Please select an item from the table");
+                MessageBox.error("Please select at least one product to delete.");
                 return;
             }
 
-            MessageBox.confirm("Are you sure you want to delete " + aSelected.length + " items?", {
-                onClose: function (sAction) {
+            MessageBox.confirm(`Are you sure you want to delete ${aSelected.length} item(s)?`, {
+                onClose: (sAction) => {
                     if (sAction === MessageBox.Action.OK) {
-                        var aRemaining = aProducts.filter(p => !p.selected);
-                        oModel.setProperty("/products", aRemaining);
-                        MessageToast.show("Selected items deleted.");
+                        const aRemaining = aProducts.filter(p => !p.selected);
+                        oLocalModel.setProperty("/Order/Products/results", aRemaining);
+                        MessageToast.show("Selected product(s) deleted.");
                     }
                 }
             });
         },
 
-        onSave: function () {
-            var oModel = this.getView().getModel();
-            var sOrderNumber = oModel.getProperty("/OrderNumber");
+onSave: function () {
+    const oView = this.getView();
+    const oModel = oView.getModel(); // OData model
+    const oLocalModel = oView.getModel("localOrders"); // JSON model
+    const oRouter = this.getOwnerComponent().getRouter();
 
-            MessageBox.confirm("Are you sure you want to Save these changes?", {
-                onClose: function (sAction) {
-                    if (sAction === MessageBox.Action.OK) {
-                        MessageBox.success("The Order " + sOrderNumber + " has been successfully updated.", {
-                            onClose: function () {
-                                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                                oRouter.navTo("RouteDetailPage");
-                            }.bind(this)
-                        });
+    if (!oModel || !oLocalModel || !oRouter) {
+        MessageBox.error("Unable to save. Missing model or router.");
+        return;
+    }
+
+    const orderData = oLocalModel.getProperty("/Order");
+    const sOrderNumber = orderData?.OrderNumber;
+
+    if (!sOrderNumber) {
+        MessageBox.error("Order number is missing. Cannot proceed with save.");
+        return;
+    }
+
+    // Construct correct path for update
+    const sOrderPath = `/Orders('${sOrderNumber}')`; // Use quotes if OrderNumber is a string
+
+    MessageBox.confirm("Are you sure you want to save these changes?", {
+        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+        emphasizedAction: MessageBox.Action.OK,
+
+        onClose: (sAction) => {
+            if (sAction === MessageBox.Action.OK) {
+                oModel.update(sOrderPath, orderData, {
+                    success: () => {
+                        MessageBox.success(
+                            `The Order ${sOrderNumber} has been successfully updated.`,
+                            {
+                                onClose: () => {
+                                    oModel.refresh(true); // force backend refresh
+                                    oRouter.navTo("RouteDetailPage", {
+                                        orderId: sOrderNumber
+                                    }, true); // force route reload
+                                }
+                            }
+                        );
+                    },
+                    error: () => {
+                        MessageBox.error(`Failed to update Order ${sOrderNumber}.`);
                     }
-                }.bind(this)
-            });
-        },
+                });
+            }
+        }
+    });
+},
 
         onCancel: function () {
             MessageBox.confirm("Are you sure you want to cancel the changes done in the page?", {
                 onClose: function (oAction) {
                     if (oAction === MessageBox.Action.OK) {
-                        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                        oRouter.navTo("RouteDetailPage");
+                        var sOrderNumber = this.getView().getBindingContext().getProperty("OrderNumber");
+                        var oRouter = this.getOwnerComponent().getRouter();
+                        oRouter.navTo("RouteDetailPage", {
+                            orderId: sOrderNumber
+                        });
                     }
                 }.bind(this)
             });
-        },
+        }
 
     });
 });

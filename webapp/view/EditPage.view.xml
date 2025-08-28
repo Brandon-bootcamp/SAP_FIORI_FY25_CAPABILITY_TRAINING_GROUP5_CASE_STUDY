@@ -1,5 +1,5 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" controllerName="com.ordermanagement.ordermanagement.controller.EditPage">
-    <Page id="editPage" floatingFooter="true" title="{i18n>title}">
+    <Page id="EditPage" floatingFooter="true" title="{i18n>editPageTitle}">
         <content>
 
             <!-- Order Details Panel -->
@@ -13,19 +13,19 @@
                     <f:SimpleForm id="orderDetailsForm" editable="true" layout="ColumnLayout" columnsL="1" columnsM="1" columnsXL="1" width="100%">
                         <f:content>
                             <Label id="lblOrderNumber" text="Order Number"/>
-                            <Input id="inpOrderNumber" value="{OrderNumber}" editable="false" width="50%"/>
+                            <Input id="inpOrderNumber" value="{localOrders>/Order/OrderNumber}" editable="false" width="50%"/>
 
                             <Label id="lblCreatedOn" text="Created On"/>
-                            <Input id="inpCreatedOn" value="{CreatedOn}" editable="false" width="50%"/>
+                            <Input id="inpCreatedOn" value="{localOrders>/Order/CreationDate}" editable="false" width="50%"/>
 
-                            <Label id="receivingPlantLabel" text="Receiving Plant"/>
-                            <Input id="ReceivingPlantInput" value="{ReceivingPlant}" editable="false" width="50%"/>
+                            <Label id="lbl_ReceivingPlant" text="Receiving Plant"/>
+                            <Input id="inp_ReceivingPlant" value="{localOrders>/Order/ReceivingPlantCode} - {localOrders>/Order/ReceivingPlantDescription}" editable="false" width="50%"/>
 
-                            <Label id="DeliveringPlantLabel" text="Delivering Plant"/>
-                            <Input id="DeliveringPlantInput" value="{DeliveringPlant}" editable="false" width="50%"/>
+                            <Label id="lbl_DeliveringPlant" text="Delivering Plant"/>
+                            <Input id="inp_DeliveringPlant" value="{localOrders>/Order/Products/results/0/DeliveringPlantCode} - {localOrders>/Order/Products/results/0/DeliveringPlantDescription}" editable="false" width="50%"/>
 
                             <Label id="lblStatus" text="Status"/>
-                            <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%">
+                            <Select id="selStatus" forceSelection="false" change="onChangeStatus" width="50%" selectedKey="{localOrders>/Order/Status}">
                                 <items>
                                     <core:Item id="statusCreated" text="Created" key="Created"/>
                                     <core:Item id="statusReleased" text="Released" key="Released"/>
@@ -44,13 +44,13 @@
                     <Toolbar id="productToolbar">
                         <Title id="productTitle" text="Product"/>
                         <ToolbarSpacer id="productToolbarSpacer"/>
-                        <Button id="btnAddProduct" icon="sap-icon://add" press="onAddProduct"/>
+                        <Button id="btnAddProduct" icon="sap-icon://add" press="onAddProduct" bindingContexts="{localOrders}"/>
                         <Button id="btnDeleteProduct" icon="sap-icon://delete" press="onDeleteProduct"/>
                     </Toolbar>
                 </headerToolbar>
 
                 <content>
-                    <Table id="productTable" items="{/products}" noDataText="Drop column list items here and columns in the area above">
+                    <Table id="productTable" items="{localOrders>/Order/Products/results}" noDataText="No data">
                         <columns>
                             <Column id="colCheckBox" width="5rem">
                                 <header>
@@ -59,33 +59,33 @@
                             </Column>
                             <Column id="colProductName">
                                 <header>
-                                    <Text id="productNameLabel" text="Product Name"/>
+                                    <Text id="lblProductName" text="Product Name"/>
                                 </header>
                             </Column>
                             <Column id="colQuantity">
                                 <header>
-                                    <Label id="QuantityLabel" text="Quantity"/>
+                                    <Label id="lbl_Quantity" text="Quantity"/>
                                 </header>
                             </Column>
                             <Column id="colPricePerQuantity">
                                 <header>
-                                    <Label id="pricePerQuantityLabel" text="Price Per Quantity"/>
+                                    <Label id="lblPricePerQuantity" text="Price Per Quantity"/>
                                 </header>
                             </Column>
-                            <Column id="colmTotalPrice">
+                            <Column id="col_TotalPrice">
                                 <header>
-                                    <Label id="totalPriceLabel" text="Total Price"/>
+                                    <Label id="lbl_TotalPrice" text="Total Price"/>
                                 </header>
                             </Column>
                         </columns>
                         <items>
-                            <ColumnListItem id="prodListItem" type="Active">
+                            <ColumnListItem id="_productListItem" type="Active">
                                 <cells>
-                                    <CheckBox id="chkSelectProduct" selected="{selected}" select="onSelectProduct"/>
-                                    <Text id="prodNameText" text="{ProductName}"/>
-                                    <Text id="qauntityText" text="{Quantity}"/>
-                                    <Text id="pricePerQuantityText" text="{PricePerQuantity}"/>
-                                    <Text id="totalPriceText" text="{TotalPrice}"/>
+                                    <CheckBox id="chkSelectProduct" selected="{localOrders>selected}" select="onSelectProduct"/>
+                                    <Text id="txtProductName" text="{localOrders>ProductName}"/>
+                                    <Text id="_txtQuantity" text="{localOrders>Quantity}"/>
+                                    <Text id="_txtPricePerQuantity" text="{localOrders>PricePerQuantity}"/>
+                                    <Text id="_txtTotalPrice" text="{localOrders>TotalPrice}"/>
                                 </cells>
                             </ColumnListItem>
                         </items>
@@ -96,10 +96,10 @@
 
         <!-- Footer Toolbar -->
         <footer>
-            <OverflowToolbar id="toolbarFooter">
+            <OverflowToolbar id="_footerToolbar">
                 <ToolbarSpacer id="footerToolbarSpacer"/>
-                <Button id="buttonSave" type="Emphasized" text="Save" press="onSave"/>
-                <Button id="buttonCancel" type="Reject" text="Cancel" press="onCancel"/>
+                <Button id="_btnSave" type="Emphasized" text="Save" press="onSave"/>
+                <Button id="_btnCancel" type="Reject" text="Cancel" press="onCancel"/>
             </OverflowToolbar>
         </footer>
     </Page>
