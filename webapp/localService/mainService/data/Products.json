@@ -8,6 +8,22 @@
     "PricePerQuantity": 15000
   },
   {
+    "ProductID": 6011,
+    "ProductName": "Shaver",
+    "DeliveringPlantCode": 106,
+    "DeliveringPlantDescription": "Vietnam",
+    "Quantity": 20,
+    "PricePerQuantity": 15000
+  },
+  {
+    "ProductID": 6012,
+    "ProductName": "Roomba",
+    "DeliveringPlantCode": 106,
+    "DeliveringPlantDescription": "Vietnam",
+    "Quantity": 20,
+    "PricePerQuantity": 15000
+  },
+  {
     "ProductID": 6002,
     "ProductName": "Microwave Oven",
     "DeliveringPlantCode": 101,
@@ -16,8 +32,40 @@
     "PricePerQuantity": 4500
   },
   {
+    "ProductID": 6022,
+    "ProductName": "Toaster",
+    "DeliveringPlantCode": 101,
+    "DeliveringPlantDescription": "Philippines",
+    "Quantity": 50,
+    "PricePerQuantity": 5000
+  },
+  {
+    "ProductID": 6023,
+    "ProductName": "Electric Kettle",
+    "DeliveringPlantCode": 101,
+    "DeliveringPlantDescription": "Philippines",
+    "Quantity": 50,
+    "PricePerQuantity": 2500
+  },
+  {
     "ProductID": 6003,
     "ProductName": "Washing Machine",
+    "DeliveringPlantCode": 102,
+    "DeliveringPlantDescription": "Thailand",
+    "Quantity": 30,
+    "PricePerQuantity": 12000
+  },
+  {
+    "ProductID": 6033,
+    "ProductName": "Lamp",
+    "DeliveringPlantCode": 102,
+    "DeliveringPlantDescription": "Thailand",
+    "Quantity": 30,
+    "PricePerQuantity": 1200
+  },
+  {
+    "ProductID": 6034,
+    "ProductName": "Hair Dryer",
     "DeliveringPlantCode": 102,
     "DeliveringPlantDescription": "Thailand",
     "Quantity": 30,
@@ -32,8 +80,40 @@
     "PricePerQuantity": 1800
   },
   {
+    "ProductID": 6044,
+    "ProductName": "Electric Massager",
+    "DeliveringPlantCode": 111,
+    "DeliveringPlantDescription": "USA",
+    "Quantity": 100,
+    "PricePerQuantity": 12000
+  },
+  {
+    "ProductID": 6045,
+    "ProductName": "LED Light",
+    "DeliveringPlantCode": 111,
+    "DeliveringPlantDescription": "USA",
+    "Quantity": 100,
+    "PricePerQuantity": 1000
+  },
+  {
     "ProductID": 6005,
     "ProductName": "Air Conditioner",
+    "DeliveringPlantCode": 104,
+    "DeliveringPlantDescription": "Japan",
+    "Quantity": 25,
+    "PricePerQuantity": 22000
+  },
+  {
+    "ProductID": 6055,
+    "ProductName": "Air Purifier",
+    "DeliveringPlantCode": 104,
+    "DeliveringPlantDescription": "Japan",
+    "Quantity": 25,
+    "PricePerQuantity": 22000
+  },
+  {
+    "ProductID": 6056,
+    "ProductName": "Air Fryer",
     "DeliveringPlantCode": 104,
     "DeliveringPlantDescription": "Japan",
     "Quantity": 25,
