@@ -11,6 +11,16 @@ sap.ui.define([
         onInit: function () {
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("RouteDetailPage").attachPatternMatched(this._onObjectMatched, this);
+
+            var oTable = this.byId("ProductTable");
+            oTable.attachUpdateFinished(this.updateProductTitle.bind(this));
+        },
+
+        updateProductTitle: function () {
+          var oTable = this.byId("ProductTable");
+          var iItemCount = oTable.getItems().length;
+ 
+          this.byId("ProductTitle").setHeaderText("Product (" + iItemCount + ")");
         },
 
         _onObjectMatched: function (oEvent) {
