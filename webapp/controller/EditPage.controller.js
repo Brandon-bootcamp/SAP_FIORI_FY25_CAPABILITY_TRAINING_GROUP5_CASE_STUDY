@@ -56,6 +56,7 @@ sap.ui.define([
         onAddProduct: function () {
             const oLocalModel = this.getView().getModel("localOrders");
             const productData = oLocalModel.getProperty("/Order/Products/results/");
+            console.log(productData);
 
             // Defensive check: only block if productData is truly missing
             if (!Array.isArray(productData)) {

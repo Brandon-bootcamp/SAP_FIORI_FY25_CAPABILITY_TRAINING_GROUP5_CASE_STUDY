@@ -446,11 +446,6 @@ sap.ui.define(
           var oTempModel = oView.getModel("TempOrders");
           var aTempProducts = oTempModel.getProperty("/Products") || [];
           
-          // var oModelProducts = this.getOwnerComponent.getModel("Products");
-          // var aTempProducts = oTempModel.getProperty("/Products");
-
-          // Get productname and id,
-          // var oSelectedProductName = this.byId("inpSelectedProduct").getValue();
           var sDeliveringPlantCode = oView
             .byId("inpDeliveringPlantCode")
             .getValue();
@@ -459,12 +454,6 @@ sap.ui.define(
           var oDate = new Date();
           var iTime = oDate.getTime();
           var sFormattedDate = "/Date(" + iTime + ")/";
-
-          // var oDataProducts = {
-          //   ProductName: oSelectedProduct,
-          //   Quantity: 231,
-          //   PricePerQuantity: 123,
-          // };
 
           var oDataOrder = {
             ReceivingPlantDescription: sReceivingPlant,
