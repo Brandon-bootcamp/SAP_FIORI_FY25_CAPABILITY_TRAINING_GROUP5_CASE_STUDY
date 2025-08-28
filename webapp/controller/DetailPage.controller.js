@@ -1,14 +1,17 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
-], (Controller) => {
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], (Controller, JSONModel, Filter, FilterOperator) => {
     "use strict";
- 
+
     return Controller.extend("com.ordermanagement.ordermanagement.controller.DetailPage", {
- 
+
         onInit: function () {
-            var oRouter = this.getOwnerComponent().getRouter();
+            const oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("RouteDetailPage").attachPatternMatched(this._onObjectMatched, this);
-            
+
             var oTable = this.byId("ProductTable");
             oTable.attachUpdateFinished(this.updateProductTitle.bind(this));
         },
@@ -19,28 +22,49 @@ sap.ui.define([
  
           this.byId("ProductTitle").setHeaderText("Product (" + iItemCount + ")");
         },
- 
+
         _onObjectMatched: function (oEvent) {
-            var sOrderNumber = oEvent.getParameter("arguments").orderId;
-            var sPath = "/Orders(" + sOrderNumber + ")";
-            console.log(sPath);
-            this.getView().bindElement({
-                path: sPath
-            });       
-        },
- 
-        onEdit: function (oEvent) {
-            const selectedOrder = oEvent.getSource().getBindingContext().getObject();
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("RouteEditPage", {
-                orderId: selectedOrder.OrderNumber
+            const sOrderNumber = oEvent.getParameter("arguments").orderId;
+            const oModel = this.getView().getModel();
+
+            // Read the specific Order and expand Products
+            oModel.read(`/Orders(${sOrderNumber})`, {
+                urlParameters: {
+                    "$expand": "Products"
+                },
+                success: (oData) => {
+                    const oLocalModel = new JSONModel({
+                        Order: oData,
+                        Products: oData.Products || []
+                    });
+                    this.getView().setModel(oLocalModel, "localOrders");
+                    console.log(oLocalModel);
+                },
+                error: (err) => {
+                    console.error("Failed to fetch order details:", err);
+                }
             });
         },
- 
+
+        onEdit: function (oEvent) {
+            const oRouter = this.getOwnerComponent().getRouter();
+            const oLocalModel = this.getView().getModel("localOrders");
+            const selectedOrder = oLocalModel.getProperty("/Order");
+
+            if (selectedOrder && selectedOrder.OrderNumber) {
+                const oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo("RouteEditPage", {
+                    orderId: selectedOrder.OrderNumber
+                });
+            } else {
+                console.warn("Order data not available in local model.");
+            }
+        },
+
         onCancel: function () {
-            var oRouter = this.getOwnerComponent().getRouter();
+            const oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("RouteOrderMainPage");
         }
- 
+
     });
 });
