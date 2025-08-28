@@ -85,7 +85,7 @@
                                     <Text id="txtProductName" text="{localOrders>ProductName}"/>
                                     <Text id="_txtQuantity" text="{localOrders>Quantity}"/>
                                     <Text id="_txtPricePerQuantity" text="{localOrders>PricePerQuantity}"/>
-                                    <Text id="_txtTotalPrice" text="{localOrders>TotalPrice}"/>
+                                    <Text id="_txtTotalPrice" text="{= ${localOrders>Quantity} * ${localOrders>PricePerQuantity} }"/>
                                 </cells>
                             </ColumnListItem>
                         </items>

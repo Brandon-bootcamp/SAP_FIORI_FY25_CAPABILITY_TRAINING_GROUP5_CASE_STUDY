@@ -24,9 +24,9 @@
         </content>
       </Panel >
  
-      <Panel headerText="{i18n>Product}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel1" >
+      <Panel headerText="{i18n>Product}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="ProductTitle" >
         <content>
-          <Table id="table0" items="{localOrders>/Order/Products/results}" >
+          <Table id="ProductTable" items="{localOrders>/Order/Products/results}" >
             <columns>
               <Column id="columnProductName" >
                 <Text id="labelProductName" text="{i18n>Product Name}"/>
@@ -44,10 +44,10 @@
             <items> 
               <ColumnListItem id="ProductListItem"> 
                 <cells> 
-                  <Text id="textProductName" text="{localOrders>ProductName}" />
+                  <Text id="textProductName" text="{localOrders>ProductID} - {localOrders>ProductName}" />
                   <Text id="textQuantity" text="{localOrders>Quantity}" />
                   <Text id="textPrice" text="{localOrders>PricePerQuantity}" />
-                  <Text id="textTotal" text="{localOrders>Total Price}" />
+                  <Text id="textTotal" text="{= ${localOrders>Quantity} * ${localOrders>PricePerQuantity} }" />
                 </cells> 
               </ColumnListItem> 
             </items> 
