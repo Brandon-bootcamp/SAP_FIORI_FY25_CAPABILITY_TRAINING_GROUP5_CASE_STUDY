@@ -12,6 +12,9 @@ sap.ui.define([
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("RouteEditPage").attachPatternMatched(this._onObjectMatched, this);
             this.localOrdersModel = this.getView().getModel("localOrders");
+
+            var oTable = this.byId("productTable");
+            oTable.attachUpdateFinished(this.updateProductTitle.bind(this));
         },
 
         _onObjectMatched: function (oEvent) {
