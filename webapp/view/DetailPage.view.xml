@@ -1,7 +1,7 @@
 <mvc:View controllerName="com.ordermanagement.ordermanagement.controller.DetailPage" 
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"> 
-    <Page id="EditPage" floatingFooter="true" title="{i18n>DetailTitle}">  
+    <Page id="DetailPage" floatingFooter="true" title="{i18n>DetailTitle}">  
     <content> 
       <Panel headerText="{i18n>Order Detail}" class="sapUiResponsiveMargin" width="auto" expanded="true" id="panel0"> 
         <content> 
@@ -13,10 +13,10 @@
             <Text id="textCreatedOn" text="{localOrders>/Order/CreationDate}"/>
 
             <Label id="labelReceivingPlant" text="{i18n>Receiving Plant}"/>
-            <Text id="textReceivingPlant" text="{localOrders>/Order/ReceivingPlantCode}"/>
+            <Text id="textReceivingPlant" text="{localOrders>/Order/ReceivingPlantCode} - {localOrders>/Order/ReceivingPlantDescription}"/>
 
             <Label id="labelDeliveringPlant" text="{i18n>Delivering Plant}"/>
-            <Text id="textDeliveringPlant" text="{localOrders>/Order/DeliveringPlantCode}"/>
+            <Text id="textDeliveringPlant" text="{localOrders>/Order/Products/results/0/DeliveringPlantCode} - {localOrders>/Order/Products/results/0/DeliveringPlantDescription}"/>
 
             <Label id="labelStatus" text="{i18n>Status}"/>
             <Text id="textStatus" text="{localOrders>/Order/Status}"/>
@@ -59,7 +59,7 @@
     <footer> 
       <OverflowToolbar id="FooterToolbar"> 
         <ToolbarSpacer id="footerSpacer" />
-        <Button id="Edit" text="{i18n>Edit}" tooltip="{i18n>edit}" press="onEdit" />
+        <Button id="Edit" text="{i18n>Edit}" tooltip="{i18n>edit}" press="onEdit" binding="{localOrders>Order}" />
         <Button id="Cancel" text="{i18n>Cancel}" tooltip="{i18n>cancel}" press="onCancel" />
       </OverflowToolbar>
     </footer>

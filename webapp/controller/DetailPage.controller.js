@@ -37,11 +37,18 @@ sap.ui.define([
         },
 
         onEdit: function (oEvent) {
-            const selectedOrder = oEvent.getSource().getBindingContext("localOrders").getObject();
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("RouteEditPage", {
-                orderId: selectedOrder.OrderNumber
-            });
+            const oLocalModel = this.getView().getModel("localOrders");
+            const selectedOrder = oLocalModel.getProperty("/Order");
+
+            if (selectedOrder && selectedOrder.OrderNumber) {
+                const oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo("RouteEditPage", {
+                    orderId: selectedOrder.OrderNumber
+                });
+            } else {
+                console.warn("Order data not available in local model.");
+            }
         },
 
         onCancel: function () {

@@ -11,28 +11,30 @@ sap.ui.define([
         onInit: function () {
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("RouteEditPage").attachPatternMatched(this._onObjectMatched, this);
-
+            this.localOrdersModel = this.getView().getModel("localOrders");
         },
 
         _onObjectMatched: function (oEvent) {
-            var sOrderNumber = oEvent.getParameter("arguments").orderId;
-            var sPath = "/Orders(" + sOrderNumber + ")";
-            this.getView().bindElement({ path: sPath });
+            const sOrderNumber = oEvent.getParameter("arguments").orderId;
+            const oModel = this.getView().getModel();
 
-            // Example: filter Products from backend or dataset
-            var oModel = this.getView().getModel();
-            var aAllOrders = oModel.getProperty("/Orders") || [];
-            var aProducts = aAllOrders
-                .filter(o => o.OrderNumber === parseInt(sOrderNumber))
-                .map(o => ({
-                    ProductName: o.ProductName,
-                    Quantity: o.Quantity,
-                    PricePerQuantity: o.PricePerQuantity,
-                    TotalPrice: o.Quantity * o.PricePerQuantity,
-                    selected: false
-                }));
-            oModel.setProperty("/products", aProducts);
-            console.log("Products set for order", sOrderNumber, aProducts);
+            // Read the specific Order and expand Products
+            oModel.read(`/Orders(${sOrderNumber})`, {
+                urlParameters: {
+                    "$expand": "Products"
+                },
+                success: (oData) => {
+                    const oLocalModel = new JSONModel({
+                        Order: oData,
+                        Products: oData.Products || []
+                    });
+                    this.getView().setModel(oLocalModel, "localOrders");
+                    console.log(oLocalModel);
+                },
+                error: (err) => {
+                    console.error("Failed to fetch order details:", err);
+                }
+            });
         },
 
         updateProductTitle: function () {
@@ -48,34 +50,41 @@ sap.ui.define([
             MessageToast.show("Status updated to: " + sKey);
         },
 
-        onAddProduct: function () {
-            const oModel = this.getView().getModel();
-            const sDeliveringPlant = oModel.getProperty("/DeliveringPlant");
-            const aOrders = oModel.getProperty("/Orders") || [];
+onAddProduct: function () {
+    const oLocalModel = this.getView().getModel("localOrders");
+    const orderData = oLocalModel.getProperty("/Order");
+    const productData = oLocalModel.getProperty("/Products/results");
 
-            const aFilteredProducts = aOrders
-                .filter(order => order.DeliveringPlantCode === sDeliveringPlant)
-                .map(order => ({
-                    ProductID: order.ProductID,
-                    ProductName: order.ProductName
-                }));
+    if (!Array.isArray(productData)) {
+        MessageBox.error("Product data is not available.");
+        return;
+    }
 
-            const oDialogModel = new sap.ui.model.json.JSONModel({
-                selectedProductId: "",
-                quantity: "",
-                availableProducts: aFilteredProducts
-            });
-            this.getView().setModel(oDialogModel, "dialog");
+    const sDeliveringPlant = orderData.DeliveringPlantCode;
 
-            if (!this._pDialog) {
-                this._pDialog = this.loadFragment({
-                    name: "com.ordermanagement.ordermanagement.fragment.ProductDialog",
-                    controller: this
-                });
-            }
+    const aFilteredProducts = productData
+        .filter(product => product.DeliveringPlant === sDeliveringPlant)
+        .map(product => ({
+            ProductID: product.ProductID,
+            ProductName: product.ProductName
+        }));
 
-            this._pDialog.then(oDialog => oDialog.open());
-        },
+    const oDialogModel = new JSONModel({
+        selectedProductId: "",
+        quantity: "",
+        availableProducts: aFilteredProducts
+    });
+    this.getView().setModel(oDialogModel, "dialog");
+
+    if (!this._pDialog) {
+        this._pDialog = this.loadFragment({
+            name: "com.ordermanagement.ordermanagement.fragment.ProductDialog",
+            controller: this
+        });
+    }
+
+    this._pDialog.then(oDialog => oDialog.open());
+},
 
         onConfirmAddProduct: function () {
             var oDialogModel = this.getView().getModel("dialog");
