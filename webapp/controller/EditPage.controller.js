@@ -187,7 +187,6 @@ sap.ui.define([
             const oLocalModel = this.getView().getModel("localOrders");
             const aProducts = oLocalModel.getProperty("/Order/Products/results") || [];
 
-            // 🔍 Find selected products
             const aSelected = aProducts.filter(p => p.selected);
             console.log(aProducts);
 
@@ -241,10 +240,10 @@ sap.ui.define([
                                     `The Order ${sOrderNumber} has been successfully updated.`,
                                     {
                                         onClose: () => {
-                                            oModel.refresh(true); // force backend refresh
+                                            oModel.refresh(true); 
                                             oRouter.navTo("RouteDetailPage", {
                                                 orderId: sOrderNumber
-                                            }, true); // force route reload
+                                            }, true); 
                                         }
                                     }
                                 );
