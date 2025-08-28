@@ -2,12 +2,12 @@
     <Dialog id="_IDGenDialog1" title="Add Product" draggable="true" resizable="true">
         <VBox id="_IDGenVBox">
             <Label id="_IDGenLabel" text="Select Product" />
-             <Select
-                id="productSelect"
-                selectedKey="{dialog>/selectedProductId}"
-                items="{dialog>/availableProducts}">
-                <core:Item id="_IDGenItem" key="{dialog>id}" text="{dialog>name}" />
-            </Select>
+                <Select
+                    id="productSelect"
+                    selectedKey="{dialog>/selectedProductId}"
+                    items="{dialog>/availableProducts}">
+                    <core:Item id="_IDGenItem" key="{dialog>id}" text="{dialog>name}" />
+                </Select>
             <Label id="_IDGenLabel1" text="Quantity" />
             <Input id="_IDGenInput" value="{dialog>/quantity}" type="Number" />
         </VBox>

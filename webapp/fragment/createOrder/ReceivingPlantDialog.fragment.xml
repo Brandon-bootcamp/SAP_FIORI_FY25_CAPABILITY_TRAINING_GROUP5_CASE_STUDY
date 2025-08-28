@@ -2,20 +2,26 @@
     xmlns:core="sap.ui.core">
     <SelectDialog id="SelectDialogReceivingPlant"
         noDataText="No Receiving Plant Found"
-        title="Receiving Plant"
+        title="{i18n>ttlReceivingPlant}"
         search=".onSearchReceivingPlant"
         selectionChange="onSelectProduct"
         searchPlaceholder="Search Receiving Plant..."
         confirm=".onValueHelpReceivingPlantDialogClose"
         cancel=".onValueHelpReceivingPlantDialogClose"
         items="{
-            path: '/Orders'
+            path: '/ReceivingPlants'
         }">
-        <StandardListItem id="StandardListReceivingPlant" 
-            title="{ReceivingPlantDescription}"
-            iconDensityAware="false"
-            iconInset="false"
-            type="Active" />
+
+        <CustomListItem id="CustomListItemReceivingPlant">
+            <HBox justifyContent="SpaceBetween" id="hboxReceivingPlant" class="sapUiSmallMarginTopBottom sapUiSmallMarginBeginEnd">
+                <VBox id="vboxReceivingPlant">
+                    <Text id="ttlReceivingPlantDesc" text="{ReceivingPlantDescription}" />
+                    <HBox id="hboxDevPlant">
+                        <Title id="txtReceivingPlantCode" text="{ReceivingPlantCode}" visible="false" />
+                    </HBox>
+                </VBox>
+            </HBox>
+        </CustomListItem>
     </SelectDialog>
 
 </core:FragmentDefinition>

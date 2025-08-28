@@ -1,17 +1,17 @@
 <core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:cards="sap.f.cards" xmlns="sap.m"
     xmlns:core="sap.ui.core">
-    <Dialog id="idConfirm" title="Confirmation">
+    <Dialog id="idConfirm" title="{i18n>ttlConfirmation}">
 
         <form:SimpleForm id="sformConfirm">
-            <Text id="txtConfirmation" text="Are you sure you want to delete items?" />
+            <Text id="txtConfirmation" text="{i18n>txtConfirmationDialog}" />
         </form:SimpleForm>
 
         <beginButton>
-            <Button id="idButtonConfirmOrderDialog" text="Confirm" type="Emphasized" press="onConfirmDeleteOrder"/>
+            <Button id="idButtonConfirmOrderDialog" text="{i18n>btnConfirm}" type="Emphasized" press="onConfirmDeleteOrder"/>
         </beginButton>
 
         <endButton>
-            <Button id="idButtonCancelOrderdialog" text="Cancel" type="Reject" press="onCloseFragment" />
+            <Button id="idButtonCancelOrderdialog" text="{i18n>btnCancel}" type="Reject" press="onCloseFragment" />
         </endButton>
 
     </Dialog>

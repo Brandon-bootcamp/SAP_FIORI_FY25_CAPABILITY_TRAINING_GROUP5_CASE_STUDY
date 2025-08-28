@@ -2,7 +2,7 @@
     xmlns:core="sap.ui.core">
     <SelectDialog id="SelectDialogDeliveringPlant"
         noDataText="No Delivering Plant Found"
-        title="Delivering Plant"
+        title="{i18n>ttlDeliveringPlant}"
         search=".onSearchDeliveringPlant"
         searchPlaceholder="Search Delivering Plant..."
         confirm=".onValueHelpDeliveringPlantDialogClose"
@@ -10,11 +10,16 @@
         items="{
             path: '/Products'
         }">
-        <StandardListItem id="StandardListItemDeliveringPlant" 
-            title="{DeliveringPlantDescription}"
-            iconDensityAware="false"
-            iconInset="false"
-            type="Active" />
+        <CustomListItem id="CustomListItemDeliveringPlant">
+            <HBox justifyContent="SpaceBetween" id="hboxDeliveringPlant" class="sapUiSmallMarginTopBottom sapUiSmallMarginBeginEnd">
+                <VBox id="vboxDeliveringPlant">
+                    <Text id="ttlDeliveringPlantDescription" text="{DeliveringPlantDescription}" />
+                    <HBox id="hboxRevPlant">
+                        <Title id="txtDeliveringPlantCode" text="{DeliveringPlantCode}" visible="false" />
+                    </HBox>
+                </VBox>
+            </HBox>
+        </CustomListItem>
     </SelectDialog>
 
 </core:FragmentDefinition>

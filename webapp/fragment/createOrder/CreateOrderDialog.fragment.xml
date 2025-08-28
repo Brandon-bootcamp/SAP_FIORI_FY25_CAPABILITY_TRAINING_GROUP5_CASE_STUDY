@@ -2,20 +2,19 @@
     xmlns:core="sap.ui.core">
     <SelectDialog id="CreateOrderDialog"
         noDataText="No Product Found"
-        title="Select Product"
+        title="{i18n>ttlSelectProduct}"
         search=".onSearchProduct"
         searchPlaceholder="Search Product..."
         confirm=".onValueHelpProductName"
         items="{
             path: '/Products'
-        }">
-        
+        }">   
         <CustomListItem id="CustomListItem">
             <HBox justifyContent="SpaceBetween" id="hbox" class="sapUiSmallMarginTopBottom sapUiSmallMarginBeginEnd">
                 <VBox id="vbox">
                     <Title id="ttlProductNameFrag" text="{ProductName}" />
                     <HBox id="vboxPrice">
-                        <Text id="txtPrice" text="Price: " class="sapUiTinyMarginEnd"/>
+                        <Text id="txtPrice" text="{i18n>txtPrice}" class="sapUiTinyMarginEnd"/>
                         <Text id="txtProductPrice" text="{PricePerQuantity}" />
                     </HBox>
                     <Text id="txtPricePerQuantityFrag" text="{ProductID}" visible="false" />

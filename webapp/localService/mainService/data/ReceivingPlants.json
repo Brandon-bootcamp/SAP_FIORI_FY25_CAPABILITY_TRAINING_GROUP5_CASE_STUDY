@@ -1,0 +1,26 @@
+[
+    {
+        "ReceivingPlantCode": 1000,
+        "ReceivingPlantDescription": "Japan"
+    },
+    {
+        "ReceivingPlantCode": 1001,
+        "ReceivingPlantDescription": "Brazil"
+    },
+    {
+        "ReceivingPlantCode": 1002,
+        "ReceivingPlantDescription": "Germany"
+    },
+    {
+        "ReceivingPlantCode": 1003,
+        "ReceivingPlantDescription": "Canada"
+    },
+    {
+        "ReceivingPlantCode": 1004,
+        "ReceivingPlantDescription": "Philippines"
+    },
+    {
+        "ReceivingPlantCode": 1005,
+        "ReceivingPlantDescription": "USA"
+    }
+]
